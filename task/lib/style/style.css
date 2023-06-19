@@ -1,0 +1,57 @@
+html {
+    font-family: sans-serif;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.header {
+    margin: 0 auto;
+    text-align: center;
+    margin: 50px 0px;
+}
+
+.main {
+    width: 70em;
+    margin: 0 auto;
+    border: 1px solid #61616148;
+}
+.main .table {
+    margin: 0px;
+}
+.main .table thead {
+    border-bottom: 1px solid #61616148;
+}
+
+#error-div {
+    color: rgb(186, 3, 3);
+    text-align: center;
+}
+
+/*** Results Styling Section ***/
+.main .divResults {
+    border: 1px solid #61616148;
+    text-align: center;
+    padding: 100px;
+}
+
+/*** Hiding Results Tables ***/
+.main .divResults #CountryCodeResults {
+    display: none;
+}
+.main .divResults #TimeZoneResults {
+    display: none;
+}
+.main .divResults #PostalCodeResults {
+    display: none;
+}
+
+.clearDiv {
+    padding: 10px;
+    text-align: right;
+}
+.clearDiv .btn {
+    width: 100px;
+}
