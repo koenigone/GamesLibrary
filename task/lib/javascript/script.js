@@ -36,6 +36,10 @@ $('#CCsubmit').on('click', function() {
             $('#error-div').html('<span>Error: ' + textStatus + ', ' + errorThrown + '</span>');
         }
     }); 
+    
+    $('#CCtableClearBtn').on('click', function() {
+        $('#CountryCodeResults').css('display', 'none');
+    });
 });
 
 // Timezone Submit Button
@@ -110,4 +114,4 @@ $('#clearBtn').on('click', function() {
     $('#CountryCodeResults').css('display', 'none');
     $('#TimeZoneResults').css('display', 'none');
     $('#PostalCodeResults').css('display', 'none');
-})
+});
