@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+
+html {
+    font-family: 'Open Sans', sans-serif;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+/******* HEADER SECTION *******/
+header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(110, 110, 110, 0.308);
+}
+
+header .main-logo img {
+    height: 70px;
+    margin: 5px;
+    border-radius: 50px;
+}
+
+header .inputsDiv {
+    display: none;
+}
+.inputsDiv span {
+    margin: 0px 10px;
+}
+.inputsDiv .btn {
+    margin-left: 10px;
+}
+
+header #toggleBtn {
+    margin: 0px 20px;
+    font-size: 30px;
+    color: rgb(16, 63, 163);
+    border: none;
+    background: none;
+}
+
+/******* MAIN SECTION *******/
+#map { 
+    height: 180px; 
+}
+
+
+
+
+/*** MOBILE ***/
+@media only screen and (max-width: 600px) {
+    header .main-logo img {
+        height: 60px;
+    }
+    header .inputsDiv {
+        text-align: center;
+    }
+    header .inputsDiv .btn {
+        margin: 10px;
+    }
+}
+
+/*** TABLET ***/
+@media only screen and (min-width: 601px) and (max-width: 1023px) {
+    header .main-logo img {
+        height: 60px;
+    }
+    header .inputsDiv {
+        text-align: center;
+    }
+    header .inputsDiv .btn {
+        margin: 10px;
+    }
+}
+
+/*** DESKTOP ***/
+@media only screen and (min-width: 1024px) {
+    header #toggleBtn {
+        display: none;
+    }
+    header .inputsDiv {
+        display: flex;
+        margin: 22px;
+        align-items: center;
+    }
+}
