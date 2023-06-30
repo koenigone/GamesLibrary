@@ -10,7 +10,7 @@ html {
 }
 
 /******* HEADER SECTION *******/
-header {
+.navbar {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -18,23 +18,46 @@ header {
     border-bottom: 1px solid rgba(110, 110, 110, 0.308);
 }
 
-header .main-logo img {
-    height: 70px;
+.navbar .main-logo {
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.navbar .main-logo img {
+    height: 60px;
     margin: 5px;
     border-radius: 50px;
+    cursor: not-allowed;
 }
 
-header .inputsDiv {
+.navbar .main-logo span {
+    margin-left: -3px;
+}
+
+.navbar .main-logo .title-red {
+    color: rgb(138, 10, 10);
+}
+.navbar .main-logo .title-green {
+    color: green;
+    font-size: 30px;
+}
+.navbar .main-logo .title-blue {
+    color: rgb(16, 74, 182);
+}
+
+.navbar .searchDiv {
+    width: 500px;
+    margin-left: 120px;
+}
+
+.navbar .inputsDiv {
     display: none;
 }
-.inputsDiv span {
-    margin: 0px 10px;
-}
-.inputsDiv .btn {
-    margin-left: 10px;
+.navbar .inputsDiv input {
+    width: 120px;
 }
 
-header #toggleBtn {
+.navbar #toggleBtn {
     margin: 0px 20px;
     font-size: 30px;
     color: rgb(16, 63, 163);
@@ -43,47 +66,46 @@ header #toggleBtn {
 }
 
 /******* MAIN SECTION *******/
-#map { 
-    height: 180px; 
+#map {
+    width: 100%;
+    height: 93vh;
 }
-
-
 
 
 /*** MOBILE ***/
 @media only screen and (max-width: 600px) {
-    header .main-logo img {
-        height: 60px;
+    .navbar .main-logo span {
+        display: none;
     }
-    header .inputsDiv {
-        text-align: center;
-    }
-    header .inputsDiv .btn {
-        margin: 10px;
+    .navbar .searchDiv {
+        width: 250px;
+        margin: 0 auto;
     }
 }
 
 /*** TABLET ***/
 @media only screen and (min-width: 601px) and (max-width: 1023px) {
-    header .main-logo img {
-        height: 60px;
-    }
-    header .inputsDiv {
-        text-align: center;
-    }
-    header .inputsDiv .btn {
-        margin: 10px;
-    }
+
 }
 
 /*** DESKTOP ***/
 @media only screen and (min-width: 1024px) {
-    header #toggleBtn {
+    .navbar #sidebar-button {
         display: none;
     }
-    header .inputsDiv {
+    .navbar #toggleBtn {
+        display: none;
+    }
+    .navbar .inputsDiv {
         display: flex;
-        margin: 22px;
-        align-items: center;
+        justify-content: center;
+    }
+    .navbar .inputsDiv input {
+        height: 40px;
+        margin: 20px 0px;
+    };
+    .searchDiv .form-control {
+        width: 500px;
     }
 }
+

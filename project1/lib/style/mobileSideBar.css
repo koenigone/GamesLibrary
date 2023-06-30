@@ -1,0 +1,68 @@
+#sidebar-button {
+    fill: white;
+    font-size: 30px;
+    margin: 10px 10px;
+    cursor: pointer;
+    float: right;
+}
+
+#sidebar {
+    width: 0px;
+    height: 100vh;
+    background-color: rgba(5, 27, 56, 0.733);
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 999;
+    overflow: hidden;
+    transition: width 0.5s ease;
+    white-space: nowrap;
+}
+
+.sidebar-item {
+    color: rgba(255, 255, 255, 0.849);
+    display: block;
+    margin: 10px 20px;
+}
+
+.navbar-head span {
+    font-weight: bold;
+    font-size: 20px;
+}
+.navbar-head .title-blue {
+    color: rgb(16, 74, 182);
+}
+.navbar-head .title-green {
+    color: green;
+    font-size: 30px;
+}
+.navbar-head .title-red {
+    color: rgb(138, 10, 10);
+}
+
+.searchDiv {
+    display: flex;
+}
+
+.inputsDiv .btn {
+    margin: 20px 0px;
+}
+
+#sidebar .div-rights {
+    margin: 500px 20px;
+}
+#sidebar .div-rights h5 {
+    font-size: 11px;
+    color: #ffffff7c;
+}
+
+#overlay {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.562);
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 999;
+    display: none;
+}
