@@ -76,13 +76,20 @@
         </div>
 
         <div id="map"></div>
+        
         <div class="mapClickResultDiv">
-            <input type="text" id="latResult" placeholder="latitude">
-            <input type="text" id="lngResult" placeholder="longitude">
+            <input type="text" class="form-control clickLat" id="latResult" placeholder="latitude" readonly>
+            <input type="text" class="form-control clickLng" id="lngResult" placeholder="longitude" readonly>
         </div>
         <div class="markersControlBtns">
-            <button id="deleteMarkerBtn">Delete Marker</button>
-            <button id="deleteAllMarkersBtn">Delete All Markers</button>
+            <!-- <button id="deleteMarkerBtn">Delete Marker</button> -->
+            <a id="deleteMarkerBtn" title="delete marker">
+                <i class="far fa-square-minus"></i>
+            </a>
+            <!-- <button id="deleteAllMarkersBtn">Delete All Markers</button> -->
+            <a id="deleteAllMarkersBtn" title="delete all markers">
+                <i class="fas fa-delete-left"></i>
+              </a>
         </div>
     </main>
     

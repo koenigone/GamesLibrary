@@ -51,7 +51,7 @@ $('#searchBarBtn').click(function() {
     var location = $('#searchInput').val();
 
     if (location.trim() === '') {
-      $('#searchErrorDiv').html('Please enter a valid country or city.');
+      $('#searchErrorDiv').html('Please enter a valid country or city name.');
       return;
     }
 
