@@ -8,11 +8,43 @@ $(window).on('load', function () {
 // Initializing Leaflet map
 var map = L.map('map').setView([0, 0], 13);
 var marker;
+var markers = [];
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
   maxZoom: 18,
 }).addTo(map);
+
+// Displays the Lat&Lng of clicked location as Inputs Value
+map.on('click', function(e) {
+  $('#latResult').val(e.latlng.lat);
+  $('#lngResult').val(e.latlng.lng);
+});
+
+// Puts a Marker On Clicked Location
+function onMapClick(e) {
+  var marker = L.marker(e.latlng).addTo(map);
+  markers.push(marker);
+}
+
+map.on('click', onMapClick);
+
+// Deletes The Markers One by One
+$('#deleteMarkerBtn').click(function() {
+  if (markers.length > 0) {
+    let marker = markers.pop();
+    map.removeLayer(marker);
+  }
+});
+
+// Deletes All Markers
+$('#deleteAllMarkersBtn').click(function() {
+  for (var i = 0; i < markers.length; i++) {
+    var marker = markers[i];
+    map.removeLayer(marker);
+  }
+  markers = [];
+});
 
 // Takes Search Input And Displays It On The Map
 $('#searchBarBtn').click(function() {

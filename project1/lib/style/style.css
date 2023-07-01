@@ -71,6 +71,19 @@ html {
     height: 93vh;
 }
 
+.mapClickResultDiv {
+    position: absolute;
+    top: 110px;
+    right: 10px;
+    z-index: 1000;
+}
+
+.markersControlBtns {
+    position: absolute;
+    top: 150px;
+    right: 10px;
+    z-index: 1000;
+}
 
 /*** MOBILE ***/
 @media only screen and (max-width: 600px) {
