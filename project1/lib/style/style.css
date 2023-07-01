@@ -49,12 +49,21 @@ html {
     width: 500px;
     margin-left: 120px;
 }
+#searchErrorDiv {
+    color: rgb(184, 4, 4);
+    font-size: 10px;
+}
 
 .navbar .inputsDiv {
     display: none;
 }
 .navbar .inputsDiv input {
     width: 120px;
+}
+
+#inputsErrorDiv {
+    color: rgb(184, 4, 4);
+    font-size: 10px;
 }
 
 .navbar #toggleBtn {

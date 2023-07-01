@@ -51,7 +51,7 @@ $('#searchBarBtn').click(function() {
     var location = $('#searchInput').val();
 
     if (location.trim() === '') {
-      alert('Please enter a valid country or city.');
+      $('#searchErrorDiv').html('Please enter a valid country or city.');
       return;
     }
 
@@ -73,31 +73,57 @@ $('#searchBarBtn').click(function() {
           marker.remove();
         }
 
-        marker = L.marker([latitude, longitude]).addTo(map);
-        map.setView([latitude, longitude], 10);
+        var searchMarker = L.marker([latitude, longitude]).addTo(map);
+        map.setView([latitude, longitude], 13);
+        markers.push(searchMarker);
+
+        $('#searchErrorDiv').html('');
       },
       error: function() {
-        alert('An error occurred during geocoding.');
+        $('#searchErrorDiv').html('An error occurred during geocoding.');
       }
     });
 });
 
 // Taking Latitude&Longitude inputs and displaying them on the map with a marker
-$('#searchBtn, #sidebarSearchBtn').click(function() {
-    var latitudeInput = parseFloat($('#latitudeInput, #sideBarlatitudeInput').val());
-    var longitudeInput = parseFloat($('#longitudeInput, #sideBarLongitudeInput').val());
+$('#searchBtn').click(function() {
+    var latitudeInput = parseFloat($('#latitudeInput').val());
+    var longitudeInput = parseFloat($('#longitudeInput').val());
   
     if (isNaN(latitudeInput) || isNaN(longitudeInput) || !isFinite(latitudeInput) || !isFinite(longitudeInput)) {
-        alert('Please enter valid latitude and longitude values.');
-        return;
+      $('#inputsErrorDiv').html('Please enter valid latitude and longitude values.');
+      return;
     }
-  
+
     if (marker) {
         marker.remove();
     }
   
-    marker = L.marker([latitudeInput, longitudeInput]).addTo(map);
+    var searchMarker = L.marker([latitudeInput, longitudeInput]).addTo(map);
     map.setView([latitudeInput, longitudeInput], 13);
+    markers.push(searchMarker);
+    $('#inputsErrorDiv').html('');
+    $('#mobileInputsErrorDiv').html('');
+});
+
+// Mobile version of the above function
+$('#sidebarSearchBtn').click(function() {
+  var mobileLatitudeInput = parseFloat($('#sideBarlatitudeInput').val());
+  var mobileLongitudeInput = parseFloat($('#sideBarLongitudeInput').val());
+
+  if (isNaN(mobileLatitudeInput) || isNaN(mobileLongitudeInput) || !isFinite(mobileLatitudeInput) || !isFinite(mobileLongitudeInput)) {
+    $('#mobileInputsErrorDiv').html('Please enter valid lat&lng values');
+    return;
+  }
+
+  if (marker) {
+    marker.remove();
+  }
+
+  var searchMarker = L.marker([mobileLatitudeInput, mobileLongitudeInput]).addTo(map);
+  map.setView([mobileLatitudeInput, mobileLongitudeInput], 13);
+  markers.push(searchMarker);
+  $('#mobileInputsErrorDiv').html('');
 });
 
 // Using JS Navigator to display user's location upon opening the website
@@ -106,8 +132,9 @@ if ('geolocation' in navigator) {
       var latitude = position.coords.latitude;
       var longitude = position.coords.longitude;
   
-      var marker = L.marker([latitude, longitude]).addTo(map);
+      var geolocationMarker = L.marker([latitude, longitude]).addTo(map);
       map.setView([latitude, longitude], 13);
+      markers.push(geolocationMarker);
     });
   } else {
     console.log('Geolocation is not supported by your browser.');
