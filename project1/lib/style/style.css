@@ -54,7 +54,7 @@ html {
     color: rgb(184, 4, 4);
     font-size: 12px;
     position: absolute;
-    top: -20px;
+    top: -21px;
     left: 0;
     right: 0;
     text-align: left;
@@ -68,10 +68,19 @@ html {
 .navbar .inputsDiv input {
     width: 120px;
 }
+.navbar .inputsDiv #searchBtn {
+    border: none;
+    background-color: #025ec7;
+    color: white;
+    padding: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
 .navbar .inputsDiv #inputsErrorDiv {
     color: rgb(184, 4, 4);
     font-size: 12px;
     position: absolute;
+    top: -21px;
     left: 0;
     right: 0;
     text-align: left;
@@ -99,7 +108,7 @@ html {
     margin: 20px;
     position: absolute;
     top: 150px;
-    right: 10px;
+    right: 0px  ;
     z-index: 1000;
 }
 
@@ -112,16 +121,8 @@ html {
     background: #025ec7;
     text-align: center;
     text-decoration: none;
-    color: #ffffffdc;
+    color: #ffffffe8;
     transition: all .2s;
-}
-
-.fas, .far {
-    line-height: 60px;
-    font-size: 20px;
-    font-weight: bold;
-    font-style: normal;
-    transition: all .1s;
 }
 
 #deleteMarkerBtn:hover, #deleteAllMarkersBtn:hover {
@@ -149,16 +150,13 @@ html {
     .navbar #sidebar-button {
         display: none;
     }
-    .navbar #toggleBtn {
-        display: none;
-    }
     .navbar .inputsDiv {
         display: flex;
         justify-content: center;
+        margin: 0px 10px;
     }
-    .navbar .inputsDiv input {
+    .navbar .inputsDiv input,button {
         height: 40px;
-        margin: 20px 0px;
     };
     .searchDiv .form-control {
         width: 500px;

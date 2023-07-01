@@ -135,6 +135,9 @@ if ('geolocation' in navigator) {
       var geolocationMarker = L.marker([latitude, longitude]).addTo(map);
       map.setView([latitude, longitude], 13);
       markers.push(geolocationMarker);
+
+      $('#latResult').val(latitude);
+      $('#lngResult').val(longitude);
     });
   } else {
     console.log('Geolocation is not supported by your browser.');
