@@ -9,7 +9,7 @@ html {
     margin: 0;
 }
 
-/******* HEADER SECTION *******/
+/******* HEADER NAVBAR SECTION *******/
 .navbar {
     width: 100%;
     height: 80px;
@@ -92,6 +92,7 @@ html {
     height: 91.4vh;
 }
 
+/* Lat & Lng Inputs */
 .mapClickResultDiv {
     display: flex;
     width: 350px;
@@ -100,10 +101,12 @@ html {
     right: 10px;
     z-index: 1000;
 }
+
 .mapClickResultDiv .clickLat, .clickLng {
     margin: 10px 0px;
 }
 
+/* Markers Control Buttons */
 .markersControlBtns {
     margin: 20px;
     position: absolute;
@@ -115,8 +118,9 @@ html {
 #deleteMarkerBtn, #deleteAllMarkersBtn {
     display: block;
     margin-bottom: 10px;
-    height: 60px;
-    width: 60px;
+    height: 50px;
+    width: 50px;
+    border: none;
     border-radius: 190px;
     background: #025ec7;
     text-align: center;
@@ -127,6 +131,35 @@ html {
 
 #deleteMarkerBtn:hover, #deleteAllMarkersBtn:hover {
     border-bottom-left-radius: 0;
+}
+
+/* Country Information Buttons */
+.infoControlBtns {
+    margin: 20px;
+    position: absolute;
+    top: 190px;
+    left: -10px;
+    z-index: 1000;
+}
+
+
+#getCountryBtn, #getCurrencyBtn, #getTimezoneBtn, #getWeatherBtn {
+    display: block;
+    margin-bottom: 10px;
+    height: 50px;
+    width: 50px;
+    border: none;
+    border-radius: 190px;
+    background: green;
+    text-align: center;
+    text-decoration: none;
+    color: #ffffffe8;
+    transition: all .2s;
+}
+
+
+#getCountryBtn:hover, #getCurrencyBtn:hover, #getTimezoneBtn:hover, #getWeatherBtn:hover {
+    border-bottom-right-radius: 0;
 }
 
 /*** MOBILE ***/

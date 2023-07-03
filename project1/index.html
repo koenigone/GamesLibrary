@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="lib/style/mobileSideBar.css">
     <link rel="stylesheet" href="lib/style/preloader.css">
     <link rel="stylesheet" href="bootstrap-5.0.2-dist\css\bootstrap.min.css">
-    <link href="https://use.fontawesome.com/releases/vVERSION/css/svg-with-js.css" rel="stylesheet"></link>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <link rel="stylesheet" href="leaflet-locatecontrol-gh-pages\dist\L.Control.Locate.min.css">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -76,22 +75,29 @@
             </div>
         </div>
 
+        <!-- Main Map Div -->
         <div id="map"></div>
         
+        <!-- On Click Lat & Lng -->
         <div class="mapClickResultDiv">
             <input type="text" class="form-control clickLat" id="latResult" placeholder="latitude" readonly>
             <input type="text" class="form-control clickLng" id="lngResult" placeholder="longitude" readonly>
         </div>
+
+        <!-- Markers Control Buttons -->
         <div class="markersControlBtns">
-            <!-- <button id="deleteMarkerBtn">Delete Marker</button> -->
-            <a id="deleteMarkerBtn" title="delete marker">
-                <i class="fa-solid fa-location-minus" style="line-height: 60px; font-size: 20px; transition: all .1s;"></i>
-            </a>
-            <!-- <button id="deleteAllMarkersBtn">Delete All Markers</button> -->
-            <a id="deleteAllMarkersBtn" title="delete all markers">
-                <i class="fa-sharp fa-solid fa-trash" style="line-height: 60px; font-size: 20px; transition: all .1s;"></i>
-              </a>
+            <button id="deleteMarkerBtn" title="delete marker"><i class="fa-regular fa-square-minus"></i></button>
+            <button id="deleteAllMarkersBtn" title="delete all markers"><i class="fa-solid fa-delete-left"></i></button>
         </div>
+
+        <!-- Country Information Buttons -->
+        <div class="infoControlBtns">
+            <button id="getCountryBtn"><i class="fa-solid fa-info"></i></button>
+            <button id="getCurrencyBtn"><i class="fa-solid fa-coins"></i></button>
+            <button id="getTimezoneBtn"><i class="fa-solid fa-hourglass-start"></i></i></button>
+            <button id="getWeatherBtn"><i class="fa-solid fa-bolt"></i></i></button>
+        </div>
+        
     </main>
     
     <div id="preloader"></div>

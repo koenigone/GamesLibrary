@@ -77,6 +77,9 @@ $('#searchBarBtn').click(function() {
         map.setView([latitude, longitude], 13);
         markers.push(searchMarker);
 
+        $('#latResult').val(latitude);
+        $('#lngResult').val(longitude);
+
         $('#searchErrorDiv').html('');
       },
       error: function() {
@@ -102,6 +105,8 @@ $('#searchBtn').click(function() {
     var searchMarker = L.marker([latitudeInput, longitudeInput]).addTo(map);
     map.setView([latitudeInput, longitudeInput], 13);
     markers.push(searchMarker);
+    $('#latResult').val(latitudeInput);
+    $('#lngResult').val(longitudeInput);
     $('#inputsErrorDiv').html('');
     $('#mobileInputsErrorDiv').html('');
 });
@@ -123,6 +128,9 @@ $('#sidebarSearchBtn').click(function() {
   var searchMarker = L.marker([mobileLatitudeInput, mobileLongitudeInput]).addTo(map);
   map.setView([mobileLatitudeInput, mobileLongitudeInput], 13);
   markers.push(searchMarker);
+
+  $('#latResult').val(mobileLatitudeInput);
+  $('#lngResult').val(mobileLongitudeInput);
   $('#mobileInputsErrorDiv').html('');
 });
 
@@ -145,3 +153,47 @@ if ('geolocation' in navigator) {
 
 // Locate Button To Display User's Current Location
 L.control.locate().addTo(map);
+
+// Get Country Name & Capital Based on the clicked location
+$('#getCountryBtn').click(function () {
+
+  var latitude = $('#latResult').val();
+  var longitude = $('#lngResult').val();
+
+  // GET request to the OpenCage API
+  $.get('https://api.opencagedata.com/geocode/v1/json', {
+    q: latitude + ',' + longitude,
+    key: 'a9539fc65a4c4710bcf9c629eb4a60dc'
+  }, function(data) {
+    console.log(data);
+
+    var continent = data.results[0].components.continent;
+    var country = data.results[0].components.country;
+    var countryCode = data.results[0].components.country_code;
+    var state = data.results[0].components.state;
+    var stateCode = data.results[0].components.state_code;
+    var postCode = data.results[0].components.postcode;
+
+    alert(`Continent: ${continent}\nCountry: ${country}\nCountry Code: ${countryCode}\nState: ${state}\nState Code: ${stateCode}\nPostcode: ${postCode}`);
+  });
+});
+
+// Get Country Currency Information
+$('#getCurrencyBtn').click(function() {
+  var latitude = $('#latResult').val();
+  var longitude = $('#lngResult').val();
+
+  $.get('https://api.opencagedata.com/geocode/v1/json', {
+    q: latitude + ',' + longitude,
+    key: 'a9539fc65a4c4710bcf9c629eb4a60dc',
+  }, function(data) {
+    console.log(data);
+
+    var isoCode = data.results[0].annotations.currency.iso_code;
+    var name = data.results[0].annotations.currency.name;
+    var subunit = data.results[0].annotations.currency.subunit;
+    var flag = data.results[0].annotations.flag;
+
+    alert(`ISO Code: ${isoCode}\nName: ${name}\nSubunit: ${subunit}\nFlag: ${flag}`);
+  });
+});
