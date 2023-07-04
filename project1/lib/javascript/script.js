@@ -197,3 +197,24 @@ $('#getCurrencyBtn').click(function() {
     alert(`ISO Code: ${isoCode}\nName: ${name}\nSubunit: ${subunit}\nFlag: ${flag}`);
   });
 });
+
+// Get Country Timezone
+$('#getTimezoneBtn').click(function() {
+  var latitude = $('#latResult').val();
+  var longitude = $('#lngResult').val();
+
+  $.get('https://api.opencagedata.com/geocode/v1/json', {
+    q: latitude + ',' + longitude,
+    key: 'a9539fc65a4c4710bcf9c629eb4a60dc',
+  }, function(data) {
+    console.log(data);
+
+    var name = data.results[0].annotations.timezone.name;
+    var now_in_dst = data.results[0].annotations.timezone.now_in_dst;
+    var offset_sec = data.results[0].annotations.timezone.offset_sec;
+    var offset_string = data.results[0].annotations.timezone.offset_string;
+    var short_name = data.results[0].annotations.timezone.short_name;
+
+    alert(`Name: ${name}\nnow In DST: ${now_in_dst}\nOffset Sec: ${offset_sec}\nOffset String: ${offset_string}}\nShort Time: ${short_name}`);
+  });
+});
