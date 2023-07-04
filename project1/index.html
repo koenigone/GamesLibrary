@@ -94,10 +94,110 @@
         <div class="infoControlBtns">
             <button id="getCountryBtn" title="Country Information"><i class="fa-solid fa-info"></i></button>
             <button id="getCurrencyBtn" title="Currency"><i class="fa-solid fa-coins"></i></button>
-            <button id="getTimezoneBtn" title="Timezone"><i class="fa-solid fa-hourglass-start"></i></i></button>
-            <button id="getWeatherBtn" title="Weather"><i class="fa-solid fa-bolt"></i></i></button>
+            <button id="getTimezoneBtn" title="Timezone"><i class="fa-regular fa-clock"></i></button>
+            <button id="getWeatherBtn" title="Weather"><i class="fa-solid fa-cloud-showers-water"></i></button>
         </div>
         
+        <div id='CountryInfoResultsDiv'>
+            <!--- Country Info Table --->
+            <table>
+                <thead>
+                    <th>Component</th>
+                    <th>Result</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>continent</td>
+                        <td id="CountryContinentResult"></td>
+                    </tr>
+                    <tr>
+                        <td>country</td>
+                        <td id="CountryNameResult"></td>
+                    </tr>
+                    <tr>
+                        <td>Country Code:</td>
+                        <td id="CountryCodeResult"></td>
+                    </tr>
+                    <tr>
+                        <td>Postcode</td>
+                        <td id="CountryPostcodeResult"></td>
+                    </tr>
+                    <tr>
+                        <td>State</td>
+                        <td id="CountryStateResult"></td>
+                    </tr>
+                    <tr>
+                        <td>State Code</td>
+                        <td id="CountryStateCodeResult"></td>
+                    </tr>
+                    <tr>
+                        <td>State District</td>
+                        <td id="CountryStateDistrictResult"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+            <!--- Country Currency Table --->
+        <div id='CurrencyResultsDiv'>
+            <table>
+                <thead>
+                    <th>Component</th>
+                    <th>Result</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ISO Code:</td>
+                        <td id="CurrencyISOCodeResult"></td>
+                    </tr>
+                    <tr>
+                        <td>Currency Name:</td>
+                        <td id="CurrencyNameResult"></td>
+                     </tr>
+                    <tr>
+                        <td>Subunit:</td>
+                        <td id="CurrencySubunitResult"></td>
+                    </tr>
+                    <tr>
+                        <td>Flag:</td>
+                        <td id="CurrencyFlagResult"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+            <!--- Country Timezone Table --->
+        <div id='TimezoneResultsDiv'>
+            <table>
+                <thead>
+                    <th>Component</th>
+                    <th>Result</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>name</td>
+                        <td id="TimezoneNameResult"></td>
+                    </tr>
+                    <tr>
+                        <td>now_in_dst</td>
+                        <td id="TimezoneDstResult"></td>
+                    </tr>
+                    <tr>
+                        <td>offset_sec</td>
+                        <td id="TimezoneSecResult"></td>
+                    </tr>
+                    <tr>
+                        <td>offset_string</td>
+                        <td id="TimezoneStringResult"></td>
+                    </tr>
+                        <tr>
+                        <td>short_name</td>
+                        <td id="TimezoneShortNameResult"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
     </main>
     
     <div id="preloader"></div>

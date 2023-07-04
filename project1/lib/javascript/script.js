@@ -154,32 +154,58 @@ if ('geolocation' in navigator) {
 // Locate Button To Display User's Current Location
 L.control.locate().addTo(map);
 
-// Get Country Name & Capital Based on the clicked location
-$('#getCountryBtn').click(function () {
+// Get Country Name & Capital Based on the clicked location (OpenCage API)
+$('#getCountryBtn').click(function() {
+  
+  // Hiding The other Tables
+  var currencyDiv = $('#CurrencyResultsDiv');
+  var timezoneDiv = $('#TimezoneResultsDiv');
+
+  if (currencyDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block') {
+    $(currencyDiv).add(timezoneDiv).css('display', 'none');
+  };
+
+  $('#CountryInfoResultsDiv').css('display', 'block');
 
   var latitude = $('#latResult').val();
   var longitude = $('#lngResult').val();
 
-  // GET request to the OpenCage API
   $.get('https://api.opencagedata.com/geocode/v1/json', {
     q: latitude + ',' + longitude,
-    key: 'a9539fc65a4c4710bcf9c629eb4a60dc'
+    key: 'a9539fc65a4c4710bcf9c629eb4a60dc',
   }, function(data) {
-    console.log(data);
 
     var continent = data.results[0].components.continent;
     var country = data.results[0].components.country;
-    var countryCode = data.results[0].components.country_code;
+    var country_code = data.results[0].components.country_code;
+    var postcode = data.results[0].components.postcode;
     var state = data.results[0].components.state;
-    var stateCode = data.results[0].components.state_code;
-    var postCode = data.results[0].components.postcode;
+    var state_code = data.results[0].components.state_code;
+    var state_district = data.results[0].components.state_district;
 
-    alert(`Continent: ${continent}\nCountry: ${country}\nCountry Code: ${countryCode}\nState: ${state}\nState Code: ${stateCode}\nPostcode: ${postCode}`);
+    $('#CountryContinentResult').html(continent);
+    $('#CountryNameResult').html(country);
+    $('#CountryCodeResult').html(country_code);
+    $('#CountryPostcodeResult').html(postcode);
+    $('#CountryStateResult').html(state);
+    $('#CountryStateCodeResult').html(state_code);
+    $('#CountryStateDistrictResult').html(state_district);
   });
 });
 
-// Get Country Currency Information
+// Get Country Currency Information -- (OpenCage API)
 $('#getCurrencyBtn').click(function() {
+
+  // Hiding The other Tables
+  var countryInfoDiv = $('#CountryInfoResultsDiv');
+  var timezoneDiv =  $('#TimezoneResultsDiv');
+
+  if (countryInfoDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block') {
+    $(countryInfoDiv).add(timezoneDiv).css('display', 'none');
+  };
+
+  $('#CurrencyResultsDiv').css('display', 'block');
+
   var latitude = $('#latResult').val();
   var longitude = $('#lngResult').val();
 
@@ -194,12 +220,26 @@ $('#getCurrencyBtn').click(function() {
     var subunit = data.results[0].annotations.currency.subunit;
     var flag = data.results[0].annotations.flag;
 
-    alert(`ISO Code: ${isoCode}\nName: ${name}\nSubunit: ${subunit}\nFlag: ${flag}`);
+    $('#CurrencyISOCodeResult').html(isoCode);
+    $('#CurrencyNameResult').html(name);
+    $('#CurrencySubunitResult').html(subunit);
+    $('#CurrencyFlagResult').html(flag);
   });
 });
 
-// Get Country Timezone
+// Get Country Timezone -- (OpenCage API)
 $('#getTimezoneBtn').click(function() {
+
+  // Hiding The other Tables
+  var countryInfoDiv = $('#CountryInfoResultsDiv');
+  var currencyDiv = $('#CurrencyResultsDiv');
+
+  if (countryInfoDiv.css('display') === 'block' || currencyDiv.css('display') === 'block') {
+    $(countryInfoDiv).add(currencyDiv).css('display', 'none');
+  };
+
+  $('#TimezoneResultsDiv').css('display', 'block');
+
   var latitude = $('#latResult').val();
   var longitude = $('#lngResult').val();
 
@@ -215,6 +255,39 @@ $('#getTimezoneBtn').click(function() {
     var offset_string = data.results[0].annotations.timezone.offset_string;
     var short_name = data.results[0].annotations.timezone.short_name;
 
-    alert(`Name: ${name}\nnow In DST: ${now_in_dst}\nOffset Sec: ${offset_sec}\nOffset String: ${offset_string}}\nShort Time: ${short_name}`);
+    $('#TimezoneNameResult').html(name);
+    $('#TimezoneDstResult').html(now_in_dst);
+    $('#TimezoneSecResult').html(offset_sec);
+    $('#TimezoneStringResult').html(offset_string);
+    $('#TimezoneShortNameResult').html(short_name);
+  });
+});
+
+// Retrive Weather Data -- (OpenWeather API)
+$('#getWeatherBtn').click(function() {
+  var appid = 'd82b4a56a2b2017d3b9863326d8378ec';
+  var latitude = $('#latResult').val();
+  var longitude = $('#lngResult').val();
+
+  $.ajax({
+    url: `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}}&lon=${longitude}&appid=${appid}`,
+    method: 'GET',
+    dataType: 'JSON',
+    success: function(data) {
+      if (data.length === 0) {
+        alert('Weather Data not found.');
+        return;
+      }
+
+      var weatherID = data.weather[0].id;
+      var weatherMain = data.weather[0].main;
+      var weatherDesc = data.weather[0].description;
+      var weatherIcon = data.weather[0].icon;
+
+      alert(`Weather ID: ${weatherID}\nWeather Main: ${weatherMain}\nWeather Description: ${weatherDesc}\nWeather Icon: ${weatherIcon}`);
+    },
+    error: function(error) {
+      alert(`error ${error.message}`);
+    }
   });
 });

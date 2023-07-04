@@ -106,6 +106,14 @@ html {
     margin: 10px 0px;
 }
 
+/* Country Select */
+.countrySelectDiv {
+    z-index: 999;
+    position: absolute;
+    top: 100px;
+    left: 100px;
+}
+
 /* Markers Control Buttons */
 .markersControlBtns {
     margin: 20px;
@@ -160,6 +168,25 @@ html {
 
 #getCountryBtn:hover, #getCurrencyBtn:hover, #getTimezoneBtn:hover, #getWeatherBtn:hover {
     border-bottom-right-radius: 0;
+}
+
+#CountryInfoResultsDiv, #CurrencyResultsDiv, #TimezoneResultsDiv {
+    margin: 0 auto;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    height: 300px;
+    width: 600px;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: #ffff;
+    z-index: 999;
+}
+
+#CountryInfoResultsDiv, #CurrencyResultsDiv, #TimezoneResultsDiv {
+    display: none;
 }
 
 /*** MOBILE ***/
