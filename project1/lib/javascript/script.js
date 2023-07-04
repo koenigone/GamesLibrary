@@ -160,9 +160,10 @@ $('#getCountryBtn').click(function() {
   // Hiding The other Tables
   var currencyDiv = $('#CurrencyResultsDiv');
   var timezoneDiv = $('#TimezoneResultsDiv');
+  var weatherDiv = $('#WeatherResultsDiv');
 
-  if (currencyDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block') {
-    $(currencyDiv).add(timezoneDiv).css('display', 'none');
+  if (currencyDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block' || weatherDiv.css('display') === 'block') {
+    $(currencyDiv).add(timezoneDiv).add(weatherDiv).css('display', 'none');
   };
 
   $('#CountryInfoResultsDiv').css('display', 'block');
@@ -199,9 +200,10 @@ $('#getCurrencyBtn').click(function() {
   // Hiding The other Tables
   var countryInfoDiv = $('#CountryInfoResultsDiv');
   var timezoneDiv =  $('#TimezoneResultsDiv');
+  var weatherDiv = $('#WeatherResultsDiv');
 
-  if (countryInfoDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block') {
-    $(countryInfoDiv).add(timezoneDiv).css('display', 'none');
+  if (countryInfoDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block' || weatherDiv.css('display') === 'block') {
+    $(countryInfoDiv).add(timezoneDiv).add(weatherDiv).css('display', 'none');
   };
 
   $('#CurrencyResultsDiv').css('display', 'block');
@@ -233,9 +235,10 @@ $('#getTimezoneBtn').click(function() {
   // Hiding The other Tables
   var countryInfoDiv = $('#CountryInfoResultsDiv');
   var currencyDiv = $('#CurrencyResultsDiv');
+  var weatherDiv = $('#WeatherResultsDiv');
 
-  if (countryInfoDiv.css('display') === 'block' || currencyDiv.css('display') === 'block') {
-    $(countryInfoDiv).add(currencyDiv).css('display', 'none');
+  if (countryInfoDiv.css('display') === 'block' || currencyDiv.css('display') === 'block' || weatherDiv.css('display') === 'block') {
+    $(countryInfoDiv).add(currencyDiv).add(weatherDiv).css('display', 'none');
   };
 
   $('#TimezoneResultsDiv').css('display', 'block');
@@ -265,26 +268,53 @@ $('#getTimezoneBtn').click(function() {
 
 // Retrive Weather Data -- (OpenWeather API)
 $('#getWeatherBtn').click(function() {
+
+  var countryInfoDiv = $('#CountryInfoResultsDiv');
+  var currencyDiv = $('#CurrencyResultsDiv');
+  var timezoneDiv = $('#TimezoneResultsDiv');
+
+  if (countryInfoDiv.css('display') === 'block' || currencyDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block') {
+    $(countryInfoDiv).add(currencyDiv).add(timezoneDiv).css('display', 'none');
+  }
+
+  $('#WeatherResultsDiv').css('display', 'block');
+
   var appid = 'd82b4a56a2b2017d3b9863326d8378ec';
   var latitude = $('#latResult').val();
   var longitude = $('#lngResult').val();
 
   $.ajax({
-    url: `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}}&lon=${longitude}&appid=${appid}`,
+    url: `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${appid}`,
     method: 'GET',
     dataType: 'JSON',
     success: function(data) {
-      if (data.length === 0) {
+      if (!data.weather || data.weather.length === 0) {
         alert('Weather Data not found.');
         return;
       }
 
-      var weatherID = data.weather[0].id;
       var weatherMain = data.weather[0].main;
       var weatherDesc = data.weather[0].description;
       var weatherIcon = data.weather[0].icon;
+      var temp = data.main.temp;
+      var feels_like = data.main.feels_like;
+      var temp_min = data.main.temp_min;
+      var temp_max = data.main.temp_max;
+      var pressure = data.main.pressure;
+      var wind_speed =  data.wind.speed;
+      var visibility = data.visibility;
 
-      alert(`Weather ID: ${weatherID}\nWeather Main: ${weatherMain}\nWeather Description: ${weatherDesc}\nWeather Icon: ${weatherIcon}`);
+      $('#WeatherMainResult').html(weatherMain);
+      $('#WeatherDescResult').html(weatherDesc);
+      $('#WeatherIconResult').html(weatherIcon);
+      $('#WeatherTempResult').html(temp);
+      $('#WeatherFeelsLikeResult').html(feels_like);
+      $('#WeatherTempMinResult').html(temp_min);
+      $('#WeatherTempMaxResult').html(temp_max);
+      $('#WeatherPressureResult').html(pressure);
+      $('#WeatherWindSpeedResult').html(wind_speed);
+      $('#WeatherVisibilityResult').html(visibility);
+
     },
     error: function(error) {
       alert(`error ${error.message}`);

@@ -170,7 +170,7 @@ html {
     border-bottom-right-radius: 0;
 }
 
-#CountryInfoResultsDiv, #CurrencyResultsDiv, #TimezoneResultsDiv {
+#CountryInfoResultsDiv, #CurrencyResultsDiv, #TimezoneResultsDiv, #WeatherResultsDiv {
     margin: 0 auto;
     padding: 20px;
     position: absolute;
@@ -185,7 +185,7 @@ html {
     z-index: 999;
 }
 
-#CountryInfoResultsDiv, #CurrencyResultsDiv, #TimezoneResultsDiv {
+#CountryInfoResultsDiv, #CurrencyResultsDiv, #TimezoneResultsDiv, #WeatherResultsDiv {
     display: none;
 }
 
