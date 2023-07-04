@@ -154,19 +154,20 @@ if ('geolocation' in navigator) {
 // Locate Button To Display User's Current Location
 L.control.locate().addTo(map);
 
+var countryInfoDiv = $('#CountryInfoResultsDiv');
+var currencyDiv = $('#CurrencyResultsDiv');
+var timezoneDiv = $('#TimezoneResultsDiv');
+var weatherDiv = $('#WeatherResultsDiv');
+
 // Get Country Name & Capital Based on the clicked location (OpenCage API)
 $('#getCountryBtn').click(function() {
   
   // Hiding The other Tables
-  var currencyDiv = $('#CurrencyResultsDiv');
-  var timezoneDiv = $('#TimezoneResultsDiv');
-  var weatherDiv = $('#WeatherResultsDiv');
-
   if (currencyDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block' || weatherDiv.css('display') === 'block') {
     $(currencyDiv).add(timezoneDiv).add(weatherDiv).css('display', 'none');
   };
 
-  $('#CountryInfoResultsDiv').css('display', 'block');
+  $(countryInfoDiv).css('display', 'block');
 
   var latitude = $('#latResult').val();
   var longitude = $('#lngResult').val();
@@ -198,15 +199,11 @@ $('#getCountryBtn').click(function() {
 $('#getCurrencyBtn').click(function() {
 
   // Hiding The other Tables
-  var countryInfoDiv = $('#CountryInfoResultsDiv');
-  var timezoneDiv =  $('#TimezoneResultsDiv');
-  var weatherDiv = $('#WeatherResultsDiv');
-
   if (countryInfoDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block' || weatherDiv.css('display') === 'block') {
     $(countryInfoDiv).add(timezoneDiv).add(weatherDiv).css('display', 'none');
   };
 
-  $('#CurrencyResultsDiv').css('display', 'block');
+  $(currencyDiv).css('display', 'block');
 
   var latitude = $('#latResult').val();
   var longitude = $('#lngResult').val();
@@ -233,15 +230,11 @@ $('#getCurrencyBtn').click(function() {
 $('#getTimezoneBtn').click(function() {
 
   // Hiding The other Tables
-  var countryInfoDiv = $('#CountryInfoResultsDiv');
-  var currencyDiv = $('#CurrencyResultsDiv');
-  var weatherDiv = $('#WeatherResultsDiv');
-
   if (countryInfoDiv.css('display') === 'block' || currencyDiv.css('display') === 'block' || weatherDiv.css('display') === 'block') {
     $(countryInfoDiv).add(currencyDiv).add(weatherDiv).css('display', 'none');
   };
 
-  $('#TimezoneResultsDiv').css('display', 'block');
+  $(timezoneDiv).css('display', 'block');
 
   var latitude = $('#latResult').val();
   var longitude = $('#lngResult').val();
@@ -269,18 +262,15 @@ $('#getTimezoneBtn').click(function() {
 // Retrive Weather Data -- (OpenWeather API)
 $('#getWeatherBtn').click(function() {
 
-  var countryInfoDiv = $('#CountryInfoResultsDiv');
-  var currencyDiv = $('#CurrencyResultsDiv');
-  var timezoneDiv = $('#TimezoneResultsDiv');
-
+  // Hiding The other Tables
   if (countryInfoDiv.css('display') === 'block' || currencyDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block') {
     $(countryInfoDiv).add(currencyDiv).add(timezoneDiv).css('display', 'none');
   }
 
-  $('#WeatherResultsDiv').css('display', 'block');
+  $(weatherDiv).css('display', 'block');
 
   var appid = 'd82b4a56a2b2017d3b9863326d8378ec';
-  var latitude = $('#latResult').val();
+  var latitude = $('#latResult').val(); 
   var longitude = $('#lngResult').val();
 
   $.ajax({
@@ -320,4 +310,12 @@ $('#getWeatherBtn').click(function() {
       alert(`error ${error.message}`);
     }
   });
+});
+
+// Closing Result Div Window Buttons
+$('.closeWindowBtn').click(function() {
+  $(countryInfoDiv).css('display', 'none');
+  $(currencyDiv).css('display', 'none');
+  $(timezoneDiv).css('display', 'none');
+  $(weatherDiv).css('display', 'none');
 });
