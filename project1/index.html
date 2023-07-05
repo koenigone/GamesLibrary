@@ -9,8 +9,10 @@
     <link rel="stylesheet" href="bootstrap-5.0.2-dist\css\bootstrap.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <link rel="stylesheet" href="leaflet-locatecontrol-gh-pages\dist\L.Control.Locate.min.css">
+    <link rel="stylesheet" href="Leaflet.EasyButton-master\src\easy-button.css">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="leaflet-locatecontrol-gh-pages\dist\L.Control.Locate.min.js"></script>
+    <script src="Leaflet.EasyButton-master\src\easy-button.js"></script>
     <script src="https://kit.fontawesome.com/16651470f2.js" crossorigin="anonymous"></script>
     <script type="application/javascript" src="lib/javascript/jquery-3.7.0.min.js"></script>
     <title>GAZETTEER</title>
@@ -89,14 +91,6 @@
             <button id="deleteMarkerBtn" title="delete marker"><i class="fa-regular fa-square-minus"></i></button>
             <button id="deleteAllMarkersBtn" title="delete all markers"><i class="fa-solid fa-delete-left"></i></button>
         </div>
-
-        <!-- Country Information Buttons -->
-        <div class="infoControlBtns">
-            <button id="getCountryBtn" title="Country Information"><i class="fa-solid fa-info"></i></button>
-            <button id="getCurrencyBtn" title="Currency"><i class="fa-solid fa-coins"></i></button>
-            <button id="getTimezoneBtn" title="Timezone"><i class="fa-regular fa-clock"></i></button>
-            <button id="getWeatherBtn" title="Weather"><i class="fa-solid fa-cloud-showers-water"></i></button>
-        </div>
         
         <div id='CountryInfoResultsDiv'>
             <button type="button" class="closeWindowBtn btn btn-secondary">Close</button>
@@ -139,7 +133,7 @@
             </table>
         </div>
 
-            <!--- Country Currency Table --->
+        <!--- Country Currency Table --->
         <div id='CurrencyResultsDiv'>
             <button type="button" class="closeWindowBtn btn btn-secondary">Close</button>
             <table>

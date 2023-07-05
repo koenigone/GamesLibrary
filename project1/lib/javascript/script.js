@@ -159,9 +159,9 @@ var currencyDiv = $('#CurrencyResultsDiv');
 var timezoneDiv = $('#TimezoneResultsDiv');
 var weatherDiv = $('#WeatherResultsDiv');
 
+
 // Get Country Name & Capital Based on the clicked location (OpenCage API)
-$('#getCountryBtn').click(function() {
-  
+function countryInfoHandleClick() {
   // Hiding The other Tables
   if (currencyDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block' || weatherDiv.css('display') === 'block') {
     $(currencyDiv).add(timezoneDiv).add(weatherDiv).css('display', 'none');
@@ -193,11 +193,10 @@ $('#getCountryBtn').click(function() {
     $('#CountryStateCodeResult').html(state_code);
     $('#CountryStateDistrictResult').html(state_district);
   });
-});
+};
 
 // Get Country Currency Information -- (OpenCage API)
-$('#getCurrencyBtn').click(function() {
-
+function currencyInfoHandleClick() {
   // Hiding The other Tables
   if (countryInfoDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block' || weatherDiv.css('display') === 'block') {
     $(countryInfoDiv).add(timezoneDiv).add(weatherDiv).css('display', 'none');
@@ -212,7 +211,6 @@ $('#getCurrencyBtn').click(function() {
     q: latitude + ',' + longitude,
     key: 'a9539fc65a4c4710bcf9c629eb4a60dc',
   }, function(data) {
-    console.log(data);
 
     var isoCode = data.results[0].annotations.currency.iso_code;
     var name = data.results[0].annotations.currency.name;
@@ -224,44 +222,42 @@ $('#getCurrencyBtn').click(function() {
     $('#CurrencySubunitResult').html(subunit);
     $('#CurrencyFlagResult').html(flag);
   });
-});
+}
 
 // Get Country Timezone -- (OpenCage API)
-$('#getTimezoneBtn').click(function() {
+function timezoneInfoClickHandle() {
 
   // Hiding The other Tables
   if (countryInfoDiv.css('display') === 'block' || currencyDiv.css('display') === 'block' || weatherDiv.css('display') === 'block') {
-    $(countryInfoDiv).add(currencyDiv).add(weatherDiv).css('display', 'none');
+      $(countryInfoDiv).add(currencyDiv).add(weatherDiv).css('display', 'none');
   };
-
+    
   $(timezoneDiv).css('display', 'block');
-
+    
   var latitude = $('#latResult').val();
   var longitude = $('#lngResult').val();
-
+    
   $.get('https://api.opencagedata.com/geocode/v1/json', {
     q: latitude + ',' + longitude,
     key: 'a9539fc65a4c4710bcf9c629eb4a60dc',
-  }, function(data) {
-    console.log(data);
-
-    var name = data.results[0].annotations.timezone.name;
-    var now_in_dst = data.results[0].annotations.timezone.now_in_dst;
-    var offset_sec = data.results[0].annotations.timezone.offset_sec;
-    var offset_string = data.results[0].annotations.timezone.offset_string;
-    var short_name = data.results[0].annotations.timezone.short_name;
-
-    $('#TimezoneNameResult').html(name);
-    $('#TimezoneDstResult').html(now_in_dst);
-    $('#TimezoneSecResult').html(offset_sec);
-    $('#TimezoneStringResult').html(offset_string);
-    $('#TimezoneShortNameResult').html(short_name);
+    }, function(data) {
+    
+      var name = data.results[0].annotations.timezone.name;
+      var now_in_dst = data.results[0].annotations.timezone.now_in_dst;
+      var offset_sec = data.results[0].annotations.timezone.offset_sec;
+      var offset_string = data.results[0].annotations.timezone.offset_string;
+      var short_name = data.results[0].annotations.timezone.short_name;
+    
+      $('#TimezoneNameResult').html(name);
+      $('#TimezoneDstResult').html(now_in_dst);
+      $('#TimezoneSecResult').html(offset_sec);
+      $('#TimezoneStringResult').html(offset_string);
+      $('#TimezoneShortNameResult').html(short_name);
   });
-});
+}
 
 // Retrive Weather Data -- (OpenWeather API)
-$('#getWeatherBtn').click(function() {
-
+function weatherInfoClickHandle() {
   // Hiding The other Tables
   if (countryInfoDiv.css('display') === 'block' || currencyDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block') {
     $(countryInfoDiv).add(currencyDiv).add(timezoneDiv).css('display', 'none');
@@ -309,8 +305,14 @@ $('#getWeatherBtn').click(function() {
     error: function(error) {
       alert(`error ${error.message}`);
     }
-  });
-});
+  })
+};
+
+// Map Info Buttons
+var countryInfoBtn = L.easyButton('fa-solid fa-info', countryInfoHandleClick).addTo(map);
+var currencyInfoBtn = L.easyButton('fa-sharp fa-solid fa-coins', currencyInfoHandleClick).addTo(map);
+var timezoneInfoBtn = L.easyButton('fa-solid fa-clock', timezoneInfoClickHandle).addTo(map);
+var weatherInfoBtn = L.easyButton('fa-solid fa-cloud', weatherInfoClickHandle).addTo(map);
 
 // Closing Result Div Window Buttons
 $('.closeWindowBtn').click(function() {
