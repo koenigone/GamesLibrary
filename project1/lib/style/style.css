@@ -20,7 +20,6 @@ html {
 
 /* MainLogo */
 .navbar .main-logo {
-    margin-top: -10px;
     font-weight: bold;
     font-size: 20px;
 }
@@ -45,26 +44,15 @@ html {
 }
 
 /* SearchBar */
-.navbar .searchDiv {
+.navbar .selectCountryDiv {
     width: 500px;
-    margin: -10px 0px 0px 200px;
     position: relative;
-}
-.navbar .searchDiv #searchErrorDiv {
-    color: rgb(184, 4, 4);
-    font-size: 12px;
-    position: absolute;
-    top: -21px;
-    left: 0;
-    right: 0;
-    text-align: left;
 }
 
 /* Lat & Lng Inputs */
 .navbar .mapClickResultDiv {
     display: flex;
     width: 350px;
-    margin: -5px 10px 0px 0px;
     z-index: 1000;
 }
 
@@ -89,9 +77,9 @@ html {
 
 /* Markers Control Buttons */
 .markersControlBtns {
-    margin: 20px;
+    margin: 10px;
     position: absolute;
-    top: 150px;
+    top: 120px;
     right: 0px  ;
     z-index: 1000;
 }
@@ -112,35 +100,6 @@ html {
 
 #deleteMarkerBtn:hover, #deleteAllMarkersBtn:hover {
     border-bottom-left-radius: 0;
-}
-
-/* Country Information Buttons */
-.infoControlBtns {
-    margin: 20px;
-    position: absolute;
-    top: 190px;
-    left: -10px;
-    z-index: 1000;
-}
-
-
-#getCountryBtn, #getCurrencyBtn, #getTimezoneBtn, #getWeatherBtn {
-    display: block;
-    margin-bottom: 10px;
-    height: 50px;
-    width: 50px;
-    border: none;
-    border-radius: 190px;
-    background: green;
-    text-align: center;
-    text-decoration: none;
-    color: #ffffffe8;
-    transition: all .2s;
-}
-
-
-#getCountryBtn:hover, #getCurrencyBtn:hover, #getTimezoneBtn:hover, #getWeatherBtn:hover {
-    border-bottom-right-radius: 0;
 }
 
 #CountryInfoResultsDiv, #CurrencyResultsDiv, #TimezoneResultsDiv, #WeatherResultsDiv {
@@ -191,8 +150,16 @@ html {
     .navbar #sidebar-button {
         display: none;
     }
+    .navbar .main-logo {
+        margin-top: -10px;
+    }
+    .navbar .selectCountryDiv {
+        margin: -10px 0px 0px 200px;
+    }
     .searchDiv .form-control {
         width: 500px;
     }
+    .navbar .mapClickResultDiv {
+        margin: -5px 10px 0px 0px;
+    }
 }
-

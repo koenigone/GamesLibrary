@@ -71,47 +71,10 @@ $('#deleteAllMarkersBtn').click(function() {
   markers = [];
 });
 
-// Takes Search Input And Displays It On The Map
-$('#searchBarBtn').click(function() {
-    var location = $('#searchInput').val();
-
-    if (location.trim() === '') {
-      $('#searchErrorDiv').html('Please enter a valid country or city name.');
-      return;
-    }
-
-    var geocodeUrl = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(location);
-
-    $.ajax({
-      url: geocodeUrl,
-      dataType: 'json',
-      success: function(data) {
-        if (data.length === 0) {
-          alert('Location not found.');
-          return;
-        }
-
-        var latitude = parseFloat(data[0].lat);
-        var longitude = parseFloat(data[0].lon);
-
-        if (marker) {
-          marker.remove();
-        }
-
-        var searchMarker = L.marker([latitude, longitude]).addTo(map);
-        map.setView([latitude, longitude], 13);
-        markers.push(searchMarker);
-
-        $('#latResult').val(latitude);
-        $('#lngResult').val(longitude);
-
-        $('#searchErrorDiv').html('');
-      },
-      error: function() {
-        $('#searchErrorDiv').html('An error occurred during geocoding.');
-      }
-    });
-});
+// Takes Selected Country And Displays It On The Map
+/*
+  SPACE FOR SELECT COUNTRY INPUT
+ */
 
 // Using JS Navigator to display user's location upon opening the website
 if ('geolocation' in navigator) {
