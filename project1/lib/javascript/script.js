@@ -11,8 +11,9 @@ var marker;
 var markers = [];
 
 // Different Map Layers
-var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+var Stadia_AlidadeSmoothDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+	maxZoom: 20,
+	attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
 }).addTo(map);
 
 var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -20,22 +21,21 @@ var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 18,
 });
 
+var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+});
+
 var OpenStreetMap_HOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
 	maxZoom: 19,
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>'
 });
 
-var Stadia_AlidadeSmoothDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
-	maxZoom: 20,
-	attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-});
-
 // Leaflet Layer Control
 var baseMaps = {
+  'Stadia Alidade Smooth Dark': Stadia_AlidadeSmoothDark,
   'Esri World Imagery': Esri_WorldImagery,
   'Open Street Map': osm,
-  "<span style='color: #6b0f0f'>OpenStreetMap HOT</span>": OpenStreetMap_HOT,
-  'Stadia Alidade Smooth Dark': Stadia_AlidadeSmoothDark,
+  "<span style='color: #6b0f0f'>OpenStreetMap HOT</span>": OpenStreetMap_HOT
 };
 
 L.control.layers(baseMaps).addTo(map);
@@ -111,52 +111,6 @@ $('#searchBarBtn').click(function() {
         $('#searchErrorDiv').html('An error occurred during geocoding.');
       }
     });
-});
-
-// Taking Latitude&Longitude inputs and displaying them on the map with a marker
-$('#searchBtn').click(function() {
-    var latitudeInput = parseFloat($('#latitudeInput').val());
-    var longitudeInput = parseFloat($('#longitudeInput').val());
-  
-    if (isNaN(latitudeInput) || isNaN(longitudeInput) || !isFinite(latitudeInput) || !isFinite(longitudeInput)) {
-      $('#inputsErrorDiv').html('Please enter valid latitude and longitude values.');
-      return;
-    }
-
-    if (marker) {
-        marker.remove();
-    }
-  
-    var searchMarker = L.marker([latitudeInput, longitudeInput]).addTo(map);
-    map.setView([latitudeInput, longitudeInput], 13);
-    markers.push(searchMarker);
-    $('#latResult').val(latitudeInput);
-    $('#lngResult').val(longitudeInput);
-    $('#inputsErrorDiv').html('');
-    $('#mobileInputsErrorDiv').html('');
-});
-
-// Mobile version of the above function
-$('#sidebarSearchBtn').click(function() {
-  var mobileLatitudeInput = parseFloat($('#sideBarlatitudeInput').val());
-  var mobileLongitudeInput = parseFloat($('#sideBarLongitudeInput').val());
-
-  if (isNaN(mobileLatitudeInput) || isNaN(mobileLongitudeInput) || !isFinite(mobileLatitudeInput) || !isFinite(mobileLongitudeInput)) {
-    $('#mobileInputsErrorDiv').html('Please enter valid lat&lng values');
-    return;
-  }
-
-  if (marker) {
-    marker.remove();
-  }
-
-  var searchMarker = L.marker([mobileLatitudeInput, mobileLongitudeInput]).addTo(map);
-  map.setView([mobileLatitudeInput, mobileLongitudeInput], 13);
-  markers.push(searchMarker);
-
-  $('#latResult').val(mobileLatitudeInput);
-  $('#lngResult').val(mobileLongitudeInput);
-  $('#mobileInputsErrorDiv').html('');
 });
 
 // Using JS Navigator to display user's location upon opening the website
