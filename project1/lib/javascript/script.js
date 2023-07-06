@@ -30,7 +30,16 @@ var OpenStreetMap_HOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>'
 });
 
-// Leaflet Layer Control
+// Adding Cities to Layer Control
+var rotherham = L.marker([53.43, -1.35]).bindPopup('This is Rotherham');
+var sheffild = L.marker([53.38, -1.46]).bindPopup('This is sheffild');
+var doncaster = L.marker([53.52, -1.13]).bindPopup('This is doncaster');
+var rawmarsh = L.marker([53.45, -1.33]).bindPopup('This is rawmarsh');
+var dalton = L.marker([53.43, -1.31]).bindPopup('This is Dalton');
+
+var cities = L.layerGroup([rotherham, sheffild, doncaster, dalton]);
+
+// Leaflet Map Layer Control
 var baseMaps = {
   'Stadia Alidade Smooth Dark': Stadia_AlidadeSmoothDark,
   'Esri World Imagery': Esri_WorldImagery,
@@ -38,7 +47,11 @@ var baseMaps = {
   "<span style='color: #6b0f0f'>OpenStreetMap HOT</span>": OpenStreetMap_HOT
 };
 
-L.control.layers(baseMaps).addTo(map);
+var overlayMaps = {
+  'Cities': cities
+};
+
+var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
 
 // Displays the Lat&Lng of clicked location as Inputs Value
 map.on('click', function(e) {
@@ -82,7 +95,7 @@ if ('geolocation' in navigator) {
       var latitude = position.coords.latitude;
       var longitude = position.coords.longitude;
   
-      var geolocationMarker = L.marker([latitude, longitude]).addTo(map);
+      var geolocationMarker = L.marker([latitude, longitude]).bindPopup('This Is Your Current Location!').addTo(map);
       map.setView([latitude, longitude], 13);
       markers.push(geolocationMarker);
 
