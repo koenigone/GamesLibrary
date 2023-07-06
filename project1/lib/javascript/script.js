@@ -85,9 +85,33 @@ $('#deleteAllMarkersBtn').click(function() {
 });
 
 // Takes Selected Country And Displays It On The Map
-/*
-  SPACE FOR SELECT COUNTRY INPUT
- */
+$('#selectCountryBtn').click(function() {
+
+  $.ajax({
+      url: "lib/PHP/countryBorders.php",
+      type: 'POST',
+      dataType: 'JSON',
+      data: {
+          iso: $('#selectCountry option:selected').val()
+      },
+      success: function(result) {
+
+          console.log(JSON.stringify(result));
+          console.log("JSON stringified");
+
+          if (result.status.name == "ok") {
+
+            console.log("All recieved well.");
+            mymap.setView(result['data']);
+
+          }
+      
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+          console.log(jqXHR);
+      }
+  })
+});
 
 // Using JS Navigator to display user's location upon opening the website
 if ('geolocation' in navigator) {
