@@ -32,18 +32,14 @@
         <div class="selectCountryDiv">
             <select class="form-select" id="selectCountry" name="selectCountry">
                 <option>Select Country</option>
-                <?php
-                    include 'lib/PHP/countryBorders.php';
-                    echo implode("\n", $options);
-                ?>
             </select>
-            <button type="button" id="selectCountryBtn">Search</button>
+            <button type="button" id="selectCountryBtn">Find</button>
         </div>
 
         <!-- On Click Lat & Lng -->
         <div class="mapClickResultDiv">
-            <input type="text" class="form-control clickLat" id="latResult" placeholder="latitude" readonly>
-            <input type="text" class="form-control clickLng" id="lngResult" placeholder="longitude" readonly>
+            <input type="text" class="form-control clickLat" id="latResult" placeholder="latitude" title="latitude" readonly>
+            <input type="text" class="form-control clickLng" id="lngResult" placeholder="longitude" title="longitude" readonly>
         </div>
 
         <div id="sidebar-button">

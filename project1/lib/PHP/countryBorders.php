@@ -1,19 +1,22 @@
 <?php
-    ini_set('display_errors', 1);
-    error_reporting(E_ALL);
+    $executionStartTime = microtime(true) / 1000;
+    $result = file_get_contents('countryBorders.geo.json'); // Reading The geo.json file
+    $data = json_decode($result, true);
 
-    // Generating Options from an exteranl file
-    $json = file_get_contents('countryBorders.geo.json');
-    $data = json_decode($json, true);
-
-    $options = [];
-
+    $options = '';
     foreach ($data['features'] as $feature) {
-        $isoCode = $feature['properties']['iso_a2'];
+        $iso2 = $feature['properties']['iso_a2'];
         $countryName = $feature['properties']['name'];
 
-        $options[] = "<option value=\"$isoCode\">$countryName</option>";
+        $options .= "<option value=\"$iso2\">$countryName</option>"; // fetching the data into the $options variable
     }
 
-    echo implode("\n", $options);
+    $output['status']['code'] = "200";
+    $output['status']['name'] = "ok";
+    $output['status']['description'] = "success";
+    $output['status']['executedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
+    $output['data']['options'] = $options;
+
+    header('Content-Type: application/json; charset=UTF-8');
+    echo json_encode($output);
 ?>

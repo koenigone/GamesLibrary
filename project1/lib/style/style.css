@@ -9,10 +9,10 @@ html {
     margin: 0;
 }
 
-/******* HEADER NAVBAR SECTION *******/
+/***************** NAVBAR SECTION *****************/
 .navbar {
     width: 100%;
-    height: 60px;
+    height: 55px;
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid rgba(110, 110, 110, 0.397);
@@ -30,6 +30,7 @@ html {
     cursor: not-allowed;
 }
 .navbar .main-logo span {
+    cursor: not-allowed;
     margin-left: -3px;
 }
 .navbar .main-logo .title-red {
@@ -43,36 +44,37 @@ html {
     color: rgb(16, 74, 182);
 }
 
-/* SearchBar */
+/* Country Select */
 .navbar .selectCountryDiv {
+    display: flex;
+    z-index: 999;
     width: 500px;
-    position: relative;
+}
+
+.selectCountryDiv #selectCountryBtn {
+    border: none;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-color: rgb(104, 104, 104);
+    color: #ffff;
+    padding: 10px;
+}
+
+#selectCountryBtn:hover {
+    background-color: rgb(87, 87, 87);
 }
 
 /* Lat & Lng Inputs */
 .navbar .mapClickResultDiv {
     display: flex;
     width: 350px;
-    z-index: 1000;
+    margin-top: -10px;
 }
 
-
-/******* MAIN SECTION *******/
+/***************** MAIN SECTION *****************/
 #map {
     width: 100%;
-    height: 93.5vh;
-}
-
-.mapClickResultDiv .clickLat, .clickLng {
-    margin: 10px 0px;
-}
-
-/* Country Select */
-.countrySelectDiv {
-    z-index: 999;
-    position: absolute;
-    top: 100px;
-    left: 100px;
+    height: 94.7vh;
 }
 
 /* Markers Control Buttons */
@@ -130,23 +132,53 @@ html {
 }
 
 /*** MOBILE ***/
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 640px) {
+    .navbar {
+        height: 60px;
+    }
+    .navbar .main-logo {
+        margin-top: -7px;
+    }
     .navbar .main-logo span {
         display: none;
     }
-    .navbar .searchDiv {
-        width: 250px;
-        margin: 0 auto;
+    .navbar .selectCountryDiv {
+        width: 230px;
+        margin-top: -7px;
+    }
+    .navbar .mapClickResultDiv {
+        display: none;
+    }
+    #map {
+        height: 92.7vh;
     }
 }
 
 /*** TABLET ***/
-@media only screen and (min-width: 601px) and (max-width: 1023px) {
-
+@media only screen and (min-width: 601px) and (max-width: 1279px) {
+    .navbar {
+        height: 60px;
+    }
+    .navbar .main-logo {
+        margin-top: -7px;
+    }
+    .navbar .main-logo span {
+        display: none;
+    }
+    .navbar .selectCountryDiv {
+        width: 370px;
+        margin-top: -7px;
+    }
+    .navbar .mapClickResultDiv {
+        display: none;
+    }
+    #map {
+        height: 92.7vh;
+    }
 }
 
 /*** DESKTOP ***/
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 1280px) {
     .navbar #sidebar-button {
         display: none;
     }
@@ -158,8 +190,5 @@ html {
     }
     .searchDiv .form-control {
         width: 500px;
-    }
-    .navbar .mapClickResultDiv {
-        margin: -5px 10px 0px 0px;
     }
 }

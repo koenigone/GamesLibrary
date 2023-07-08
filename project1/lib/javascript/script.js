@@ -8,6 +8,7 @@ $(window).on('load', function () {
 // Initializing Leaflet map
 var map = L.map('map').setView([0, 0], 13);
 var marker;
+var geojsonLayer;
 var markers = [];
 
 // Different Map Layers
@@ -85,32 +86,57 @@ $('#deleteAllMarkersBtn').click(function() {
 });
 
 // Takes Selected Country And Displays It On The Map
+var selectElement = $('#selectCountry');
+
+$.ajax({
+  url: 'lib/PHP/countryBorders.php',
+  method: 'GET',
+  dataType: 'json',
+  success: function(data) {
+    if (data.status.code === '200') {
+      selectElement.html(data.data.options); // Adding the options to the HTML select element
+    } else {
+      console.log('Error:', data.status.description);
+    }
+  },
+  error: function(error) {
+    console.log('Error:', error);
+  }
+});
+
 $('#selectCountryBtn').click(function() {
+  var selectedIso2 = selectElement.val();
 
-  $.ajax({
-      url: "lib/PHP/countryBorders.php",
-      type: 'POST',
-      dataType: 'JSON',
-      data: {
-          iso: $('#selectCountry option:selected').val()
-      },
-      success: function(result) {
+  if (selectedIso2) {
+    // Fetching the country coordinates based on the ISO2 code
+    $.ajax({
+    url: 'lib/PHP/countryCoordinates.php',
+    method: 'GET',
+    dataType: 'json',
+    data: { iso2: selectedIso2 },
+    success: function(data) {
+      if (data.status.code === '200') {
+        var countryCoordinates = data.data.coordinates;
 
-          console.log(JSON.stringify(result));
-          console.log("JSON stringified");
+        // Clearing previous GeoJSON layer from the map
+        if (geojsonLayer) {
+          map.removeLayer(geojsonLayer);
+        }
 
-          if (result.status.name == "ok") {
+        // Createing GeoJSON layer
+        geojsonLayer = L.geoJSON(countryCoordinates).addTo(map);
 
-            console.log("All recieved well.");
-            mymap.setView(result['data']);
-
-          }
-      
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-          console.log(jqXHR);
+        // Fitting the map to the bounds of the GeoJSON layer
+        map.fitBounds(geojsonLayer.getBounds());
+      } else {
+        console.log('Error:', data.status.description);
       }
-  })
+      },
+      error: function(error) {
+        console.log('Error:', error);
+      }
+    });
+  }
 });
 
 // Using JS Navigator to display user's location upon opening the website
