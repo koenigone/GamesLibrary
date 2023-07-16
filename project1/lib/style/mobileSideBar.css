@@ -1,9 +1,10 @@
 #sidebar-button {
     fill: white;
-    font-size: 30px;
+    font-size: 33px;
     margin: -4px 5px 0px 0px;
     cursor: pointer;
     float: right;
+    z-index: 999;
 }
 
 #sidebar {
@@ -15,14 +16,8 @@
     right: 0;
     z-index: 9999;
     overflow: hidden;
-    transition: width 0.5s ease;
+    transition: width 0.3s ease;
     white-space: nowrap;
-}
-
-.sidebar-item {
-    color: rgba(255, 255, 255, 0.849);
-    display: block;
-    margin: 10px 20px;
 }
 
 .navbar-head span {
@@ -40,16 +35,18 @@
     color: rgb(138, 10, 10);
 }
 
-.searchDiv {
-    display: flex;
+.sidebar-item {
+    display: block;
+    margin: 50px 20px;
 }
-
-.inputsDiv .btn {
-    margin: 20px 0px;
+.sidebar-item input {
+    margin: 10px 0px;
 }
 
 #sidebar .div-rights {
-    margin: 500px 20px;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
 }
 #sidebar .div-rights h5 {
     font-size: 11px;

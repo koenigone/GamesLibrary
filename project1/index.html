@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="lib/style/preloader.css">
     <link rel="stylesheet" href="lib/style/style.css">
     <link rel="stylesheet" href="lib/style/mobileSideBar.css">
-    <link rel="stylesheet" href="lib/style/preloader.css">
+    <link rel="stylesheet" href="lib/style/scrollbar.css">
     <link rel="stylesheet" href="bootstrap-5.0.2-dist\css\bootstrap.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <link rel="stylesheet" href="leaflet-locatecontrol-gh-pages\dist\L.Control.Locate.min.css">
@@ -28,20 +29,20 @@
             <span class="title-red">EER</span>
         </div>
 
-        <!-- searchbar -->
+        <!-- main select -->
         <div class="selectCountryDiv">
-            <select class="form-select" id="selectCountry" name="selectCountry">
+            <select class="form-select" id="selectCountry" name="selectCountry" title="Select a country to see it on the map!">
                 <option>Select Country</option>
             </select>
-            <button type="button" id="selectCountryBtn">Find</button>
         </div>
 
         <!-- On Click Lat & Lng -->
         <div class="mapClickResultDiv">
-            <input type="text" class="form-control clickLat" id="latResult" placeholder="latitude" title="latitude" readonly>
-            <input type="text" class="form-control clickLng" id="lngResult" placeholder="longitude" title="longitude" readonly>
+            <input type="text" class="form-control latResult" placeholder="latitude" title="latitude" readonly>
+            <input type="text" class="form-control lngResult" placeholder="longitude" title="longitude" readonly>
         </div>
 
+        <!-- Mobile sidebar Button -->
         <div id="sidebar-button">
             <i id="sidebar-button" class="fa-solid fa-bars"></i>
         </div>
@@ -49,6 +50,7 @@
     </header>
     <!------- MAIN SECTION ------->
     <main>
+        <!-- Mobile Sidebar -->
         <div class="mobile-sidebar">
             <div id="overlay"></div>
             <div id="sidebar">
@@ -59,8 +61,11 @@
                     <span class="title-red">EER</span>
                 </div>
                 <!-- Item Two-->
-                
-                
+                <div class="sidebar-item">
+                    <input type="text" class="form-control clickLat latResult" placeholder="latitude" title="latitude" readonly>
+                    <input type="text" class="form-control clickLng lngResult" placeholder="longitude" title="longitude" readonly>
+                </div>
+                <!-- Div Rights -->
                 <div class="div-rights">
                     <h5>Developed by <i class="fa-regular fa-copyright"></i> KoenigOne<br>mm6dd.mh@gmail.com</h5>
                 </div>
@@ -70,48 +75,55 @@
         <!-- Main Map Div -->
         <div id="map"></div>
 
+        <!-- Overlay To hide Results Tables -->
+        <div id="tableOverlay"></div>
+
         <!-- Markers Control Buttons -->
         <div class="markersControlBtns">
             <button id="deleteMarkerBtn" title="delete marker"><i class="fa-regular fa-square-minus"></i></button>
             <button id="deleteAllMarkersBtn" title="delete all markers"><i class="fa-solid fa-delete-left"></i></button>
         </div>
         
+        <!-- APIs Results Tables -->
         <div id='CountryInfoResultsDiv'>
             <button type="button" class="closeWindowBtn btn btn-secondary">Close</button>
             <!--- Country Info Table --->
-            <table class="CountryInfoTable">
+            <table class="table table-dark">
                 <thead>
-                    <th>Component</th>
-                    <th>Result</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Component</th>
+                    <th scope="col">Result</th>
                 </thead>
                 <tbody>
                     <tr>
-                        <th>continent</th>
+                        <th scope="row">1</th>
+                        <td>continent</td>
                         <td id="CountryContinentResult"></td>
                     </tr>
                     <tr>
-                        <th>country</th>
+                        <th scope="row">2</th>
+                        <td>country</td>
                         <td id="CountryNameResult"></td>
                     </tr>
                     <tr>
-                        <th>Country Code:</th>
+                        <th scope="row">3</th>
+                        <td>Country Code:</td>
                         <td id="CountryCodeResult"></td>
                     </tr>
                     <tr>
-                        <th>Postcode</th>
-                        <td id="CountryPostcodeResult"></td>
+                        <th scope="row">4</th>
+                        <td>Country Capital:</td>
+                        <th id="CountryCapitalResult"></th>
                     </tr>
                     <tr>
-                        <th>State</th>
-                        <td id="CountryStateResult"></td>
+                        <th scope="row">5</th>
+                        <td>Country Population:</td>
+                        <td id="CountryPopulationResult"></td>
                     </tr>
                     <tr>
-                        <th>State Code</th>
-                        <td id="CountryStateCodeResult"></td>
-                    </tr>
-                    <tr>
-                        <th>State District</th>
-                        <td id="CountryStateDistrictResult"></td>
+                        <th scope="row">6</th>
+                        <td>Country Language:</td>
+                        <td id="CountryLanguageResult"></td>
                     </tr>
                 </tbody>
             </table>
@@ -120,27 +132,32 @@
         <!--- Country Currency Table --->
         <div id='CurrencyResultsDiv'>
             <button type="button" class="closeWindowBtn btn btn-secondary">Close</button>
-            <table>
+            <table class="table table-dark">
                 <thead>
-                    <th>Component</th>
-                    <th>Result</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Component</th>
+                    <th scope="col">Result</th>
                 </thead>
                 <tbody>
                     <tr>
+                        <th scope="row">1</th>
                         <td>ISO Code:</td>
                         <td id="CurrencyISOCodeResult"></td>
                     </tr>
                     <tr>
+                        <th scope="row">2</th>
                         <td>Currency Name:</td>
                         <td id="CurrencyNameResult"></td>
                      </tr>
                     <tr>
+                        <th scope="row">3</th>
                         <td>Subunit:</td>
                         <td id="CurrencySubunitResult"></td>
                     </tr>
                     <tr>
-                        <td>Flag:</td>
-                        <td id="CurrencyFlagResult"></td>
+                        <th scope="row">4</th>
+                        <td>Exchange Rate ($USD):</td>
+                        <td id="CurrencyExchangeResult"></td>
                     </tr>
                 </tbody>
             </table>
@@ -149,30 +166,35 @@
             <!--- Country Timezone Table --->
         <div id='TimezoneResultsDiv'>
             <button type="button" class="closeWindowBtn btn btn-secondary">Close</button>
-            <table>
+            <table class="table table-dark">
                 <thead>
-                    <th>Component</th>
-                    <th>Result</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Component</th>
+                    <th scope="col">Result</th>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>name</td>
+                        <th scope="row">1</th>
+                        <td>Name:</td>
                         <td id="TimezoneNameResult"></td>
                     </tr>
                     <tr>
-                        <td>now_in_dst</td>
+                        <th scope="row">2</th>
+                        <td>Now In DST:</td>
                         <td id="TimezoneDstResult"></td>
                     </tr>
                     <tr>
-                        <td>offset_sec</td>
+                        <th scope="row">3</th>
+                        <td>Offset Sec:</td>
                         <td id="TimezoneSecResult"></td>
                     </tr>
                     <tr>
-                        <td>offset_string</td>
+                        <th scope="row">4</th>
+                        <td>Offset String:</td>
                         <td id="TimezoneStringResult"></td>
                     </tr>
-                        <tr>
-                        <td>short_name</td>
+                        <th scope="row">5</th>
+                        <td>Short Name:</td>
                         <td id="TimezoneShortNameResult"></td>
                     </tr>
                 </tbody>
@@ -182,50 +204,61 @@
         <!--- Country Weather Table --->
         <div id='WeatherResultsDiv'>
             <button type="button" class="closeWindowBtn btn btn-secondary">Close</button>
-            <table>
+            <table class="table table-dark weatherTable">
                  <thead>
-                    <th>Component</th>
-                    <th>Result</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Component</th>
+                    <th scope="col">Result</th>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>weatherMain</td>
+                        <th scope="row">1</th>
+                        <td>Weather:</td>
                         <td id="WeatherMainResult"></td>
                     </tr>
                     <tr>
-                        <td>weatherDesc</td>
+                        <th scope="row">2</th>
+                        <td>Description:</td>
                         <td id="WeatherDescResult"></td>
                     </tr>
                     <tr>
-                        <td>weatherIcon</td>
+                        <th scope="row">3</th>
+                        <td>Status:</td>
                         <td id="WeatherIconResult"></td>
                     </tr>
                     <tr>
-                        <td>tamp</td>
+                        <th scope="row">4</th>
+                        <td>Temperature:</td>
                         <td id="WeatherTempResult"></td>
                      </tr>
                     <tr>
-                        <td>feels_like</td>
+                        <th scope="row">5</th>
+                        <td>Feels Like:</td>
                         <td id="WeatherFeelsLikeResult"></td>
                     </tr>
                     <tr>
-                        <td>temp_min</td>
+                        <th scope="row">6</th>
+                        <td>Temp Min</td>
                         <td id="WeatherTempMinResult"></td>
                     </tr>
                     <tr>
-                        <td>temp_max</td>
+                        <th scope="row">7</th>
+                        <td>Temp Max</td>
                         <td id="WeatherTempMaxResult"></td>
                      </tr>
                     <tr>
-                        <td>pressure</td>
+                        <th scope="row">8</th>
+                        <td>Pressure:</td>
                         <td id="WeatherPressureResult"></td>
                     </tr>
                     <tr>
-                        <td>wind_speed</td>
+                        <th scope="row">9</th>
+                        <td>Wind Speed:</td>
                         <td id="WeatherWindSpeedResult"></td>
                      </tr>
                     <tr>
-                        <td>visibility</td>
+                        <th scope="row">10</th>
+                        <td>Visibility:</td>
                         <td id="WeatherVisibilityResult"></td>
                     </tr>
                 </tbody>

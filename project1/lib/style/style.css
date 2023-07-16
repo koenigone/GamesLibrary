@@ -47,21 +47,7 @@ html {
 /* Country Select */
 .navbar .selectCountryDiv {
     display: flex;
-    z-index: 999;
     width: 500px;
-}
-
-.selectCountryDiv #selectCountryBtn {
-    border: none;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    background-color: rgb(104, 104, 104);
-    color: #ffff;
-    padding: 10px;
-}
-
-#selectCountryBtn:hover {
-    background-color: rgb(87, 87, 87);
 }
 
 /* Lat & Lng Inputs */
@@ -83,7 +69,7 @@ html {
     position: absolute;
     top: 120px;
     right: 0px  ;
-    z-index: 1000;
+    z-index: 997;
 }
 
 #deleteMarkerBtn, #deleteAllMarkersBtn {
@@ -104,9 +90,10 @@ html {
     border-bottom-left-radius: 0;
 }
 
+/* Results Tables */
 #CountryInfoResultsDiv, #CurrencyResultsDiv, #TimezoneResultsDiv, #WeatherResultsDiv {
+    display: none;
     margin: 0 auto;
-    padding: 10px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -115,12 +102,23 @@ html {
     width: 600px;
     border: 2px solid black;
     border-radius: 10px;
-    background-color: #ffff;
+    background-color: #1f2327;
     z-index: 999;
 }
 
-#CountryInfoResultsDiv, #CurrencyResultsDiv, #TimezoneResultsDiv, #WeatherResultsDiv {
+#WeatherResultsDiv {
+    height: 500px;
+}
+
+#tableOverlay {
     display: none;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.562);
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 998;
 }
 
 .closeWindowBtn {
@@ -128,7 +126,7 @@ html {
     position: absolute;
     right: 10px;
     bottom: 10px;
-    z-index: 1000;
+    z-index: 10000;
 }
 
 /*** MOBILE ***/
@@ -151,6 +149,9 @@ html {
     }
     #map {
         height: 92.7vh;
+    }
+    #CountryInfoResultsDiv, #CurrencyResultsDiv, #TimezoneResultsDiv, #WeatherResultsDiv {
+        width: 350px;
     }
 }
 
@@ -187,8 +188,5 @@ html {
     }
     .navbar .selectCountryDiv {
         margin: -10px 0px 0px 200px;
-    }
-    .searchDiv .form-control {
-        width: 500px;
     }
 }

@@ -1,29 +1,29 @@
-const hamburger = document.getElementById('sidebar-button')
-const sidebar = document.getElementById('sidebar')
-const overlay = document.getElementById('overlay')
+const sidebarBtn = $('#sidebar-button');
+const sidebar = $('#sidebar');
+const overlay = $('#overlay');
 
-let menuOpen = false
+let menuOpen = false;
 
 function openMenu() {
-    menuOpen = true
-    overlay.style.display = 'block'
-    sidebar.style.width = '260px'
-}
+    menuOpen = true;
+    overlay.css('display', 'block');
+    sidebar.css('width', '260px');
+};
 
 function closeMenu() {
     menuOpen = false
-    overlay.style.display = 'none'
-    sidebar.style.width = '0px'
-}
+    overlay.css('display', 'none');
+    sidebar.css('width', '0px');
+};
 
-hamburger.addEventListener('click', function () {
+sidebarBtn.click(function () {
     if (!menuOpen) {
         openMenu()
     }
-})
+});
 
-overlay.addEventListener('click', function () {
+overlay.click(function () {
     if (menuOpen) {
         closeMenu()
     }
-})
+});
