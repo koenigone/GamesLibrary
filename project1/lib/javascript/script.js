@@ -6,7 +6,7 @@ $(window).on('load', function () {
 }});
 
 // Initializing Leaflet map
-var map = L.map('map').setView([0, 0], 13);
+var map = L.map('map').setView([0, 0], 0);
 var marker;
 var geojsonLayer;
 var markersClick = [];
@@ -31,6 +31,15 @@ var OpenStreetMap_HOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>'
 });
 
+// Wikipedia Links overlay
+var wikipediaLayerGroup = L.layerGroup.wikipediaLayer({
+  images: 'leaflet-wikipedia-master/images',
+  target: '_blank',
+  limit: '50',
+  popupOnMouseover: true,
+  clearOutsideBounds: true,
+});
+
 
 // Leaflet Map Layer Control
 var baseMaps = {
@@ -40,7 +49,12 @@ var baseMaps = {
   "<span style='color: #6b0f0f'>OpenStreetMap HOT</span>": OpenStreetMap_HOT
 };
 
-var layerControl = L.control.layers(baseMaps).addTo(map);
+var overlayMap = {
+  'Wikipedia Links': wikipediaLayerGroup
+}
+
+// Base layerControl
+var layerControl = L.control.layers(baseMaps, overlayMap).addTo(map);
 
 
 var latitudeDisplay = $('.latResult');
@@ -168,6 +182,8 @@ $('#selectCountry').on('change', function() {
 
           // Fitting the map to the bounds of the GeoJSON layer
           map.fitBounds(geojsonLayer.getBounds());
+
+          
         } else {
           alert('Error:', data.status.description);
         }

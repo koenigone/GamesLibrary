@@ -1,0 +1,40 @@
+{
+  "name": "leaflet-wikipedia",
+  "version": "1.1.0",
+  "authors": [
+    "MatthewBarker <mrjbarker@hotmail.com>"
+  ],
+  "description": "A leaflet plugin module to display Wikipedia entries on a map layer",
+  "main": [
+    "build/images/wikipedia-icon.png",
+    "build/images/wikipedia-icon-2x.png",
+    "build/leaflet-wikipedia.min.js"
+  ],
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "leaflet",
+    "map",
+    "wikipedia"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/matthewbarker/leaflet-wikipedia",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "example",
+    "gulp",
+    "help",
+    "images",
+    "source",
+    "gulpfile.js"
+  ],
+  "dependencies": {
+    "browser-jsonp": "~1.0.8",
+    "leaflet": "~0.7.3"
+  }
+}
