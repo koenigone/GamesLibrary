@@ -11,12 +11,13 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <link rel="stylesheet" href="leaflet-locatecontrol-gh-pages\dist\L.Control.Locate.min.css">
     <link rel="stylesheet" href="Leaflet.EasyButton-master\src\easy-button.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="leaflet-locatecontrol-gh-pages\dist\L.Control.Locate.min.js"></script>
     <script src="Leaflet.EasyButton-master\src\easy-button.js"></script>
-
-    <script src="leaflet-wikipedia-master\source\leaflet-wikipedia.js"></script>
-    <script src="JSONP-master\lib\jsonp.min.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
 
     <script src="https://kit.fontawesome.com/16651470f2.js" crossorigin="anonymous"></script>
     <script type="application/javascript" src="lib/javascript/jquery-3.7.0.min.js"></script>
@@ -36,7 +37,6 @@
         <!-- main select -->
         <div class="selectCountryDiv">
             <select class="form-select" id="selectCountry" name="selectCountry" title="Select a country to see it on the map!">
-                <option>Select Country</option>
             </select>
         </div>
 
@@ -264,6 +264,29 @@
                         <th scope="row">10</th>
                         <td>Visibility:</td>
                         <td id="WeatherVisibilityResult"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id='WikipediaResultsDiv'>
+            <button type="button" class="closeWindowBtn btn btn-secondary">Close</button>
+            <table class="table table-dark">
+                <thead>
+                    <th scope="col">#</th>
+                    <th scope="col">Component</th>
+                    <th scope="col">Result</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Country Wikipedia Page:</td>
+                        <td id="WikiLink1Result"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Capital Wikipedia Page:</td>
+                        <td id="WikiLink2Result"></td>
                     </tr>
                 </tbody>
             </table>

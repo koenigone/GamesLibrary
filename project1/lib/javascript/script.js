@@ -17,46 +17,6 @@ var Stadia_AlidadeSmoothDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/a
 	attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-  maxZoom: 18,
-});
-
-var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-});
-
-var OpenStreetMap_HOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-	maxZoom: 19,
-	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>'
-});
-
-// Wikipedia Links overlay
-var wikipediaLayerGroup = L.layerGroup.wikipediaLayer({
-  images: 'leaflet-wikipedia-master/images',
-  target: '_blank',
-  limit: '50',
-  popupOnMouseover: true,
-  clearOutsideBounds: true,
-});
-
-
-// Leaflet Map Layer Control
-var baseMaps = {
-  'Stadia Alidade Smooth Dark': Stadia_AlidadeSmoothDark,
-  'Esri World Imagery': Esri_WorldImagery,
-  'Open Street Map': osm,
-  "<span style='color: #6b0f0f'>OpenStreetMap HOT</span>": OpenStreetMap_HOT
-};
-
-var overlayMap = {
-  'Wikipedia Links': wikipediaLayerGroup
-}
-
-// Base layerControl
-var layerControl = L.control.layers(baseMaps, overlayMap).addTo(map);
-
-
 var latitudeDisplay = $('.latResult');
 var longitudeDisplay = $('.lngResult');
 
@@ -64,6 +24,8 @@ var longitudeDisplay = $('.lngResult');
 map.on('click', function(e) {
   latitudeDisplay.val(e.latlng.lat);
   longitudeDisplay.val(e.latlng.lng);
+
+  onMapClick(e);
 });
 
 // Puts a Marker On Clicked Location
@@ -72,7 +34,6 @@ function onMapClick(e) {
   markersClick.push(marker);
 }
 
-map.on('click', onMapClick);
 
 // Deletes The Markers One by One
 $('#deleteMarkerBtn').click(function() {
@@ -155,10 +116,9 @@ $.ajax({
   }
 });
 
-
 // Adding a highlighted borders on the selected country
-$('#selectCountry').on('change', function() {
-  var selectedIso2 = selectElement.val();
+selectElement.on('change', function() {
+  var selectedIso2 = $(this).val();
 
   if (selectedIso2) {
     // Fetching the country coordinates based on the ISO2 code
@@ -183,7 +143,6 @@ $('#selectCountry').on('change', function() {
           // Fitting the map to the bounds of the GeoJSON layer
           map.fitBounds(geojsonLayer.getBounds());
 
-          
         } else {
           alert('Error:', data.status.description);
         }
@@ -196,18 +155,266 @@ $('#selectCountry').on('change', function() {
 });
 
 
+
+// Different Map Layers
+var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+  maxZoom: 18,
+});
+
+var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+});
+
+var OpenStreetMap_HOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>'
+});
+
+var wikipediaLayer = L.layerGroup();
+var citiesMarkerCluster = L.markerClusterGroup();
+
+// Leaflet Map Layer Control
+var baseMaps = {
+  'Stadia Alidade Smooth Dark': Stadia_AlidadeSmoothDark,
+  'Esri World Imagery': Esri_WorldImagery,
+  'Open Street Map': osm,
+  "<span style='color: #6b0f0f'>OpenStreetMap HOT</span>": OpenStreetMap_HOT
+};
+
+var overlayMaps = {
+  'Wikipedia Links': wikipediaLayer,
+  'Country Cities': citiesMarkerCluster
+};
+
+// Base layerControl
+var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+
+// Wikipedia Custom Marker
+var wikipediaMarkerIcon = L.icon({
+  iconUrl: 'wiki-marker.png',
+
+  iconSize:     [40, 40], // size of the icon
+  iconAnchor:   [12, 45], // point of the icon which will correspond to marker's location
+  popupAnchor:  [4, -40] // point from which the popup should open relative to the iconAnchor
+});
+
+// Cities Custom Marker
+var CityMarkerIcon = L.icon({
+  iconUrl: 'city-marker.png',
+
+  iconSize:     [35, 40], // size of the icon
+  iconAnchor:   [22, 35],
+  popupAnchor:  [4, -15]
+});
+
+var countryMarker;
+var capitalMarker;
+
+// Adding Wikipedia Markers for Country & it's Capital To Base layerControl
+selectElement.change(function() {
+  var iso2Code = $('#selectCountry').val();
+
+  $.ajax({
+    url: 'lib/PHP/wikipedia.php',
+    type: 'GET',
+    data: {
+      iso2: iso2Code
+    },
+    success: function(response) {
+      var countryName = response.countryName;
+
+      // AJAX request to fetch the latitude and longitude of the capital from OpenCage Geocoding API
+      $.ajax({
+        url: 'https://api.opencagedata.com/geocode/v1/json',
+        type: 'GET',
+        data: {
+          q: countryName,
+          key: 'a9539fc65a4c4710bcf9c629eb4a60dc'
+        },
+        dataType: 'json',
+        success: function(geocodeData) {
+          if (geocodeData.results.length > 0) {
+            var countryLat = geocodeData.results[0].geometry.lat;
+            var countryLng = geocodeData.results[0].geometry.lng;
+
+            // Remove existing markers if any
+            if (countryMarker) {
+              map.removeLayer(countryMarker);
+            }
+
+            // AJAX request to get the Wikipedia link
+            $.ajax({
+              url: 'https://en.wikipedia.org/api/rest_v1/page/summary/' + countryName,
+              type: 'GET',
+              dataType: 'json',
+              success: function(data) {
+                var countryWikipediaUrl = data.content_urls.desktop.page;
+                var countryTitle = data.title;
+                var countryImage = data.thumbnail ? data.thumbnail.source : ''; // If available, use the thumbnail image
+            
+                // Custom HTML content for the popup
+                var popupContent = `
+                  <div style="text-align: center; width: 260px;">
+                    <h2>${countryTitle}</h2>
+                    <img src="${countryImage}" alt="${countryTitle}" style="max-width: 200px; margin: 0 auto;">
+                    <p><a href="${countryWikipediaUrl}" target="_blank">Learn more about ${countryTitle}</a></p>
+                  </div>
+                `;
+            
+                // Country Wikipedia Marker
+                countryMarker = L.marker([countryLat, countryLng], {icon: wikipediaMarkerIcon, title: `${countryTitle} Wikipedia link`})
+                  .bindPopup(popupContent)
+                  .addTo(wikipediaLayer);
+              },
+              error: function() {
+                alert('Error fetching Wikipedia link.');
+
+                if (countryMarker) {
+                  map.removeLayer(countryMarker);
+                }
+              }
+            });
+          } else {
+            alert('No data found for the country.');
+          }
+        },
+        error: function() {
+          alert('Error finding the Country Latitude and Longitude');
+        }
+      });
+    },
+    error: function() {
+      alert('Error fetching country name.');
+    }
+  });
+});
+
+
+selectElement.change(function() {
+  var iso2Code = $(this).val();
+
+  // API call to Rest Countries to get the country info
+  $.ajax({
+    url: 'https://restcountries.com/v2/alpha/' + iso2Code,
+    method: 'GET',
+    success: function(data) {
+      var capital = data.capital;
+
+      // Using a geocoding service to get the lat/lng of the capital
+      $.ajax({
+        url: 'https://api.opencagedata.com/geocode/v1/json',
+        method: 'GET',
+        data: {
+          key: 'a9539fc65a4c4710bcf9c629eb4a60dc',
+          q: capital
+        },
+        success: function(response) {
+          var lat = response.results[0].geometry.lat;
+          var lng = response.results[0].geometry.lng;
+
+          if (capitalMarker) {
+            map.removeLayer(capitalMarker);
+          }
+
+          // Creating a Wikipedia link for the capital city
+          var wikipediaLink = '<a href="https://en.wikipedia.org/wiki/' + capital + '" target="_blank"> More about ' + capital + '</a>';
+
+          // AJAX request to get additional information from Wikipedia
+          $.ajax({
+            url: 'https://en.wikipedia.org/api/rest_v1/page/summary/' + capital,
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+              var popupContent = '<h2>' + capital + '</h2>';
+              if (data.thumbnail) {
+                popupContent += '<img src="' + data.thumbnail.source + '" alt="' + capital + '" style="max-width: 200px;">';
+              }
+              popupContent += '<p>' + data.extract + '</p>';
+              popupContent += '<p>' + wikipediaLink + '</p>';
+
+              capitalMarker = L.marker([lat, lng], {icon: wikipediaMarkerIcon}).addTo(wikipediaLayer);
+              capitalMarker.bindPopup(popupContent);
+            },
+            error: function() {
+              alert('Error fetching Wikipedia data for the capital.');
+            }
+          });
+        },
+        error: function() {
+          alert('Error retrieving geocoding data.');
+
+          if (capitalMarker) {
+            map.removeLayer(capitalMarker);
+          }
+        }
+      });
+    },
+    error: function() {
+      alert('Error retrieving country data.');
+    }
+  });
+});
+
+// an array to hold the feature groups
+var markerGroups = [];
+
+// Using GeoNames API to Retrive Country Cities and Place Markers on each City
+selectElement.change(async function() {
+  var iso2Code = $(this).val();
+  var username = 'mohammadmohammad';
+  var maxRows = 50;
+
+  try {
+    const data = await $.ajax({
+      url: `http://api.geonames.org/searchJSON?country=${iso2Code}&maxRows=${maxRows}&username=${username}`,
+      method: 'GET',
+      dataType: 'JSON',
+    });
+
+    // Clearing the existing markers before adding new ones
+    citiesMarkerCluster.clearLayers();
+    markerGroups = []; // Clear the previous marker groups
+
+    // Splitting the markers into groups of 10
+    var groupSize = 10;
+    for (var i = 0; i < data.geonames.length; i += groupSize) {
+      var markersSubset = data.geonames.slice(i, i + groupSize);
+      var markerGroup = L.featureGroup();
+
+      markersSubset.forEach(function(city) {
+        var marker = L.marker([city.lat, city.lng]);
+
+        marker.bindPopup(city.name);
+        markerGroup.addLayer(marker);
+      });
+
+      markerGroups.push(markerGroup);
+      citiesMarkerCluster.addLayer(markerGroup);
+    }
+
+  } catch (error) {
+    alert('Error fetching cities:', error);
+  }
+});
+
+
+
 // APIs Info Tables
 var countryInfoDiv = $('#CountryInfoResultsDiv');
 var currencyDiv = $('#CurrencyResultsDiv');
 var timezoneDiv = $('#TimezoneResultsDiv');
 var weatherDiv = $('#WeatherResultsDiv');
+var wikipediaDiv = $('#WikipediaResultsDiv');
 var tableOverlay = $('#tableOverlay');
+var closeBtn = $('.closeWindowBtn');
 
 
 // Get Info Based on The Selected Country (GeoNames API)
 function getCountryInfoBySelected() {
-  if (currencyDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block' || weatherDiv.css('display') === 'block') {
-    $(currencyDiv).add(timezoneDiv).add(weatherDiv).css('display', 'none');
+  if (currencyDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block' || weatherDiv.css('display') === 'block' || wikipediaDiv.css('display') === 'block') {
+    $(currencyDiv).add(timezoneDiv).add(weatherDiv).add(wikipediaDiv).css('display', 'none');
   }
 
   var selectedIso2 = $('#selectCountry').val();
@@ -234,6 +441,7 @@ function getCountryInfoBySelected() {
           // Show the country information div
           countryInfoDiv.css('display', 'block');
           tableOverlay.css('display', 'block');
+          closeBtn.css('display', 'block');
         } else {
           alert('Error:', data.status.description);
         }
@@ -248,8 +456,8 @@ function getCountryInfoBySelected() {
 // Get Country Currency Information -- (OpenCage API)
 function getCurrencyInfoBySelected() {
   // Hiding the other tables
-  if (countryInfoDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block' || weatherDiv.css('display') === 'block') {
-    $(countryInfoDiv).add(timezoneDiv).add(weatherDiv).css('display', 'none');
+  if (countryInfoDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block' || weatherDiv.css('display') === 'block' || wikipediaDiv.css('display') === 'block') {
+    $(countryInfoDiv).add(timezoneDiv).add(weatherDiv).add(wikipediaDiv).css('display', 'none');
   }
 
   var selectedIso2 = $('#selectCountry').val();
@@ -280,6 +488,7 @@ function getCurrencyInfoBySelected() {
 
       currencyDiv.css('display', 'block');
       tableOverlay.css('display', 'block');
+      closeBtn.css('display', 'block');
     });
   }
 }
@@ -288,8 +497,8 @@ function getCurrencyInfoBySelected() {
 function getTimezoneInfoBySelected() {
 
   // Hiding The other Tables
-  if (countryInfoDiv.css('display') === 'block' || currencyDiv.css('display') === 'block' || weatherDiv.css('display') === 'block') {
-      $(countryInfoDiv).add(currencyDiv).add(weatherDiv).css('display', 'none');
+  if (countryInfoDiv.css('display') === 'block' || currencyDiv.css('display') === 'block' || weatherDiv.css('display') === 'block' || wikipediaDiv.css('display') === 'block') {
+      $(countryInfoDiv).add(currencyDiv).add(weatherDiv).add(wikipediaDiv).css('display', 'none');
   };
     
   var selectedIso2 = $('#selectCountry').val();
@@ -309,14 +518,15 @@ function getTimezoneInfoBySelected() {
       // results table
       timezoneDiv.css('display', 'block');
       tableOverlay.css('display', 'block');
+      closeBtn.css('display', 'block');
   });
 }
 
 // Retrive Weather Data -- (OpenWeather API)
 function getWeatherInfoByCoords() {
   // Hiding The other Tables
-  if (countryInfoDiv.css('display') === 'block' || currencyDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block') {
-    $(countryInfoDiv).add(currencyDiv).add(timezoneDiv).css('display', 'none');
+  if (countryInfoDiv.css('display') === 'block' || currencyDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block' || wikipediaDiv.css('display') === 'block') {
+    $(countryInfoDiv).add(currencyDiv).add(timezoneDiv).add(wikipediaDiv).css('display', 'none');
   }
 
   var appid = 'd82b4a56a2b2017d3b9863326d8378ec';
@@ -353,7 +563,7 @@ function getWeatherInfoByCoords() {
       // results table
       weatherDiv.css('display', 'block');
       tableOverlay.css('display', 'block');
-
+      closeBtn.css('display', 'block');
     },
     error: function(error) {
       alert(`Make sure to place a marker! ${error.description}`);
@@ -370,19 +580,11 @@ var timezoneInfoBtn = L.easyButton('fa-solid fa-clock', getTimezoneInfoBySelecte
 var weatherInfoBtn = L.easyButton('fa-solid fa-cloud', getWeatherInfoByCoords, 'Weather Info based on the placed markers').addTo(map);
 
 // Overlay to hide results tables
-$('#tableOverlay').click(function() {
-  $(this).css('display', 'none');
-  $(countryInfoDiv).css('display', 'none');
-  $(currencyDiv).css('display', 'none');
-  $(timezoneDiv).css('display', 'none');
-  $(weatherDiv).css('display', 'none');
-});
-
-// Closing the results window
-$('.closeWindowBtn').click(function() {
-  tableOverlay.css('display', 'none');
+$('#tableOverlay, .closeWindowBtn').click(function() {
+  $('#tableOverlay').add('.closeWindowBtn').css('display', 'none');
   countryInfoDiv.css('display', 'none');
   currencyDiv.css('display', 'none');
   timezoneDiv.css('display', 'none');
   weatherDiv.css('display', 'none');
+  wikipediaDiv.css('display', 'none');
 });

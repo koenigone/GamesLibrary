@@ -92,7 +92,7 @@ html {
 }
 
 /* Results Tables */
-#CountryInfoResultsDiv, #CurrencyResultsDiv, #TimezoneResultsDiv, #WeatherResultsDiv {
+#CountryInfoResultsDiv, #CurrencyResultsDiv, #TimezoneResultsDiv, #WeatherResultsDiv, #WikipediaResultsDiv {
     display: none;
     margin: 0 auto;
     position: absolute;
