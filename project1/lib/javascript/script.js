@@ -166,9 +166,15 @@ var OpenStreetMap_HOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>'
 });
 
-var Stadia_AlidadeSmoothDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+var OpenStreetMap_BZH = L.tileLayer('https://tile.openstreetmap.bzh/br/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles courtesy of <a href="http://www.openstreetmap.bzh/" target="_blank">Breton OpenStreetMap Team</a>',
+	bounds: [[46.2, -5.5], [50, 0.7]]
+});
+
+var OpenStreetMap_France = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
 	maxZoom: 20,
-	attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+	attribution: '&copy; OpenStreetMap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 });
 
 var wikipediaLayer = L.layerGroup();
@@ -178,7 +184,9 @@ var citiesMarkerCluster = L.markerClusterGroup();
 var baseMaps = {
   'Esri World Imagery (Default)': Esri_WorldImagery,
   'Open Street Map': osm,
-  "<span style='color: #6b0f0f'>OpenStreetMap HOT</span>": OpenStreetMap_HOT
+  "<span style='color: #6b0f0f'>OpenStreetMap HOT</span>": OpenStreetMap_HOT,
+  'OpenStreet BZH': OpenStreetMap_BZH,
+  'OpenStreep France': OpenStreetMap_France
 };
 
 var overlayMaps = {
