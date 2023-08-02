@@ -375,7 +375,7 @@ selectElement.change(async function() {
 
   try {
     const data = await $.ajax({
-      url: `http://api.geonames.org/searchJSON?country=${iso2Code}&maxRows=${maxRows}&username=${username}`,
+      url: `https://secure.geonames.org/searchJSON?country=${iso2Code}&maxRows=${maxRows}&username=${username}`,
       method: 'GET',
       dataType: 'JSON',
     });
