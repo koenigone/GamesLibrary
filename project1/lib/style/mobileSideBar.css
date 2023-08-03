@@ -10,7 +10,7 @@
 #sidebar {
     width: 0px;
     height: 100vh;
-    background-color: rgba(5, 27, 56, 0.733);
+    background-color: rgba(18, 21, 24, 0.9);
     position: fixed;
     top: 0;
     right: 0;
@@ -39,6 +39,12 @@
     display: block;
     margin: 50px 20px;
 }
+
+.sidebar-item span {
+    color: white;
+    font-weight: bold;
+}
+
 .sidebar-item input {
     margin: 10px 0px;
 }
@@ -60,6 +66,6 @@
     position: fixed;
     top: 0;
     right: 0;
-    z-index: 999;
+    z-index: 9998;
     display: none;
 }

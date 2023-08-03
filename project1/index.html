@@ -66,7 +66,9 @@
                 </div>
                 <!-- Item Two-->
                 <div class="sidebar-item">
+                    <span>Latitude</span>
                     <input type="text" class="form-control clickLat latResult" placeholder="latitude" title="latitude" readonly>
+                    <span>Longitude</span>
                     <input type="text" class="form-control clickLng lngResult" placeholder="longitude" title="longitude" readonly>
                 </div>
                 <!-- Div Rights -->
@@ -84,212 +86,88 @@
 
         <!-- Markers Control Buttons -->
         <div class="markersControlBtns">
-            <button id="deleteMarkerBtn" title="delete marker"><i class="fa-regular fa-square-minus"></i></button>
-            <button id="deleteAllMarkersBtn" title="delete all markers"><i class="fa-solid fa-delete-left"></i></button>
+            <button id="deleteMarkerBtn" title="delete marker"><img src="map-marker-minus.png"></button>
+            <button id="deleteAllMarkersBtn" title="delete all markers"><img src="map-marker-remove.png"></button>
         </div>
         
         <!-- APIs Results Tables -->
+
+        <!--- Country Info Card --->
         <div id='CountryInfoResultsDiv'>
-            <button type="button" class="closeWindowBtn btn btn-secondary">Close</button>
-            <!--- Country Info Table --->
-            <table class="table table-dark">
-                <thead>
-                    <th scope="col">#</th>
-                    <th scope="col">Component</th>
-                    <th scope="col">Result</th>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>continent</td>
-                        <td id="CountryContinentResult"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>country</td>
-                        <td id="CountryNameResult"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Country Code:</td>
-                        <td id="CountryCodeResult"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">4</th>
-                        <td>Country Capital:</td>
-                        <th id="CountryCapitalResult"></th>
-                    </tr>
-                    <tr>
-                        <th scope="row">5</th>
-                        <td>Country Population:</td>
-                        <td id="CountryPopulationResult"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">6</th>
-                        <td>Country Language:</td>
-                        <td id="CountryLanguageResult"></td>
-                    </tr>
-                </tbody>
-            </table>
+            <button type="button" class="closeWindowBtn"><i class="fa-solid fa-xmark"></i></button>
+
+            <img class="result-card-item" src="info-result-img.png" alt="img not available">
+
+            <h4 class="result-card-item">continent: <span id="CountryContinentResult"></span></h4>
+
+            <h4 class="result-card-item">country: <span id="CountryNameResult"></span></h4>
+
+            <h4 class="result-card-item">Country Code: <span id="CountryCodeResult"></span></h4>
+            
+            <h4 class="result-card-item">Country Capital: <span id="CountryCapitalResult"></span></h4>
+
+            <h4 class="result-card-item">Country Population: <span id="CountryPopulationResult"></span></h4>
+
+            <h4 class="result-card-item">Country Language: <span id="CountryLanguageResult"></span></h4>
         </div>
 
-        <!--- Country Currency Table --->
+        <!--- Country Currency Card --->
         <div id='CurrencyResultsDiv'>
-            <button type="button" class="closeWindowBtn btn btn-secondary">Close</button>
-            <table class="table table-dark">
-                <thead>
-                    <th scope="col">#</th>
-                    <th scope="col">Component</th>
-                    <th scope="col">Result</th>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>ISO Code:</td>
-                        <td id="CurrencyISOCodeResult"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Currency Name:</td>
-                        <td id="CurrencyNameResult"></td>
-                     </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Subunit:</td>
-                        <td id="CurrencySubunitResult"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">4</th>
-                        <td>Exchange Rate ($USD):</td>
-                        <td id="CurrencyExchangeResult"></td>
-                    </tr>
-                </tbody>
-            </table>
+            <button type="button" class="closeWindowBtn"><i class="fa-solid fa-xmark"></i></button>
+
+            <img class="result-card-item" src="currency-result-img.png" alt="img not available">
+
+            <h4 class="result-card-item">ISO Code: <span id="CurrencyISOCodeResult"></span></h4>
+
+            <h4 class="result-card-item">Currency Name: <span id="CurrencyNameResult"></span></h4>
+
+            <h4 class="result-card-item">Subunit: <span id="CurrencySubunitResult"></span></h4>
+            
+            <h4 class="result-card-item">Exchange Rate ($USD): <span id="CurrencyExchangeResult"></span></h4>
         </div>
 
-            <!--- Country Timezone Table --->
+            <!--- Country Timezone Card --->
         <div id='TimezoneResultsDiv'>
-            <button type="button" class="closeWindowBtn btn btn-secondary">Close</button>
-            <table class="table table-dark">
-                <thead>
-                    <th scope="col">#</th>
-                    <th scope="col">Component</th>
-                    <th scope="col">Result</th>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Name:</td>
-                        <td id="TimezoneNameResult"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Now In DST:</td>
-                        <td id="TimezoneDstResult"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Offset Sec:</td>
-                        <td id="TimezoneSecResult"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">4</th>
-                        <td>Offset String:</td>
-                        <td id="TimezoneStringResult"></td>
-                    </tr>
-                        <th scope="row">5</th>
-                        <td>Short Name:</td>
-                        <td id="TimezoneShortNameResult"></td>
-                    </tr>
-                </tbody>
-            </table>
+            <button type="button" class="closeWindowBtn"><i class="fa-solid fa-xmark"></i></button>
+
+            <img class="result-card-item" src="timezone-result-img.png" alt="img not available">
+
+            <h4 class="result-card-item">Name: <span id="TimezoneNameResult"></span></h4>
+
+            <h4 class="result-card-item">Now In DST: <span id="TimezoneDstResult"></span></h4>
+
+            <h4 class="result-card-item">Offset Sec: <span id="TimezoneSecResult"></span></h4>
+            
+            <h4 class="result-card-item">Offset String: <span id="TimezoneStringResult"></span></h4>
+
+            <h4 class="result-card-item">Short Name: <span id="TimezoneShortNameResult"></span></h4>
         </div>
 
-        <!--- Country Weather Table --->
+        <!--- Country Weather Card --->
         <div id='WeatherResultsDiv'>
-            <button type="button" class="closeWindowBtn btn btn-secondary">Close</button>
-            <table class="table table-dark weatherTable">
-                 <thead>
-                    <th scope="col">#</th>
-                    <th scope="col">Component</th>
-                    <th scope="col">Result</th>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Weather:</td>
-                        <td id="WeatherMainResult"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Description:</td>
-                        <td id="WeatherDescResult"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Status:</td>
-                        <td id="WeatherIconResult"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">4</th>
-                        <td>Temperature:</td>
-                        <td id="WeatherTempResult"></td>
-                     </tr>
-                    <tr>
-                        <th scope="row">5</th>
-                        <td>Feels Like:</td>
-                        <td id="WeatherFeelsLikeResult"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">6</th>
-                        <td>Temp Min</td>
-                        <td id="WeatherTempMinResult"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">7</th>
-                        <td>Temp Max</td>
-                        <td id="WeatherTempMaxResult"></td>
-                     </tr>
-                    <tr>
-                        <th scope="row">8</th>
-                        <td>Pressure:</td>
-                        <td id="WeatherPressureResult"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">9</th>
-                        <td>Wind Speed:</td>
-                        <td id="WeatherWindSpeedResult"></td>
-                     </tr>
-                    <tr>
-                        <th scope="row">10</th>
-                        <td>Visibility:</td>
-                        <td id="WeatherVisibilityResult"></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <button type="button" class="closeWindowBtn"><i class="fa-solid fa-xmark"></i></button>
 
-        <div id='WikipediaResultsDiv'>
-            <button type="button" class="closeWindowBtn btn btn-secondary">Close</button>
-            <table class="table table-dark">
-                <thead>
-                    <th scope="col">#</th>
-                    <th scope="col">Component</th>
-                    <th scope="col">Result</th>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Country Wikipedia Page:</td>
-                        <td id="WikiLink1Result"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Capital Wikipedia Page:</td>
-                        <td id="WikiLink2Result"></td>
-                    </tr>
-                </tbody>
-            </table>
+            <img class="result-card-item" src="weather-result-img.png" alt="img not available">
+
+            <h4 class="result-card-item">Weather: <span id="WeatherMainResult"></span></h4>
+
+            <h4 class="result-card-item">Description: <span id="WeatherDescResult"></span></h4>
+
+            <h4 class="result-card-item"><span id="WeatherIconResult"></span></h4>
+            
+            <h4 class="result-card-item">Temperature: <span id="WeatherTempResult"></span></h4>
+
+            <h4 class="result-card-item">Feels Like: <span id="WeatherFeelsLikeResult"></span></h4>
+
+            <h4 class="result-card-item">Temp Min: <span id="WeatherTempMinResult"></span></h4>
+
+            <h4 class="result-card-item">Temp Max: <span id="WeatherTempMaxResult"></span></h4>
+
+            <h4 class="result-card-item">Pressure: <span id="WeatherPressureResult"></span></h4>
+            
+            <h4 class="result-card-item">Wind Speed: <span id="WeatherWindSpeedResult"></span></h4>
+
+            <h4 class="result-card-item">Visibility: <span id="WeatherVisibilityResult"></span></h4>
         </div>
 
     </main>

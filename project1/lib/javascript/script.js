@@ -12,9 +12,11 @@ var geojsonLayer;
 var markersClick = [];
 
 // Default map layer
-var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+var OpenStreetMap_HOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>'
 }).addTo(map);
+
 
 var latitudeDisplay = $('.latResult');
 var longitudeDisplay = $('.lngResult');
@@ -161,9 +163,8 @@ var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 18,
 });
 
-var OpenStreetMap_HOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-	maxZoom: 19,
-	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>'
+var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
 });
 
 var OpenStreetMap_BZH = L.tileLayer('https://tile.openstreetmap.bzh/br/{z}/{x}/{y}.png', {
@@ -177,14 +178,14 @@ var OpenStreetMap_France = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/
 	attribution: '&copy; OpenStreetMap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 });
 
-var wikipediaLayer = L.layerGroup();
-var citiesMarkerCluster = L.markerClusterGroup();
+var wikipediaLayer = L.layerGroup().addTo(map);
+var citiesMarkerCluster = L.markerClusterGroup().addTo(map);
 
 // Leaflet Map Layer Control
 var baseMaps = {
-  'Esri World Imagery (Default)': Esri_WorldImagery,
+  "<span style='color: #6b0f0f'>OpenStreetMap HOT (Default)</span>": OpenStreetMap_HOT,
+  'Esri World Imagery': Esri_WorldImagery,
   'Open Street Map': osm,
-  "<span style='color: #6b0f0f'>OpenStreetMap HOT</span>": OpenStreetMap_HOT,
   'OpenStreet BZH': OpenStreetMap_BZH,
   'OpenStreep France': OpenStreetMap_France
 };
@@ -196,7 +197,6 @@ var overlayMaps = {
 
 // Base layerControl
 var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
-
 
 // Wikipedia Custom Marker
 var wikipediaMarkerIcon = L.icon({
@@ -420,9 +420,6 @@ var closeBtn = $('.closeWindowBtn');
 
 // Get Info Based on The Selected Country (GeoNames API)
 function getCountryInfoBySelected() {
-  if (currencyDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block' || weatherDiv.css('display') === 'block' || wikipediaDiv.css('display') === 'block') {
-    $(currencyDiv).add(timezoneDiv).add(weatherDiv).add(wikipediaDiv).css('display', 'none');
-  }
 
   var selectedIso2 = $('#selectCountry').val();
 
@@ -445,10 +442,17 @@ function getCountryInfoBySelected() {
           $('#CountryPopulationResult').html(countryInfo.population);
           $('#CountryLanguageResult').html(countryInfo.language);
 
+          currencyDiv.add(timezoneDiv).add(weatherDiv).css('visibility', 'hidden');
           // Show the country information div
-          countryInfoDiv.css('display', 'block');
+          countryInfoDiv.css({
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+            visibility: 'visible'
+          });
+          
           tableOverlay.css('display', 'block');
           closeBtn.css('display', 'block');
+
         } else {
           alert('Error:', data.status.description);
         }
@@ -462,10 +466,6 @@ function getCountryInfoBySelected() {
 
 // Get Country Currency Information -- (OpenCage API)
 function getCurrencyInfoBySelected() {
-  // Hiding the other tables
-  if (countryInfoDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block' || weatherDiv.css('display') === 'block' || wikipediaDiv.css('display') === 'block') {
-    $(countryInfoDiv).add(timezoneDiv).add(weatherDiv).add(wikipediaDiv).css('display', 'none');
-  }
 
   var selectedIso2 = $('#selectCountry').val();
 
@@ -491,22 +491,23 @@ function getCurrencyInfoBySelected() {
         var exchangeRate = exchangeRateData.rates[currencyCode];
 
         $('#CurrencyExchangeResult').html(exchangeRate);
-      });
 
-      currencyDiv.css('display', 'block');
+        countryInfoDiv.add(timezoneDiv).add(weatherDiv).css('visibility', 'hidden');
+        currencyDiv.css({
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+        visibility: 'visible'
+      });
+      
       tableOverlay.css('display', 'block');
       closeBtn.css('display', 'block');
+      });
     });
   }
 }
 
 // Get Country Timezone -- (OpenCage API)
 function getTimezoneInfoBySelected() {
-
-  // Hiding The other Tables
-  if (countryInfoDiv.css('display') === 'block' || currencyDiv.css('display') === 'block' || weatherDiv.css('display') === 'block' || wikipediaDiv.css('display') === 'block') {
-      $(countryInfoDiv).add(currencyDiv).add(weatherDiv).add(wikipediaDiv).css('display', 'none');
-  };
     
   var selectedIso2 = $('#selectCountry').val();
     
@@ -522,8 +523,13 @@ function getTimezoneInfoBySelected() {
       $('#TimezoneStringResult').html(timezoneInfo.offset_string);
       $('#TimezoneShortNameResult').html(timezoneInfo.short_name);
 
+      countryInfoDiv.add(currencyDiv).add(weatherDiv).css('visibility', 'hidden');
       // results table
-      timezoneDiv.css('display', 'block');
+      timezoneDiv.css({
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+        visibility: 'visible'
+      });
       tableOverlay.css('display', 'block');
       closeBtn.css('display', 'block');
   });
@@ -531,10 +537,6 @@ function getTimezoneInfoBySelected() {
 
 // Retrive Weather Data -- (OpenWeather API)
 function getWeatherInfoByCoords() {
-  // Hiding The other Tables
-  if (countryInfoDiv.css('display') === 'block' || currencyDiv.css('display') === 'block' || timezoneDiv.css('display') === 'block' || wikipediaDiv.css('display') === 'block') {
-    $(countryInfoDiv).add(currencyDiv).add(timezoneDiv).add(wikipediaDiv).css('display', 'none');
-  }
 
   var appid = 'd82b4a56a2b2017d3b9863326d8378ec';
   var latitude = latitudeDisplay.val();
@@ -558,7 +560,7 @@ function getWeatherInfoByCoords() {
 
       $("#WeatherMainResult").text(weatherData.main);
       $("#WeatherDescResult").text(weatherData.description);
-      $("#WeatherIconResult").html(`<img src="${iconUrl}" alt="Weather Icon">`);
+      $("#WeatherIconResult").html(`<img src="${iconUrl}" alt="Weather Icon" style="width: 80px; margin: -20px 0px">`);
       $("#WeatherTempResult").text(mainWeather.temp + "°C");
       $("#WeatherFeelsLikeResult").text(mainWeather.feels_like + "°C");
       $("#WeatherTempMinResult").text(mainWeather.temp_min + "°C");
@@ -567,8 +569,13 @@ function getWeatherInfoByCoords() {
       $("#WeatherWindSpeedResult").text(windData.speed + " m/s");
       $("#WeatherVisibilityResult").text(visibility + " meters");
 
+      countryInfoDiv.add(currencyDiv).add(timezoneDiv).css('visibility', 'hidden');
       // results table
-      weatherDiv.css('display', 'block');
+      weatherDiv.css({
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+        visibility: 'visible'
+      });
       tableOverlay.css('display', 'block');
       closeBtn.css('display', 'block');
     },
@@ -586,12 +593,32 @@ var currencyInfoBtn = L.easyButton('fa-sharp fa-solid fa-coins', getCurrencyInfo
 var timezoneInfoBtn = L.easyButton('fa-solid fa-clock', getTimezoneInfoBySelected, 'Country Timezone').addTo(map);
 var weatherInfoBtn = L.easyButton('fa-solid fa-cloud', getWeatherInfoByCoords, 'Weather Info based on the placed markers').addTo(map);
 
-// Overlay to hide results tables
+// Overlay and Button to hide results tables
 $('#tableOverlay, .closeWindowBtn').click(function() {
   $('#tableOverlay').add('.closeWindowBtn').css('display', 'none');
-  countryInfoDiv.css('display', 'none');
-  currencyDiv.css('display', 'none');
-  timezoneDiv.css('display', 'none');
-  weatherDiv.css('display', 'none');
-  wikipediaDiv.css('display', 'none');
+
+  // Reset styles and classes for each div
+  countryInfoDiv.css({
+    top: '0',
+    transform: 'translate(-50%, -50%)',
+    visibility: 'hidden'
+  });
+
+  currencyDiv.css({
+    top: '0',
+    transform: 'translate(-50%, -50%)',
+    visibility: 'hidden'
+  });
+
+  timezoneDiv.css({
+    top: '0',
+    transform: 'translate(-50%, -50%)',
+    visibility: 'hidden'
+  });
+
+  weatherDiv.css({
+    top: '0',
+    transform: 'translate(-50%, -50%)',
+    visibility: 'hidden'
+  });
 });
