@@ -21,45 +21,17 @@ var OpenStreetMap_HOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{
 var latitudeDisplay = $('.latResult');
 var longitudeDisplay = $('.lngResult');
 
-// Displays the Lat&Lng of clicked location as Inputs Value
-map.on('click', function(e) {
-  latitudeDisplay.val(e.latlng.lat);
-  longitudeDisplay.val(e.latlng.lng);
-
-  onMapClick(e);
-});
-
-// Puts a Marker On Clicked Location
-function onMapClick(e) {
-  var marker = L.marker(e.latlng).addTo(map);
-  markersClick.push(marker);
-}
-
-
-// Deletes The Markers One by One
-$('#deleteMarkerBtn').click(function() {
-  if (markersClick.length > 0) {
-    let marker = markersClick.pop();
-    map.removeLayer(marker);
-    
-    latitudeDisplay.val('');
-    longitudeDisplay.val('');
-  }
-});
-
-// Deletes All Markers
-$('#deleteAllMarkersBtn').click(function() {
-  for (var i = 0; i < markersClick.length; i++) {
-    var marker = markersClick[i];
-    map.removeLayer(marker);
-  }
-  markersClick = [];
-
-  latitudeDisplay.val('');
-  longitudeDisplay.val('');
-});
-
 // Taking user's location and setting it as default selected country with a marker on his location
+var userLocationMarker = L.ExtraMarkers.icon({
+  shape: 'circle',
+  markerColor: 'green',
+  icon: 'fa-solid fa-street-view',
+  iconColor: 'white', // Icon color
+  iconRotate: 0,
+  number: '1',
+  svg: false
+});
+
 var selectElement = $('#selectCountry');
 
 $.ajax({
@@ -77,7 +49,7 @@ $.ajax({
           var longitude = position.coords.longitude;
 
           // Adding a marker on current user's location
-          var geolocationMarker = L.marker([latitude, longitude]).bindPopup('This Is Your Current Location!').addTo(map);
+          var geolocationMarker = L.marker([latitude, longitude], {icon: userLocationMarker}).bindPopup('This Is Your Current Location!').addTo(map);
           markersClick.push(geolocationMarker);
 
           var geocodingUrl = 'https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' + latitude + '&lon=' + longitude;
@@ -139,7 +111,7 @@ selectElement.on('change', function() {
 
           // Creating GeoJSON layer
           geojsonLayer = L.geoJSON(countryCoordinates).addTo(map);
-          geojsonLayer.setStyle({ color: '#2661bf', fillColor: '#4287f5' });
+          geojsonLayer.setStyle({ color: '#47d185', fillColor: '#6ee0a1' });
 
           // Fitting the map to the bounds of the GeoJSON layer
           map.fitBounds(geojsonLayer.getBounds());
@@ -180,6 +152,9 @@ var OpenStreetMap_France = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/
 
 var wikipediaLayer = L.layerGroup().addTo(map);
 var citiesMarkerCluster = L.markerClusterGroup().addTo(map);
+var airportMarkerCluster = L.markerClusterGroup().addTo(map);
+var prisonsMarkerCluster = L.markerClusterGroup().addTo(map);
+var universityMarkerCluster = L.markerClusterGroup().addTo(map);
 
 // Leaflet Map Layer Control
 var baseMaps = {
@@ -191,29 +166,67 @@ var baseMaps = {
 };
 
 var overlayMaps = {
-  'Wikipedia Links': wikipediaLayer,
-  'Country Cities': citiesMarkerCluster
+  '<i class="fa-brands fa-wikipedia-w text-success"></i> Wikipedia Links': wikipediaLayer,
+  '<i class="fa-solid fa-city text-success"></i> Country Cities': citiesMarkerCluster,
+  '<i class="fa-solid fa-building-columns text-success"></i> Universities': universityMarkerCluster,
+  '<i class="fa-solid fa-plane text-success"></i> Airports': airportMarkerCluster,
+  '<i class="fa-solid fa-handcuffs text-success"></i> Prisons': prisonsMarkerCluster
 };
 
 // Base layerControl
 var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
 
 // Wikipedia Custom Marker
-var wikipediaMarkerIcon = L.icon({
-  iconUrl: 'wiki-marker.png',
-
-  iconSize:     [40, 40], // size of the icon
-  iconAnchor:   [12, 45], // point of the icon which will correspond to marker's location
-  popupAnchor:  [4, -40] // point from which the popup should open relative to the iconAnchor
+var wikipediaMarker = L.ExtraMarkers.icon({
+  shape: 'circle',
+  markerColor: 'blue',
+  icon: 'fa-brands fa-wikipedia-w',
+  iconColor: 'white',
+  iconRotate: 0,
+  number: '1',
+  svg: false
 });
 
 // Cities Custom Marker
-var CityMarkerIcon = L.icon({
-  iconUrl: 'city-marker.png',
+var citiesMarker = L.ExtraMarkers.icon({
+  shape: 'square',
+  markerColor: 'purple',
+  icon: 'fa-solid fa-city',
+  iconColor: 'white',
+  iconRotate: 0,
+  number: '1',
+  svg: false
+});
 
-  iconSize:     [35, 40], // size of the icon
-  iconAnchor:   [22, 35],
-  popupAnchor:  [4, -15]
+// Universities Custom Marker
+var UniversityMarker = L.ExtraMarkers.icon({
+  shape: 'square',
+  markerColor: 'red',
+  icon: 'fa-solid fa-building-columns',
+  iconColor: 'white',
+  number: '1',
+  svg: false
+});
+
+// Airports Custom Marker
+var airportMarker = L.ExtraMarkers.icon({
+  shape: 'square',
+  markerColor: 'white',
+  icon: 'fa-solid fa-plane',
+  iconColor: 'black',
+  iconRotate: 50,
+  number: '1',
+  svg: false
+});
+
+// Prisons Custom Marker
+var prisonMarker = L.ExtraMarkers.icon({
+  shape: 'square',
+  markerColor: 'black',
+  icon: 'fa-solid fa-handcuffs',
+  iconColor: 'white',
+  number: '1',
+  svg: false
 });
 
 var countryMarker;
@@ -232,6 +245,8 @@ selectElement.change(function() {
     success: function(response) {
       var countryName = response.countryName;
 
+      wikipediaLayer.clearLayers(); // removing layer from prev selected country
+
       // AJAX request to fetch the latitude and longitude of the capital from OpenCage Geocoding API
       $.ajax({
         url: 'https://api.opencagedata.com/geocode/v1/json',
@@ -245,11 +260,6 @@ selectElement.change(function() {
           if (geocodeData.results.length > 0) {
             var countryLat = geocodeData.results[0].geometry.lat;
             var countryLng = geocodeData.results[0].geometry.lng;
-
-            // Remove existing markers if any
-            if (countryMarker) {
-              map.removeLayer(countryMarker);
-            }
 
             // AJAX request to get the Wikipedia link
             $.ajax({
@@ -271,16 +281,12 @@ selectElement.change(function() {
                 `;
             
                 // Country Wikipedia Marker
-                countryMarker = L.marker([countryLat, countryLng], {icon: wikipediaMarkerIcon, title: `${countryTitle} Wikipedia link`})
-                  .bindPopup(popupContent)
-                  .addTo(wikipediaLayer);
+                countryMarker = L.marker([countryLat, countryLng], {icon: wikipediaMarker, title: `${countryTitle} Wikipedia link`});
+                countryMarker.bindPopup(popupContent);
+                countryMarker.addTo(wikipediaLayer);
               },
               error: function() {
                 alert('Error fetching Wikipedia link.');
-
-                if (countryMarker) {
-                  map.removeLayer(countryMarker);
-                }
               }
             });
           } else {
@@ -309,6 +315,8 @@ selectElement.change(function() {
     success: function(data) {
       var capital = data.capital;
 
+      wikipediaLayer.clearLayers(); // removing layer from prev selected country
+
       // Using a geocoding service to get the lat/lng of the capital
       $.ajax({
         url: 'https://api.opencagedata.com/geocode/v1/json',
@@ -320,10 +328,6 @@ selectElement.change(function() {
         success: function(response) {
           var lat = response.results[0].geometry.lat;
           var lng = response.results[0].geometry.lng;
-
-          if (capitalMarker) {
-            map.removeLayer(capitalMarker);
-          }
 
           // Creating a Wikipedia link for the capital city
           var wikipediaLink = '<a href="https://en.wikipedia.org/wiki/' + capital + '" target="_blank"> More about ' + capital + '</a>';
@@ -341,7 +345,7 @@ selectElement.change(function() {
               popupContent += '<p>' + data.extract + '</p>';
               popupContent += '<p>' + wikipediaLink + '</p>';
 
-              capitalMarker = L.marker([lat, lng], {icon: wikipediaMarkerIcon}).addTo(wikipediaLayer);
+              capitalMarker = L.marker([lat, lng], {icon: wikipediaMarker}).addTo(wikipediaLayer);
               capitalMarker.bindPopup(popupContent);
             },
             error: function() {
@@ -370,8 +374,8 @@ var markerGroups = [];
 // Using GeoNames API to Retrive Country Cities and Place Markers on each City
 selectElement.change(async function() {
   var iso2Code = $(this).val();
-  var username = 'mohammadmohammad';
-  var maxRows = 50;
+  const username = 'mohammadmohammad';
+  var maxRows = 100;
 
   try {
     const data = await $.ajax({
@@ -380,8 +384,8 @@ selectElement.change(async function() {
       dataType: 'JSON',
     });
 
-    // Clearing the existing markers before adding new ones
-    citiesMarkerCluster.clearLayers();
+    citiesMarkerCluster.clearLayers(); // removing layer from prev selected country
+
     markerGroups = []; // Clear the previous marker groups
 
     // Splitting the markers into groups of 10
@@ -391,7 +395,7 @@ selectElement.change(async function() {
       var markerGroup = L.featureGroup();
 
       markersSubset.forEach(function(city) {
-        var marker = L.marker([city.lat, city.lng]);
+        var marker = L.marker([city.lat, city.lng], {icon: citiesMarker});
 
         marker.bindPopup(city.name);
         markerGroup.addLayer(marker);
@@ -406,6 +410,95 @@ selectElement.change(async function() {
   }
 });
 
+// Retriving Universities locations from GeoNames API
+selectElement.change(function() {
+  var iso2Code = $(this).val();
+  const username = 'mohammadmohammad'
+
+  universityMarkerCluster.clearLayers(); // removing layer from prev selected country
+
+  // Fetch university location data from GeoNames API using AJAX
+  $.ajax({
+      url: `http://api.geonames.org/searchJSON?q=university&country=${iso2Code}&maxRows=10&username=${username}`,
+      method: 'GET',
+      dataType: 'json',
+      success: function(data) {
+          data.geonames.forEach(location => {
+              const lat = location.lat;
+              const lng = location.lng;
+
+              
+              var universitiesMarker = L.marker([lat, lng], {icon: UniversityMarker}).addTo(universityMarkerCluster);
+              universitiesMarker.bindPopup(location.name);
+          });
+      },
+      error: function(error) {
+          alert('Error fetching data:', error);
+      }
+  });
+});
+
+// Retriving Airports locations from GeoNames API
+selectElement.change(function() {
+  var iso2Code = $(this).val();
+
+  airportMarkerCluster.clearLayers(); // removing layer from prev selected country
+
+  $.ajax({ // retriving airports data from GeoNames API
+    url: 'http://api.geonames.org/searchJSON',
+    dataType: 'json',
+    data: {
+      country: iso2Code,
+      featureCode: 'AIRP',
+      maxRows: 15,
+      username: 'mohammadmohammad',
+    },
+    success: function(data) {
+
+      var airports = data.geonames;
+
+      airports.forEach(function(airport) { // Placing markers on the airports
+        var lat = airport.lat;
+        var lng = airport.lng;
+        var name = airport.name;
+
+        var airportsMarker = L.marker([lat, lng], {icon: airportMarker}).addTo(airportMarkerCluster);
+        airportsMarker.bindPopup(name).openPopup();
+      });
+    },
+    error: function(xhr, status, error) {
+      alert('Error fetching airports:', error);
+    }
+  });
+});
+
+// Retriving Prisons locations from GeoNames API
+selectElement.change(function() {
+  const iso2Code = $(this).val();
+  var username = 'mohammadmohammad';
+
+  prisonsMarkerCluster.clearLayers(); // removing layer from prev selected country
+
+  // GeoNames API to retrive prisons locations
+  $.ajax({
+      url: `http://api.geonames.org/searchJSON?q=prison&country=${iso2Code}&maxRows=10&username=${username}`,
+      method: 'GET',
+      dataType: 'json',
+      success: function(data) {
+          data.geonames.forEach(location => {
+              const lat = location.lat;
+              const lng = location.lng;
+
+              var prisonsMarkers = L.marker([lat, lng], {icon: prisonMarker}).addTo(prisonsMarkerCluster);
+
+              prisonsMarkers.bindPopup(location.name);
+          });
+      },
+      error: function(error) {
+          alert('Error fetching data:', error);
+      }
+  });
+});
 
 
 // APIs Info Tables
@@ -413,10 +506,6 @@ var countryInfoDiv = $('#CountryInfoResultsDiv');
 var currencyDiv = $('#CurrencyResultsDiv');
 var timezoneDiv = $('#TimezoneResultsDiv');
 var weatherDiv = $('#WeatherResultsDiv');
-var wikipediaDiv = $('#WikipediaResultsDiv');
-var tableOverlay = $('#tableOverlay');
-var closeBtn = $('.closeWindowBtn');
-
 
 // Get Info Based on The Selected Country (GeoNames API)
 function getCountryInfoBySelected() {
@@ -438,20 +527,11 @@ function getCountryInfoBySelected() {
           $('#CountryContinentResult').html(countryInfo.continent);
           $('#CountryNameResult').html(countryInfo.country);
           $('#CountryCodeResult').html(countryInfo.country_code);
+          $('#CountryISO3Result').html(countryInfo.isoAlpha3);
           $('#CountryCapitalResult').html(countryInfo.capital);
-          $('#CountryPopulationResult').html(countryInfo.population);
+          $('#CountryPopulationResult').html(numeral(countryInfo.population).format('0,0')); // formatting the number
           $('#CountryLanguageResult').html(countryInfo.language);
-
-          currencyDiv.add(timezoneDiv).add(weatherDiv).css('visibility', 'hidden');
-          // Show the country information div
-          countryInfoDiv.css({
-            top: '50%',
-            transform: 'translate(-50%, -50%)',
-            visibility: 'visible'
-          });
-          
-          tableOverlay.css('display', 'block');
-          closeBtn.css('display', 'block');
+          $('#CountryAreaResult').html(numeral(countryInfo.areaInSqKm).format('0,0') + ' KM');
 
         } else {
           alert('Error:', data.status.description);
@@ -462,11 +542,10 @@ function getCountryInfoBySelected() {
       }
     });
   }
-}
+};
 
 // Get Country Currency Information -- (OpenCage API)
 function getCurrencyInfoBySelected() {
-
   var selectedIso2 = $('#selectCountry').val();
 
   if (selectedIso2) {
@@ -479,28 +558,37 @@ function getCurrencyInfoBySelected() {
       $('#CurrencyISOCodeResult').html(currencyInfo.iso_code);
       $('#CurrencyNameResult').html(currencyInfo.name);
       $('#CurrencySubunitResult').html(currencyInfo.subunit);
+      $('#currencySymbol').html(currencyInfo.symbol);
 
       var currencyCode = currencyInfo.iso_code;
 
-      // Make a request to get the exchange rate
-      $.get('https://openexchangerates.org/api/latest.json', {
-        app_id: '61ce4d4569c8431988a21c5d58020ac5',
-        base: 'USD',
-        symbols: currencyCode,
-      }, function(exchangeRateData) {
-        var exchangeRate = exchangeRateData.rates[currencyCode];
+      var exchangeInput = $('#CurrencyExchangeInput'); // user input
+      var exchangeResult = $('#CurrencyExchangeResult'); // result
 
-        $('#CurrencyExchangeResult').html(exchangeRate);
+      // Function to update the result based on the input value
+      function updateResult(inputValue) {
+ 
+        $.get('https://openexchangerates.org/api/latest.json', { // call to openExchangeRates API
+          app_id: '61ce4d4569c8431988a21c5d58020ac5',
+          base: 'USD',
+          symbols: currencyCode,
+        }, function(exchangeRateData) {
+          var exchangeRate = exchangeRateData.rates[currencyCode];
+          var result = (inputValue * exchangeRate).toFixed(2);
+          exchangeResult.val(result);
+        });
+      }
 
-        countryInfoDiv.add(timezoneDiv).add(weatherDiv).css('visibility', 'hidden');
-        currencyDiv.css({
-        top: '50%',
-        transform: 'translate(-50%, -50%)',
-        visibility: 'visible'
-      });
-      
-      tableOverlay.css('display', 'block');
-      closeBtn.css('display', 'block');
+      // setting default value for the input and updating the result
+      exchangeInput.val(1);
+      updateResult(1);
+
+      // an event listener to capture changes in the input value
+      exchangeInput.on('input', function () {
+        var inputValue = parseFloat(exchangeInput.val());
+        if (!isNaN(inputValue)) {
+          updateResult(inputValue);
+        }
       });
     });
   }
@@ -508,117 +596,129 @@ function getCurrencyInfoBySelected() {
 
 // Get Country Timezone -- (OpenCage API)
 function getTimezoneInfoBySelected() {
-    
   var selectedIso2 = $('#selectCountry').val();
-    
-  $.get('https://api.opencagedata.com/geocode/v1/json', {
-    q: selectedIso2,
-    key: 'a9539fc65a4c4710bcf9c629eb4a60dc',
-    }, function(data) {
+  
+  $.ajax({
+    url: 'https://api.opencagedata.com/geocode/v1/json',
+    data: {
+      q: selectedIso2,
+      key: 'a9539fc65a4c4710bcf9c629eb4a60dc'
+    },
+    success: function(data) {
       var timezoneInfo = data.results[0].annotations.timezone;
-    
+
       $('#TimezoneNameResult').html(timezoneInfo.name);
       $('#TimezoneDstResult').html(timezoneInfo.now_in_dst + 'Hr');
       $('#TimezoneSecResult').html(timezoneInfo.offset_sec + 's');
       $('#TimezoneStringResult').html(timezoneInfo.offset_string);
       $('#TimezoneShortNameResult').html(timezoneInfo.short_name);
-
-      countryInfoDiv.add(currencyDiv).add(weatherDiv).css('visibility', 'hidden');
-      // results table
-      timezoneDiv.css({
-        top: '50%',
-        transform: 'translate(-50%, -50%)',
-        visibility: 'visible'
-      });
-      tableOverlay.css('display', 'block');
-      closeBtn.css('display', 'block');
+    },
+    error: function(error) {
+      alert('Error retriving the timezone of the current country', error);
+    }
   });
 }
 
 // Retrive Weather Data -- (OpenWeather API)
-function getWeatherInfoByCoords() {
-
-  var appid = 'd82b4a56a2b2017d3b9863326d8378ec';
-  var latitude = latitudeDisplay.val();
-  var longitude = longitudeDisplay.val();
+function getWeatherInfoBySelected() {
+  var selectedCountry = $('#selectCountry').val();
+  var apiKey = '4a1a815cc1274059a29112128230808';
+  var apiUrl = 'https://api.weatherapi.com/v1/forecast.json'; // weatherAPI endpoint
 
   $.ajax({
-    url: `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${appid}`,
-    method: 'GET',
-    dataType: 'JSON',
+    url: apiUrl,
+    type: 'GET',
+    dataType: 'json',
+    data: {
+      key: apiKey,
+      q: selectedCountry + ',iso2',
+      days: 7
+    },
     success: function(data) {
-      if (!data.weather || data.weather.length === 0) {
-        alert('Weather Data not found.');
-        return;
+
+      var weatherLocation = data.location;
+      var weatherData = data.current;
+      var forecastDays = data.forecast.forecastday;
+
+      // Looping through forcast days
+      for (var i = 0; i < forecastDays.length; i++) {
+        var dayData = forecastDays[i].day;
+        var date = new Date(forecastDays[i].date);
+        var temperature = dayData.avgtemp_c;
+
+        var conditionCode = dayData.condition.code;
+        var conditionIconUrl = dayData.condition.icon;
+
+        var dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'short' });
+
+        // Constructing the ID of the element based on the day abbreviation
+        var temperatureElementId = '#weather' + dayOfWeek + 'Result';
+        var imageElementId = '#weather' + dayOfWeek + 'Img';
+        
+        // Updating the content
+        $(temperatureElementId).html(temperature + '°C');
+        $(imageElementId).attr('src', conditionIconUrl).attr('alt', dayOfWeek);
       }
-      var weatherData = data.weather[0];
-      var mainWeather = data.main;
-      var windData = data.wind;
-      var visibility = data.visibility;
 
-      var iconUrl = `http://openweathermap.org/img/w/${weatherData.icon}.png`;
-
-      $("#WeatherMainResult").text(weatherData.main);
-      $("#WeatherDescResult").text(weatherData.description);
-      $("#WeatherIconResult").html(`<img src="${iconUrl}" alt="Weather Icon" style="width: 80px; margin: -20px 0px">`);
-      $("#WeatherTempResult").text(mainWeather.temp + "°C");
-      $("#WeatherFeelsLikeResult").text(mainWeather.feels_like + "°C");
-      $("#WeatherTempMinResult").text(mainWeather.temp_min + "°C");
-      $("#WeatherTempMaxResult").text(mainWeather.temp_max + "°C");
-      $("#WeatherPressureResult").text(mainWeather.pressure + " hPa");
-      $("#WeatherWindSpeedResult").text(windData.speed + " m/s");
-      $("#WeatherVisibilityResult").text(visibility + " meters");
-
-      countryInfoDiv.add(currencyDiv).add(timezoneDiv).css('visibility', 'hidden');
-      // results table
-      weatherDiv.css({
-        top: '50%',
-        transform: 'translate(-50%, -50%)',
-        visibility: 'visible'
-      });
-      tableOverlay.css('display', 'block');
-      closeBtn.css('display', 'block');
+      $('#weatherCountryResult').html(weatherLocation.country);
+      $('#weatherTempResult').html(weatherData.temp_c + '°C');
+      $('#weatherConditionResult').html(weatherData.condition.text);
+      $('#weatherLastUpdated').html(weatherData.last_updated);
     },
     error: function(error) {
-      alert(`Make sure to place a marker! ${error.description}`);
+      console.log('Error fetching weather data:', error);
     }
-  })
-};
+  });
+}
 
 // Locate Button To Display User's Current Location
 L.control.locate().addTo(map);
-// Map Info Buttons
-var countryInfoBtn = L.easyButton('fa-solid fa-info', getCountryInfoBySelected, 'Country Info').addTo(map);
-var currencyInfoBtn = L.easyButton('fa-sharp fa-solid fa-coins', getCurrencyInfoBySelected, 'Currency Info').addTo(map);
-var timezoneInfoBtn = L.easyButton('fa-solid fa-clock', getTimezoneInfoBySelected, 'Country Timezone').addTo(map);
-var weatherInfoBtn = L.easyButton('fa-solid fa-cloud', getWeatherInfoByCoords, 'Weather Info based on the placed markers').addTo(map);
 
-// Overlay and Button to hide results tables
-$('#tableOverlay, .closeWindowBtn').click(function() {
-  $('#tableOverlay').add('.closeWindowBtn').css('display', 'none');
+// Custom EasyButtons to display Info Modals
+var countryInfoModal = L.easyButton({
+  states: [{
+    stateName: 'show-modal',
+    icon: '<i class="fas fa-info-circle text-primary"></i>',
+    title: 'Show Country Info',
+    onClick: function() {
+      getCountryInfoBySelected();
+      countryInfoDiv.modal('show');
+    }
+  }]
+}).addTo(map);
 
-  // Reset styles and classes for each div
-  countryInfoDiv.css({
-    top: '0',
-    transform: 'translate(-50%, -50%)',
-    visibility: 'hidden'
-  });
+var currencyInfoModal = L.easyButton({
+  states: [{
+    stateName: 'show-modal',
+    icon: '<i class="fa-solid fa-money-bill text-warning"></i>',
+    title: 'Show Currency Info',
+    onClick: function() {
+      getCurrencyInfoBySelected();
+      currencyDiv.modal('show');
+    }
+  }]
+}).addTo(map);
 
-  currencyDiv.css({
-    top: '0',
-    transform: 'translate(-50%, -50%)',
-    visibility: 'hidden'
-  });
+var timezoneInfoModal = L.easyButton({
+  states: [{
+    stateName: 'show-modal',
+    icon: '<i class="fa-solid fa-clock text-success"></i>',
+    title: 'Show Timezone Info',
+    onClick: function() {
+      getTimezoneInfoBySelected();
+      timezoneDiv.modal('show');
+    }
+  }]
+}).addTo(map);
 
-  timezoneDiv.css({
-    top: '0',
-    transform: 'translate(-50%, -50%)',
-    visibility: 'hidden'
-  });
-
-  weatherDiv.css({
-    top: '0',
-    transform: 'translate(-50%, -50%)',
-    visibility: 'hidden'
-  });
-});
+var weatherInfoModal = L.easyButton({
+  states: [{
+    stateName: 'show-modal',
+    icon: '<i class="fa-solid fa-cloud text-info"></i>',
+    title: 'Show Weather Info',
+    onClick: function() {
+      getWeatherInfoBySelected();
+      weatherDiv.modal('show');
+    }
+  }]
+}).addTo(map);

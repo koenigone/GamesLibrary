@@ -11,209 +11,94 @@ html {
 }
 
 /***************** NAVBAR SECTION *****************/
-.navbar {
-    width: 100%;
-    height: 55px;
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid rgba(110, 110, 110, 0.397);
+.selectCountryDiv {
+    position: fixed;
+    top: 10px;
+    margin: 0 auto;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 200px;
+    box-shadow: 0 1px 4px 1px #1f23275b;
 }
 
-/* MainLogo */
-.navbar .main-logo {
-    font-weight: bold;
-    font-size: 20px;
-}
-.navbar .main-logo img {
-    height: 50px;
-    margin: 5px;
-    border-radius: 50px;
-    cursor: not-allowed;
-}
-.navbar .main-logo span {
-    cursor: not-allowed;
-    margin-left: -3px;
-}
-.navbar .main-logo .title-red {
-    color: rgb(138, 10, 10);
-}
-.navbar .main-logo .title-green {
-    color: green;
-    font-size: 30px;
-}
-.navbar .main-logo .title-blue {
-    color: rgb(16, 74, 182);
-}
-
-/* Country Select */
-.navbar .selectCountryDiv {
-    display: flex;
-    width: 500px;
-}
-
-/* Lat & Lng Inputs */
-.navbar .mapClickResultDiv {
-    display: flex;
-    width: 350px;
-    margin-top: -10px;
+#selectCountry {
+    text-align: center;
 }
 
 /***************** MAIN SECTION *****************/
 #map {
     width: 100%;
-    height: 93.9vh;
-}
-
-/* Markers Control Buttons */
-.markersControlBtns {
-    margin: 10px;
-    position: absolute;
-    top: 120px;
-    right: 0px  ;
-    z-index: 997;
-}
-
-#deleteMarkerBtn, #deleteAllMarkersBtn {
-    display: block;
-    margin-bottom: 10px;
-    height: 50px;
-    width: 50px;
-    border: none;
-    border-radius: 190px;
-    background: #025ec7;
-    text-align: center;
-    text-decoration: none;
-    color: #ffffffe8;
-    transition: all .2s;
-}
-
-#deleteMarkerBtn:hover, #deleteAllMarkersBtn:hover {
-    border-bottom-left-radius: 0;
-}
-
-#deleteMarkerBtn img, #deleteAllMarkersBtn img {
-    height: 24px;
-}
-
-/* Results Tables */
-#CountryInfoResultsDiv, #CurrencyResultsDiv, #TimezoneResultsDiv, #WeatherResultsDiv {
-    width: 450px;
-    height: 340px;
-    border-radius: 10px;
-    text-align: center;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    background-color: rgba(31, 35, 39, 0.8);
-    transition: transform 0.2s, top 0.2s;
-    visibility: hidden;
-    color: white;
-    z-index: 999;
-}
-
-#CurrencyResultsDiv {
-    height: 250px;
-}
-
-#TimezoneResultsDiv {
-    height: 300px;
-}
-
-#WeatherResultsDiv {
-    height: 500px;
-}
-
-#CountryInfoResultsDiv img, #CurrencyResultsDiv img, #TimezoneResultsDiv img, #WeatherResultsDiv img, #WikipediaResultsDiv img {
-    height: 100px;
-    margin-top: -50px;
-    margin-bottom: 20px;
-    margin-left: 35px;
-}
-
-.result-card-item {
-    font-size: 16px;
-    line-height: 30px;
-}
-
-#tableOverlay {
-    display: none;
-    width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.562);
-    position: fixed;
-    top: 0;
-    right: 0;
-    z-index: 998;
+    margin: 0;
+    padding: 0;
 }
 
-.closeWindowBtn {
-    color: white;
-    font-size: 20px;
-    float: right;
-    background: none;
-    border: none;
-    margin: 10px 10px;
+table td {
+    font-size: 13px;
 }
+
+table td i {
+    font-size: 13px;
+}
+
+.gradient-custom {
+    /* fallback for old browsers */
+    background: #ffffff;
+    
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, rgba(255, 255, 255, 1), rgb(131, 195, 231));
+    
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, rgba(255, 255, 255, 1), rgb(131, 195, 231))
+    }
+    
+    .carousel-indicators li {
+    background-color: #282828;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    }
 
 /*** MOBILE ***/
 @media only screen and (max-width: 640px) {
-    .navbar {
-        height: 60px;
-    }
-    .navbar .main-logo {
-        margin-top: -7px;
-    }
-    .navbar .main-logo span {
-        display: none;
-    }
-    .navbar .selectCountryDiv {
-        width: 230px;
-        margin-top: -7px;
-    }
-    .navbar .mapClickResultDiv {
-        display: none;
-    }
     #map {
-        height: 90vh;
-    }
-    #CountryInfoResultsDiv, #CurrencyResultsDiv, #TimezoneResultsDiv, #WeatherResultsDiv {
-        width: 290px;
+        height: 92vh;
     }
 }
 
 /*** TABLET ***/
 @media only screen and (min-width: 601px) and (max-width: 1279px) {
-    .navbar {
-        height: 60px;
-    }
-    .navbar .main-logo {
-        margin-top: -7px;
-    }
-    .navbar .main-logo span {
-        display: none;
-    }
-    .navbar .selectCountryDiv {
-        width: 370px;
-        margin-top: -7px;
-    }
-    .navbar .mapClickResultDiv {
-        display: none;
-    }
     #map {
-        height: 92.7vh;
+        height: 93vh;
+    }
+    .selectCountryDiv {
+        width: 320px;
+    }
+    
+    table td {
+        font-size: 16px;
+    }
+    
+    table td i {
+        font-size: 22px;
     }
 }
 
 /*** DESKTOP ***/
 @media only screen and (min-width: 1280px) {
-    .navbar #sidebar-button {
-        display: none;
+    .selectCountryDiv {
+        width: 420px;
     }
-    .navbar .main-logo {
-        margin-top: -10px;
+    .input-group-text {
+        font-size: 20px;
     }
-    .navbar .selectCountryDiv {
-        margin: -10px 0px 0px 200px;
+    
+    table td {
+        font-size: 18px;
+    }
+    
+    table td i {
+        font-size: 25px;
     }
 }

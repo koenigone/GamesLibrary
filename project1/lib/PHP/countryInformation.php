@@ -48,9 +48,11 @@ $output['status']['executedIn'] = intval((microtime(true) - $executionStartTime)
 $output['data']['continent'] = $countryInfo['continentName'];
 $output['data']['country'] = $countryInfo['countryName'];
 $output['data']['country_code'] = $countryInfo['countryCode'];
+$output['data']['isoAlpha3'] = $countryInfo['isoAlpha3'];
 $output['data']['capital'] = $countryInfo['capital'];
 $output['data']['population'] = $countryInfo['population'];
 $output['data']['language'] = $countryInfo['languages'];
+$output['data']['areaInSqKm'] = $countryInfo['areaInSqKm'];
 
 header('Content-Type: application/json; charset=UTF-8');
 echo json_encode($output);

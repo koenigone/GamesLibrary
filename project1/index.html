@@ -3,177 +3,330 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="lib/style/preloader.css">
-    <link rel="stylesheet" href="lib/style/style.css">
-    <link rel="stylesheet" href="lib/style/mobileSideBar.css">
-    <link rel="stylesheet" href="lib/style/scrollbar.css">
-    <link rel="stylesheet" href="bootstrap-5.0.2-dist\css\bootstrap.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <!-- Frameworks -->
+    <link rel="stylesheet" href="bootstrap-5.3.1-dist\css\bootstrap.css">
+    <link rel="stylesheet" href="Leaflet-map\leaflet.css">
     <link rel="stylesheet" href="leaflet-locatecontrol-gh-pages\dist\L.Control.Locate.min.css">
     <link rel="stylesheet" href="Leaflet.EasyButton-master\src\easy-button.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="Leaflet.markercluster-master\dist\MarkerCluster.css" />
+    <link rel="stylesheet" href="Leaflet.markercluster-master\dist\MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="Leaflet.ExtraMarkers-master\dist\css\leaflet.extra-markers.min.css">
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="leaflet-locatecontrol-gh-pages\dist\L.Control.Locate.min.js"></script>
-    <script src="Leaflet.EasyButton-master\src\easy-button.js"></script>
-    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <!-- My CSS -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 
-    <script src="https://kit.fontawesome.com/16651470f2.js" crossorigin="anonymous"></script>
-    <script type="application/javascript" src="lib/javascript/jquery-3.7.0.min.js"></script>
-    <title>GAZETTEER</title>
+    <link rel="stylesheet" href="lib/style/preloader.css">
+    <link rel="stylesheet" href="lib/style/style.css">
+    <link rel="stylesheet" href="lib/style/scrollbar.css">
+
+    <title>Gazetteer</title>
 </head>
 <body>
-    <!------- HEADER SECTION ------->
-    <header class="navbar">
-        <!-- logo -->
-        <div class="main-logo">
-            <img src="tempLogo.png" alt="missing img">
-            <span class="title-blue">GAZE</span>
-            <span class="title-green">TT</span>
-            <span class="title-red">EER</span>
-        </div>
+    <!-- main select -->
+    <div class="selectCountryDiv">
+      <select class="form-select" id="selectCountry" name="selectCountry" title="Select a country to see it on the map!"></select>
+    </div>
 
-        <!-- main select -->
-        <div class="selectCountryDiv">
-            <select class="form-select" id="selectCountry" name="selectCountry" title="Select a country to see it on the map!">
-            </select>
-        </div>
-
-        <!-- On Click Lat & Lng -->
-        <div class="mapClickResultDiv">
-            <input type="text" class="form-control latResult" placeholder="latitude" title="latitude" readonly>
-            <input type="text" class="form-control lngResult" placeholder="longitude" title="longitude" readonly>
-        </div>
-
-        <!-- Mobile sidebar Button -->
-        <div id="sidebar-button">
-            <i id="sidebar-button" class="fa-solid fa-bars"></i>
-        </div>
-
-    </header>
     <!------- MAIN SECTION ------->
     <main>
-        <!-- Mobile Sidebar -->
-        <div class="mobile-sidebar">
-            <div id="overlay"></div>
-            <div id="sidebar">
-                <!-- Item One-->
-                <div class="navbar-head sidebar-item">
-                    <span class="title-blue">GAZE</span>
-                    <span class="title-green">TT</span>
-                    <span class="title-red">EER</span>
+      <!-- Main Map Div -->
+      <div id="map"></div>
+
+      <!--- Country Info Modal --->
+      <div>
+        <div id='CountryInfoResultsDiv' class="modal fade" tabindex="-1" role="dialog" aria-labelledby="CountryInfoResultsTitle" area-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+              <div class="modal-header bg-primary bg-gradient text-white">
+                <h3 class="CountryInfoResultsTitle" id="CountryInfoResultsTitle"><i class="fa-solid fa-circle-info"></i> Country Info</h3>
+              </div>
+  
+              <div class="modal-body">
+                <table class="table table-hover">
+                  <tbody>
+                    <tr>
+                        <td scope="row" class="text-center col-2"><i class="fa-solid fa-globe text-primary"></i></td>
+                        <td class="text-nowrap">Continent:</td>
+                        <td id="CountryContinentResult" class="text-end"></td>
+                    </tr>
+  
+                    <tr>
+                        <td scope="row" class="text-center col-2"><i class="fa-solid fa-earth-americas text-primary"></i></td>
+                        <td class="text-nowrap">Country:</td>
+                        <td id="CountryNameResult" class="text-end"></td>
+                    </tr>
+  
+                    <tr>
+                        <td scope="row" class="text-center col-2"><i class="fa-solid fa-link text-primary"></i></td>
+                        <td class="text-nowrap">Country Code:</td>
+                        <td id="CountryCodeResult" class="text-end"></td>
+                    </tr>
+  
+                    <tr>
+                        <td scope="row" class="text-center col-2"><i class="fa-solid fa-paperclip text-primary"></i></td>
+                        <td class="text-nowrap">ISO3 Code:</td>
+                        <td id="CountryISO3Result" class="text-end"></td>
+                    </tr>
+  
+                    <tr>
+                        <td scope="row" class="text-center col-2"><i class="fa-solid fa-house text-primary"></i></td>
+                        <td class="text-nowrap">Country Capital:</td>
+                        <td id="CountryCapitalResult" class="text-end"></td>
+                    </tr>
+  
+                    <tr>
+                        <td scope="row" class="text-center col-2"><i class="fa-solid fa-person text-primary"></i></td>
+                        <td class="text-nowrap">Country Population:</td>
+                        <td id="CountryPopulationResult" class="text-end"></td>
+                    </tr>
+  
+                    <tr>
+                        <td scope="row" class="text-center col-2"><i class="fa-solid fa-language text-primary"></i></td>
+                        <td class="text-nowrap">Country Language:</td>
+                        <td id="CountryLanguageResult" class="text-end"></td>
+                    </tr>
+  
+                    <tr>
+                        <td scope="row" class="text-center col-2"><i class="fa-solid fa-ruler-combined text-primary"></i></td>
+                        <td class="text-nowrap">Area (km2):</td>
+                        <td id="CountryAreaResult" class="text-end"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+  
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <!--- Currency Info Modal --->
+      <div>
+        <div id='CurrencyResultsDiv' class="modal fade" tabindex="-1" role="dialog" aria-labelledby="CurrencyResultsTitle" area-hidden="false">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+              <div class="modal-header bg-warning bg-gradient text-white">
+                <h3 class="CurrencyResultsTitle" id="CurrencyResultsTitle"><i class="fa-solid fa-coins"></i> Country Currency</h3>
+              </div>
+  
+              <div class="modal-body">
+                <table class="table table-hover">
+                  <tbody>
+                    <tr>
+                        <td scope="row" class="text-center col-2"><i class="fa-solid fa-paperclip text-warning"></i></td>
+                        <td class="text-nowrap">Currency Code:</td>
+                        <td id="CurrencyISOCodeResult" class="text-end"></td>
+                    </tr>
+  
+                    <tr>
+                        <td scope="row" class="text-center col-2"><i class="fa-solid fa-money-bill text-warning"></i></td>
+                        <td class="text-nowrap">Currency Name:</td>
+                        <td id="CurrencyNameResult" class="text-end"></td>
+                    </tr>
+  
+                    <tr>
+                        <td scope="row" class="text-center col-2"><i class="fa-solid fa-cent-sign text-warning"></i></td>
+                        <td class="text-nowrap">Subunit:</td>
+                        <td id="CurrencySubunitResult" class="text-end"></td>
+                    </tr>
+  
+                    <tr>
+                        <td scope="row" class="text-center col-2"><i class="fa-solid fa-dollar-sign text-warning"></i></td>
+                        <td class="text-nowrap">Exchange Rate:</td>
+                        <td class="text-end">
+                          <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text text-success">$</span>
+                            </div>
+                            <input id="CurrencyExchangeInput" type="number" class="form-control" value="1" min="1" step="1" placeholder="value">
+                          </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                      <td scope="row" class="text-center col-2"><i class="fa-solid fa-equals text-warning"></i></td>
+                      <td class="text-nowrap">Current Value:</td>
+                      <td class="text-end">
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text text-success" id="currencySymbol"></span>
+                          </div>
+                          <input type="text" class="form-control" id="CurrencyExchangeResult" type="number" placeholder="value in USD" readonly>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+  
+              <div class="modal-footer">
+                <button type="button" class="btn btn-warning text-light" data-bs-dismiss="modal">Close</button>
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <!--- Timezone Info Modal --->
+      <div>
+        <div id='TimezoneResultsDiv' class="modal fade" tabindex="-1" role="dialog" aria-labelledby="TimezoneResultsDivTitle" area-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+              <div class="modal-header bg-success bg-gradient text-white">
+                <h3 class="TimezoneResultsDivTitle" id="TimezoneResultsDivTitle"><i class="fa-solid fa-clock"></i> Country Timezone</h3>
+              </div>
+  
+              <div class="modal-body">
+                <table class="table table-hover">
+                  <tbody>
+                    <tr>
+                        <td scope="row" class="text-center col-2"><i class="fa-solid fa-earth-americas text-success"></i></td>
+                        <td class="text-nowrap">Name:</td>
+                        <td id="TimezoneNameResult" class="text-end"></td>
+                    </tr>
+  
+                    <tr>
+                        <td scope="row" class="text-center col-2"><i class="fa-solid fa-clock text-success"></i></td>
+                        <td class="text-nowrap">Now In DST:</td>
+                        <td id="TimezoneDstResult" class="text-end"></td>
+                    </tr>
+  
+                    <tr>
+                        <td scope="row" class="text-center col-2"><i class="fa-solid fa-stopwatch-20 text-success"></i></td>
+                        <td class="text-nowrap">Offset Sec:</td>
+                        <td id="TimezoneSecResult" class="text-end"></td>
+                    </tr>
+  
+                    <tr>
+                        <td scope="row" class="text-center col-2"><i class="fa-solid fa-hourglass-start text-success"></i></td>
+                        <td class="text-nowrap">Offset String:</td>
+                        <td id="TimezoneStringResult" class="text-end"></td>
+                    </tr>
+  
+                    <tr>
+                        <td scope="row" class="text-center col-2"><i class="fa-solid fa-timeline text-success"></i></td>
+                        <td class="text-nowrap">Short Name:</td>
+                        <td id="TimezoneShortNameResult" class="text-end"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+  
+              <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <!--- Weather Info Modal --->
+      <div>
+        <div id='WeatherResultsDiv' class="modal fade" tabindex="-1" role="dialog" aria-labelledby="WeatherResultsDivTitle" area-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+              <div class="modal-header bg-info bg-gradient text-white">
+                <h3 class="WeatherResultsDivTitle" id="WeatherResultsDivTitle"><i class="fa-solid fa-cloud"></i> Country Weather</h3>
+              </div>
+
+              <section class="vh-25 weatherSection">
+                <div class="container py-3 h-100">
+                   <div class="row d-flex justify-content-center align-items-center h-100" style="color: #282828;">
+                      <div class="col-md-9 col-lg-12 col-xl-9">
+                         <div class="card mb-2 gradient-custom" style="border-radius: 15px;">
+                            <div class="card-body p-2">
+                               <div id="demo1" class="carousel slide" data-ride="carousel">
+                                  <!-- Carousel inner -->
+                                  <div class="carousel-inner">
+                                     <div class="carousel-item active">
+                                        <div class="d-flex justify-content-between mb-4 pb-1">
+                                          <div>
+                                            <strong class="display-4">TODAY</strong>
+                                            <h2 class="display-4 text-muted"><strong id="weatherTempResult"></strong></h2>
+                                            <p class="text-muted mb-0" id="weatherConditionResult"></p>
+                                            <p class="text-muted mb-0" id="weatherCountryResult"></p>
+                                          </div>
+                                          <div>
+                                            <img src="//cdn.weatherapi.com/weather/64x64/day/116.png" width="110px">
+                                          </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+
+                         <div id="demo3" class="carousel slide" data-ride="carousel">
+                            <!-- Carousel inner -->
+                            <div class="carousel-inner">
+                               <div class="carousel-item active">
+                                  <div class="card" style="border-radius: 15px;">
+                                     <div class="card-body p-4">
+                                        <div class="d-flex justify-content-around text-center mb-4 pb-2">
+                                           <div class="flex-column">
+                                              <p class="small"><strong id="weatherMonResult"></strong></p>
+                                              <img id="weatherMonImg" src="" alt="Weather Image">
+                                              <p class="mb-0"><strong>Mon</strong></p>
+                                           </div>
+                                           <div class="flex-column">
+                                              <p class="small"><strong id="weatherTueResult"></strong></p>
+                                              <img id="weatherTueImg" src="" alt="Weather Image">
+                                              <p class="mb-0"><strong>Tue</strong></p>
+                                           </div>
+                                           <div class="flex-column">
+                                              <p class="small"><strong id="weatherWedResult"></strong></p>
+                                              <img id="weatherWedImg" src="" alt="Weather Image">
+                                              <p class="mb-0"><strong>Wed</strong></p>
+                                           </div>
+                                           <div class="flex-column">
+                                              <p class="small"><strong id="weatherThuResult"></strong></p>
+                                              <img id="weatherThuImg" src="" alt="Weather Image">
+                                              <p class="mb-0"><strong>Thu</strong></p>
+                                           </div>
+                                           <div class="flex-column">
+                                              <p class="small"><strong id="weatherFriResult"></strong></p>
+                                              <img id="weatherFriImg" src="" alt="Weather Image">
+                                              <p class="mb-0"><strong>Fri</strong></p>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
                 </div>
-                <!-- Item Two-->
-                <div class="sidebar-item">
-                    <span>Latitude</span>
-                    <input type="text" class="form-control clickLat latResult" placeholder="latitude" title="latitude" readonly>
-                    <span>Longitude</span>
-                    <input type="text" class="form-control clickLng lngResult" placeholder="longitude" title="longitude" readonly>
-                </div>
-                <!-- Div Rights -->
-                <div class="div-rights">
-                    <h5>Developed by <i class="fa-regular fa-copyright"></i> KoenigOne<br>mm6dd.mh@gmail.com</h5>
-                </div>
-            </div>
+             </section>
+             
+
+              <div class="modal-footer d-flex justify-content-between">
+                <p class="text-left">Last Updated: <span id="weatherLastUpdated"></span></p>
+                <button type="button" class="btn btn-info text-light" data-bs-dismiss="modal">Close</button>
+              </div>
+          </div>
         </div>
-
-        <!-- Main Map Div -->
-        <div id="map"></div>
-
-        <!-- Overlay To hide Results Tables -->
-        <div id="tableOverlay"></div>
-
-        <!-- Markers Control Buttons -->
-        <div class="markersControlBtns">
-            <button id="deleteMarkerBtn" title="delete marker"><img src="map-marker-minus.png"></button>
-            <button id="deleteAllMarkersBtn" title="delete all markers"><img src="map-marker-remove.png"></button>
-        </div>
-        
-        <!-- APIs Results Tables -->
-
-        <!--- Country Info Card --->
-        <div id='CountryInfoResultsDiv'>
-            <button type="button" class="closeWindowBtn"><i class="fa-solid fa-xmark"></i></button>
-
-            <img class="result-card-item" src="info-result-img.png" alt="img not available">
-
-            <h4 class="result-card-item">continent: <span id="CountryContinentResult"></span></h4>
-
-            <h4 class="result-card-item">country: <span id="CountryNameResult"></span></h4>
-
-            <h4 class="result-card-item">Country Code: <span id="CountryCodeResult"></span></h4>
-            
-            <h4 class="result-card-item">Country Capital: <span id="CountryCapitalResult"></span></h4>
-
-            <h4 class="result-card-item">Country Population: <span id="CountryPopulationResult"></span></h4>
-
-            <h4 class="result-card-item">Country Language: <span id="CountryLanguageResult"></span></h4>
-        </div>
-
-        <!--- Country Currency Card --->
-        <div id='CurrencyResultsDiv'>
-            <button type="button" class="closeWindowBtn"><i class="fa-solid fa-xmark"></i></button>
-
-            <img class="result-card-item" src="currency-result-img.png" alt="img not available">
-
-            <h4 class="result-card-item">ISO Code: <span id="CurrencyISOCodeResult"></span></h4>
-
-            <h4 class="result-card-item">Currency Name: <span id="CurrencyNameResult"></span></h4>
-
-            <h4 class="result-card-item">Subunit: <span id="CurrencySubunitResult"></span></h4>
-            
-            <h4 class="result-card-item">Exchange Rate ($USD): <span id="CurrencyExchangeResult"></span></h4>
-        </div>
-
-            <!--- Country Timezone Card --->
-        <div id='TimezoneResultsDiv'>
-            <button type="button" class="closeWindowBtn"><i class="fa-solid fa-xmark"></i></button>
-
-            <img class="result-card-item" src="timezone-result-img.png" alt="img not available">
-
-            <h4 class="result-card-item">Name: <span id="TimezoneNameResult"></span></h4>
-
-            <h4 class="result-card-item">Now In DST: <span id="TimezoneDstResult"></span></h4>
-
-            <h4 class="result-card-item">Offset Sec: <span id="TimezoneSecResult"></span></h4>
-            
-            <h4 class="result-card-item">Offset String: <span id="TimezoneStringResult"></span></h4>
-
-            <h4 class="result-card-item">Short Name: <span id="TimezoneShortNameResult"></span></h4>
-        </div>
-
-        <!--- Country Weather Card --->
-        <div id='WeatherResultsDiv'>
-            <button type="button" class="closeWindowBtn"><i class="fa-solid fa-xmark"></i></button>
-
-            <img class="result-card-item" src="weather-result-img.png" alt="img not available">
-
-            <h4 class="result-card-item">Weather: <span id="WeatherMainResult"></span></h4>
-
-            <h4 class="result-card-item">Description: <span id="WeatherDescResult"></span></h4>
-
-            <h4 class="result-card-item"><span id="WeatherIconResult"></span></h4>
-            
-            <h4 class="result-card-item">Temperature: <span id="WeatherTempResult"></span></h4>
-
-            <h4 class="result-card-item">Feels Like: <span id="WeatherFeelsLikeResult"></span></h4>
-
-            <h4 class="result-card-item">Temp Min: <span id="WeatherTempMinResult"></span></h4>
-
-            <h4 class="result-card-item">Temp Max: <span id="WeatherTempMaxResult"></span></h4>
-
-            <h4 class="result-card-item">Pressure: <span id="WeatherPressureResult"></span></h4>
-            
-            <h4 class="result-card-item">Wind Speed: <span id="WeatherWindSpeedResult"></span></h4>
-
-            <h4 class="result-card-item">Visibility: <span id="WeatherVisibilityResult"></span></h4>
-        </div>
+      </div>
 
     </main>
     
     <div id="preloader"></div>
+    
+    <!-- Frameworks JS -->
+    <script src="bootstrap-5.3.1-dist\js\bootstrap.js"></script>
+    <script src="Leaflet-map\leaflet.js"></script>
+    <script src="leaflet-locatecontrol-gh-pages\dist\L.Control.Locate.min.js"></script>
+    <script src="Leaflet.EasyButton-master\src\easy-button.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <script src="Leaflet.ExtraMarkers-master\dist\js\leaflet.extra-markers.min.js"></script>
+
+    <script src="fontawesome-free-6.4.2-web\js\all.js"></script>
+    <script src="adamwdraper-Numeral-js-7de892f\min\numeral.min.js"></script>
+    
+    <script type="application/javascript" src="lib/javascript/jquery-3.7.0.min.js"></script>
     <script type="application/javascript" src="lib/javascript/script.js"></script>
-    <script type="application/javascript" src="lib/javascript/mobileSideBar.js"></script>
 </body>
 </html>
