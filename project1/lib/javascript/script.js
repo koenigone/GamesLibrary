@@ -419,7 +419,7 @@ selectElement.change(function() {
 
   // Fetch university location data from GeoNames API using AJAX
   $.ajax({
-      url: `https://api.geonames.org/searchJSON?q=university&country=${iso2Code}&maxRows=10&username=${username}`,
+      url: `https://secure.geonames.org/searchJSON?q=university&country=${iso2Code}&maxRows=10&username=${username}`,
       method: 'GET',
       dataType: 'json',
       success: function(data) {
@@ -445,7 +445,7 @@ selectElement.change(function() {
   airportMarkerCluster.clearLayers(); // removing layer from prev selected country
 
   $.ajax({ // retriving airports data from GeoNames API
-    url: 'https://api.geonames.org/searchJSON',
+    url: 'https://secure.geonames.org/searchJSON',
     dataType: 'json',
     data: {
       country: iso2Code,
@@ -481,7 +481,7 @@ selectElement.change(function() {
 
   // GeoNames API to retrive prisons locations
   $.ajax({
-      url: `https://api.geonames.org/searchJSON?q=prison&country=${iso2Code}&maxRows=10&username=${username}`,
+      url: `https://secure.geonames.org/searchJSON?q=prison&country=${iso2Code}&maxRows=10&username=${username}`,
       method: 'GET',
       dataType: 'json',
       success: function(data) {
