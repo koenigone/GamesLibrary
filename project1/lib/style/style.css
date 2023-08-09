@@ -43,22 +43,29 @@ table td i {
 }
 
 .gradient-custom {
-    /* fallback for old browsers */
-    background: #ffffff;
+/* fallback for old browsers */
+background: #ffffff;
     
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right, rgba(255, 255, 255, 1), rgb(131, 195, 231));
+/* Chrome 10-25, Safari 5.1-6 */
+background: -webkit-linear-gradient(to right, rgba(255, 255, 255, 1), rgb(131, 195, 231));
     
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right, rgba(255, 255, 255, 1), rgb(131, 195, 231))
-    }
-    
-    .carousel-indicators li {
-    background-color: #282828;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    }
+/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+background: linear-gradient(to right, rgba(255, 255, 255, 1), rgb(131, 195, 231))
+}
+
+.carousel-indicators li {
+background-color: #282828;
+width: 7px;
+height: 7px;
+border-radius: 50%;
+}
+
+.wikipediaImg {
+    max-width: 280px;
+    max-height: 300px;
+    margin: 0 auto;
+    border-radius: 5px;
+}
 
 /*** MOBILE ***/
 @media only screen and (max-width: 640px) {

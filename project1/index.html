@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="Leaflet-map\leaflet.css">
     <link rel="stylesheet" href="leaflet-locatecontrol-gh-pages\dist\L.Control.Locate.min.css">
     <link rel="stylesheet" href="Leaflet.EasyButton-master\src\easy-button.css">
-    <link rel="stylesheet" href="Leaflet.markercluster-master\dist\MarkerCluster.css" />
-    <link rel="stylesheet" href="Leaflet.markercluster-master\dist\MarkerCluster.Default.css" />
     <link rel="stylesheet" href="Leaflet.ExtraMarkers-master\dist\css\leaflet.extra-markers.min.css">
+    <link rel="stylesheet" href="node_modules\leaflet.markercluster\dist\MarkerCluster.css" />
+    <link rel="stylesheet" href="node_modules\leaflet.markercluster\dist\MarkerCluster.Default.css" />
 
     <!-- My CSS -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -311,6 +311,56 @@
         </div>
       </div>
 
+            <!--- Wikipedia Links Modals --->
+            <div>
+              <div id='countryWikipediaModal' class="modal fade" tabindex="-1" role="dialog" aria-labelledby="countryWikipediaModalTitle" area-hidden="false">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header bg-primary bg-gradient text-white">
+                      <h3 class="countryWikipediaModalTitle" id="countryWikipediaModalTitle"><i class="fa-brands fa-wikipedia-w"></i> Wikipedia</h3>
+                    </div>
+        
+                    <div class="modal-body">
+                      <div class="d-flex flex-column align-items-center">
+                        <h2 id="countryWikipediaTitle"></h2>
+                        <img src="" id="countryWikipediaImg" alt="img not available" class="img-fluid mb-3 wikipediaImg">
+                        <p id="countryWikipediaParagraph" class="text-center"></p>
+                      </div>
+                    </div>
+        
+                    <div class="modal-footer d-flex justify-content-between">
+                      <p><a href="" target="_blank" id="countryWikipediaLink" class="text-left">Read more about <span id="countryWikipediaLinkName"></span></a></p>
+                      <button type="button" class="btn btn-primary text-light" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+              </div>
+            </div>
+
+            <!--- Capital Link Modal --->
+            <div>
+              <div id='capitalWikipediaModal' class="modal fade" tabindex="-1" role="dialog" aria-labelledby="capitalWikipediaModalTitle" area-hidden="false">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header bg-primary bg-gradient text-white">
+                      <h3 class="capitalWikipediaModalTitle" id="capitalWikipediaModalTitle"><i class="fa-brands fa-wikipedia-w"></i> Wikipedia</h3>
+                    </div>
+        
+                    <div class="modal-body">
+                      <div class="d-flex flex-column align-items-center">
+                        <h2 id="capitalWikipediaTitle"></h2>
+                        <img src="" id="capitalWikipediaImg" alt="img not available" class="img-fluid mb-3 wikipediaImg">
+                        <p id="capitalWikipediaParagraph" class="text-center"></p>
+                      </div>
+                    </div>
+        
+                    <div class="modal-footer d-flex justify-content-between">
+                      <p><a href="" target="_blank" id="capitalWikipediaLink" class="text-left">Read more about <span id="capitalWikipediaLinkName"></span></a></p>
+                      <button type="button" class="btn btn-primary text-light" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+              </div>
+            </div>
+
     </main>
     
     <div id="preloader"></div>
@@ -320,8 +370,8 @@
     <script src="Leaflet-map\leaflet.js"></script>
     <script src="leaflet-locatecontrol-gh-pages\dist\L.Control.Locate.min.js"></script>
     <script src="Leaflet.EasyButton-master\src\easy-button.js"></script>
-    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
     <script src="Leaflet.ExtraMarkers-master\dist\js\leaflet.extra-markers.min.js"></script>
+    <script src="node_modules\leaflet.markercluster\dist\leaflet.markercluster.js"></script>
 
     <script src="fontawesome-free-6.4.2-web\js\all.js"></script>
     <script src="adamwdraper-Numeral-js-7de892f\min\numeral.min.js"></script>

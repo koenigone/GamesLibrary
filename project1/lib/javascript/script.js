@@ -9,13 +9,58 @@ $(window).on('load', function () {
 var map = L.map('map').setView([0, 0], 0);
 var marker;
 var geojsonLayer;
-var markersClick = [];
 
 // Default map layer
 var OpenStreetMap_HOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
 	maxZoom: 19,
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>'
 }).addTo(map);
+
+// Different Map Layers
+var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+  maxZoom: 18,
+});
+
+var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+});
+
+var OpenStreetMap_DE = L.tileLayer('https://tile.openstreetmap.de/{z}/{x}/{y}.png', {
+	maxZoom: 18,
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+});
+
+var OpenStreetMap_France = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+	maxZoom: 20,
+	attribution: '&copy; OpenStreetMap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+});
+
+var wikipediaLayer = L.layerGroup().addTo(map);
+var citiesMarkerCluster = L.markerClusterGroup().addTo(map);
+var airportMarkerCluster = L.markerClusterGroup().addTo(map);
+var prisonsMarkerCluster = L.markerClusterGroup().addTo(map);
+var universityMarkerCluster = L.markerClusterGroup().addTo(map);
+
+// Leaflet Map Layer Control
+var baseMaps = {
+  "<span style='color: #6b0f0f'>OpenStreetMap HOT (Default)</span>": OpenStreetMap_HOT,
+  'Esri World Imagery': Esri_WorldImagery,
+  'Open Street Map': osm,
+  'Open Streep DE': OpenStreetMap_DE,
+  'OpenStreep France': OpenStreetMap_France
+};
+
+var overlayMaps = {
+  '<i class="fa-brands fa-wikipedia-w text-success"></i> Wikipedia Links': wikipediaLayer,
+  '<i class="fa-solid fa-city text-success"></i> Country Cities': citiesMarkerCluster,
+  '<i class="fa-solid fa-building-columns text-success"></i> Universities': universityMarkerCluster,
+  '<i class="fa-solid fa-plane text-success"></i> Airports': airportMarkerCluster,
+  '<i class="fa-solid fa-handcuffs text-success"></i> Prisons': prisonsMarkerCluster
+};
+
+// Base layerControl
+var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
 
 
 var latitudeDisplay = $('.latResult');
@@ -49,8 +94,8 @@ $.ajax({
           var longitude = position.coords.longitude;
 
           // Adding a marker on current user's location
-          var geolocationMarker = L.marker([latitude, longitude], {icon: userLocationMarker}).bindPopup('This Is Your Current Location!').addTo(map);
-          markersClick.push(geolocationMarker);
+          var geolocationMarker = L.marker([latitude, longitude], {icon: userLocationMarker}).addTo(map);
+          geolocationMarker.bindPopup('This Is Your Current Location!');
 
           var geocodingUrl = 'https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' + latitude + '&lon=' + longitude;
           $.ajax({
@@ -128,54 +173,6 @@ selectElement.on('change', function() {
 });
 
 
-
-// Different Map Layers
-var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-  maxZoom: 18,
-});
-
-var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-});
-
-var OpenStreetMap_BZH = L.tileLayer('https://tile.openstreetmap.bzh/br/{z}/{x}/{y}.png', {
-	maxZoom: 19,
-	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles courtesy of <a href="http://www.openstreetmap.bzh/" target="_blank">Breton OpenStreetMap Team</a>',
-	bounds: [[46.2, -5.5], [50, 0.7]]
-});
-
-var OpenStreetMap_France = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-	maxZoom: 20,
-	attribution: '&copy; OpenStreetMap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-});
-
-var wikipediaLayer = L.layerGroup().addTo(map);
-var citiesMarkerCluster = L.markerClusterGroup().addTo(map);
-var airportMarkerCluster = L.markerClusterGroup().addTo(map);
-var prisonsMarkerCluster = L.markerClusterGroup().addTo(map);
-var universityMarkerCluster = L.markerClusterGroup().addTo(map);
-
-// Leaflet Map Layer Control
-var baseMaps = {
-  "<span style='color: #6b0f0f'>OpenStreetMap HOT (Default)</span>": OpenStreetMap_HOT,
-  'Esri World Imagery': Esri_WorldImagery,
-  'Open Street Map': osm,
-  'OpenStreet BZH': OpenStreetMap_BZH,
-  'OpenStreep France': OpenStreetMap_France
-};
-
-var overlayMaps = {
-  '<i class="fa-brands fa-wikipedia-w text-success"></i> Wikipedia Links': wikipediaLayer,
-  '<i class="fa-solid fa-city text-success"></i> Country Cities': citiesMarkerCluster,
-  '<i class="fa-solid fa-building-columns text-success"></i> Universities': universityMarkerCluster,
-  '<i class="fa-solid fa-plane text-success"></i> Airports': airportMarkerCluster,
-  '<i class="fa-solid fa-handcuffs text-success"></i> Prisons': prisonsMarkerCluster
-};
-
-// Base layerControl
-var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
-
 // Wikipedia Custom Marker
 var wikipediaMarker = L.ExtraMarkers.icon({
   shape: 'circle',
@@ -229,9 +226,6 @@ var prisonMarker = L.ExtraMarkers.icon({
   svg: false
 });
 
-var countryMarker;
-var capitalMarker;
-
 // Adding Wikipedia Markers for Country & it's Capital To Base layerControl
 selectElement.change(function() {
   var iso2Code = $('#selectCountry').val();
@@ -245,7 +239,7 @@ selectElement.change(function() {
     success: function(response) {
       var countryName = response.countryName;
 
-      wikipediaLayer.clearLayers(); // removing layer from prev selected country
+      wikipediaLayer.clearLayers(); // Removing layer from previous selected country
 
       // AJAX request to fetch the latitude and longitude of the capital from OpenCage Geocoding API
       $.ajax({
@@ -261,33 +255,42 @@ selectElement.change(function() {
             var countryLat = geocodeData.results[0].geometry.lat;
             var countryLng = geocodeData.results[0].geometry.lng;
 
-            // AJAX request to get the Wikipedia link
-            $.ajax({
-              url: 'https://en.wikipedia.org/api/rest_v1/page/summary/' + countryName,
-              type: 'GET',
-              dataType: 'json',
-              success: function(data) {
-                var countryWikipediaUrl = data.content_urls.desktop.page;
-                var countryTitle = data.title;
-                var countryImage = data.thumbnail ? data.thumbnail.source : ''; // If available, use the thumbnail image
-            
-                // Custom HTML content for the popup
-                var popupContent = `
-                  <div style="text-align: center; width: 260px;">
-                    <h2>${countryTitle}</h2>
-                    <img src="${countryImage}" alt="${countryTitle}" style="max-width: 200px; margin: 0 auto;">
-                    <p><a href="${countryWikipediaUrl}" target="_blank">Learn more about ${countryTitle}</a></p>
-                  </div>
-                `;
-            
-                // Country Wikipedia Marker
-                countryMarker = L.marker([countryLat, countryLng], {icon: wikipediaMarker, title: `${countryTitle} Wikipedia link`});
-                countryMarker.bindPopup(popupContent);
-                countryMarker.addTo(wikipediaLayer);
-              },
-              error: function() {
-                alert('Error fetching Wikipedia link.');
-              }
+            // Create and add a marker to the map
+            var countryMarker = L.marker([countryLat, countryLng], {icon: wikipediaMarker, title: `${countryName} Wikipedia link`});
+            countryMarker.addTo(wikipediaLayer);
+
+            countryMarker.on('click', function() {
+              // AJAX request to get the Wikipedia link
+              $.ajax({
+                url: 'https://en.wikipedia.org/api/rest_v1/page/summary/' + countryName,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                  var countryWikipediaUrl = data.content_urls.desktop.page;
+                  var countryTitle = data.title;
+                  var countryImage = data.thumbnail ? data.thumbnail.source : '';
+
+                  var maxParagraphLength = 200;
+                  var countryWikipediaParagraph = data.extract || '';
+                
+                  if (countryWikipediaParagraph.length > maxParagraphLength) { // shortening the text logic
+                    countryWikipediaParagraph = countryWikipediaParagraph.substring(0, maxParagraphLength) + '...';
+                  }
+
+                  // Update the modal content
+                  $('#countryWikipediaTitle').text(countryTitle);
+                  $('#countryWikipediaImg').attr('src', countryImage);
+                  $('#countryWikipediaParagraph').html(countryWikipediaParagraph);
+                  $('#countryWikipediaLinkName').text(countryTitle);
+                  $('#countryWikipediaLink').attr('href', countryWikipediaUrl);
+                
+                  // Open the modal
+                  $('#countryWikipediaModal').modal('show');
+                },
+                error: function() {
+                  alert('Error fetching Wikipedia link.');
+                }
+              });
             });
           } else {
             alert('No data found for the country.');
@@ -304,7 +307,7 @@ selectElement.change(function() {
   });
 });
 
-
+// country Capital Wikipedia Marker
 selectElement.change(function() {
   var iso2Code = $(this).val();
 
@@ -313,7 +316,7 @@ selectElement.change(function() {
     url: 'https://restcountries.com/v2/alpha/' + iso2Code,
     method: 'GET',
     success: function(data) {
-      var capital = data.capital;
+      var capitalName = data.capital;
 
       wikipediaLayer.clearLayers(); // removing layer from prev selected country
 
@@ -323,42 +326,51 @@ selectElement.change(function() {
         method: 'GET',
         data: {
           key: 'a9539fc65a4c4710bcf9c629eb4a60dc',
-          q: capital
+          q: capitalName
         },
         success: function(response) {
-          var lat = response.results[0].geometry.lat;
-          var lng = response.results[0].geometry.lng;
+          var capitalLat = response.results[0].geometry.lat;
+          var capitalLng = response.results[0].geometry.lng;
 
-          // Creating a Wikipedia link for the capital city
-          var wikipediaLink = '<a href="https://en.wikipedia.org/wiki/' + capital + '" target="_blank"> More about ' + capital + '</a>';
+          var capitalMarker = L.marker([capitalLat, capitalLng], {icon: wikipediaMarker, title: `${capitalName} Wikipedia link`});
+          capitalMarker.addTo(wikipediaLayer);
 
           // AJAX request to get additional information from Wikipedia
-          $.ajax({
-            url: 'https://en.wikipedia.org/api/rest_v1/page/summary/' + capital,
-            method: 'GET',
-            dataType: 'json',
-            success: function(data) {
-              var popupContent = '<h2>' + capital + '</h2>';
-              if (data.thumbnail) {
-                popupContent += '<img src="' + data.thumbnail.source + '" alt="' + capital + '" style="max-width: 200px;">';
+          capitalMarker.on('click', function() {
+            $.ajax({
+              url: 'https://en.wikipedia.org/api/rest_v1/page/summary/' + capitalName,
+              method: 'GET',
+              dataType: 'json',
+              success: function(data) {
+                var capitalWikipediaUrl = data.content_urls.desktop.page;
+                var capitalTitle = data.title;
+                var capitalImage = data.thumbnail ? data.thumbnail.source : '';
+  
+                var maxParagraphLength = 200;
+                var capitalWikipediaParagraph = data.extract || '';
+          
+                if (capitalWikipediaParagraph.length > maxParagraphLength) { // shortening the text logic
+                  capitalWikipediaParagraph = capitalWikipediaParagraph.substring(0, maxParagraphLength) + '...';
+                }
+  
+                // Update the modal content
+                $('#capitalWikipediaTitle').text(capitalTitle);
+                $('#capitalWikipediaImg').attr('src', capitalImage);
+                $('#capitalWikipediaParagraph').text(capitalWikipediaParagraph);
+                $('#capitalWikipediaLink').attr('href', capitalWikipediaUrl);
+                $('#capitalWikipediaLinkName').text(capitalName);
+  
+                // Open the modal
+                $('#capitalWikipediaModal').modal('show');
+              },
+              error: function() {
+                alert('Error fetching Wikipedia data for the capital.');
               }
-              popupContent += '<p>' + data.extract + '</p>';
-              popupContent += '<p>' + wikipediaLink + '</p>';
-
-              capitalMarker = L.marker([lat, lng], {icon: wikipediaMarker}).addTo(wikipediaLayer);
-              capitalMarker.bindPopup(popupContent);
-            },
-            error: function() {
-              alert('Error fetching Wikipedia data for the capital.');
-            }
-          });
+            });
+          })
         },
         error: function() {
           alert('Error retrieving geocoding data.');
-
-          if (capitalMarker) {
-            map.removeLayer(capitalMarker);
-          }
         }
       });
     },
