@@ -556,52 +556,60 @@ function getCountryInfoBySelected() {
   }
 };
 
-// Get Country Currency Information -- (OpenCage API)
+// Get Country Currency Information -- (restcountries & openExchangeRates APIs)
 function getCurrencyInfoBySelected() {
   var selectedIso2 = $('#selectCountry').val();
 
   if (selectedIso2) {
-    $.get('https://api.opencagedata.com/geocode/v1/json', {
-      q: selectedIso2,
-      key: 'a9539fc65a4c4710bcf9c629eb4a60dc',
-    }, function(data) {
-      var currencyInfo = data.results[0].annotations.currency;
+    // Retrieve currency information from REST Countries API
+    $.ajax({
+      url: 'https://restcountries.com/v3.1/alpha/' + selectedIso2,
+      method: 'GET',
+      dataType: 'json',
+      success: function(data) {
+        var currencies = data[0].currencies;
+        
+        // Accessing currency information within the nested object
+        var currencyCode = Object.keys(currencies)[0];
+        var currencyInfo = currencies[currencyCode];
+  
+        $('#CurrencyISOCodeResult').html(currencyCode);
+        $('#CurrencyNameResult').html(currencyInfo.name);
+        $('#CurrencySymbolResult').html(currencyInfo.symbol);
 
-      $('#CurrencyISOCodeResult').html(currencyInfo.iso_code);
-      $('#CurrencyNameResult').html(currencyInfo.name);
-      $('#CurrencySubunitResult').html(currencyInfo.subunit);
-      $('#currencySymbol').html(currencyInfo.symbol);
+        $('#currencySymbol').html(currencyInfo.symbol);
 
-      var currencyCode = currencyInfo.iso_code;
+        var exchangeInput = $('#CurrencyExchangeInput'); // user input
+        var exchangeResult = $('#CurrencyExchangeResult'); // result
 
-      var exchangeInput = $('#CurrencyExchangeInput'); // user input
-      var exchangeResult = $('#CurrencyExchangeResult'); // result
-
-      // Function to update the result based on the input value
-      function updateResult(inputValue) {
- 
-        $.get('https://openexchangerates.org/api/latest.json', { // call to openExchangeRates API
-          app_id: '61ce4d4569c8431988a21c5d58020ac5',
-          base: 'USD',
-          symbols: currencyCode,
-        }, function(exchangeRateData) {
-          var exchangeRate = exchangeRateData.rates[currencyCode];
-          var result = (inputValue * exchangeRate).toFixed(2);
-          exchangeResult.val(result);
-        });
-      }
-
-      // setting default value for the input and updating the result
-      exchangeInput.val(1);
-      updateResult(1);
-
-      // an event listener to capture changes in the input value
-      exchangeInput.on('input', function () {
-        var inputValue = parseFloat(exchangeInput.val());
-        if (!isNaN(inputValue)) {
-          updateResult(inputValue);
+        // Function to update the result based on the input value
+        function updateResult(inputValue) {
+          $.get('https://openexchangerates.org/api/latest.json', { // call to openExchangeRates API
+            app_id: '61ce4d4569c8431988a21c5d58020ac5',
+            base: 'USD',
+            symbols: currencyCode,
+          }, function(exchangeRateData) {
+            var exchangeRate = exchangeRateData.rates[currencyCode];
+            var result = (inputValue * exchangeRate).toFixed(2);
+            exchangeResult.val(result);
+          });
         }
-      });
+
+        // setting default value for the input and updating the result
+        exchangeInput.val(1);
+        updateResult(1);
+
+        // an event listener to capture changes in the input value
+        exchangeInput.on('input', function () {
+          var inputValue = parseFloat(exchangeInput.val());
+          if (!isNaN(inputValue)) {
+            updateResult(inputValue);
+          }
+        });
+      },
+      error: function(xhr, status, error) {
+        console.error('Error:', error);
+      }
     });
   }
 }
