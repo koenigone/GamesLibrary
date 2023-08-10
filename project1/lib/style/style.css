@@ -2,7 +2,6 @@
 
 html {
     font-family: 'Open Sans', sans-serif;
-    background-color: #1f2327;
 }
 
 * {
@@ -69,16 +68,21 @@ border-radius: 50%;
 
 /*** MOBILE ***/
 @media only screen and (max-width: 640px) {
-    #map {
-        height: 92vh;
+    .selectCountryDiv {
+        width: 210px;
+    }
+    
+    table td {
+        font-size: 14px;
+    }
+    
+    table td i {
+        font-size: 18px;
     }
 }
 
 /*** TABLET ***/
 @media only screen and (min-width: 601px) and (max-width: 1279px) {
-    #map {
-        height: 93vh;
-    }
     .selectCountryDiv {
         width: 320px;
     }
