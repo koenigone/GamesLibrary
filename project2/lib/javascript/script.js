@@ -28,6 +28,8 @@ $(document).ready(function() {
 $('#departmentFilter').on('change', function() {
     var selectedDepartment = $(this).val();
 
+    $('#personnelBtn').tab('show');
+
     // Show all cards if no department is selected (value is empty)
     if (!selectedDepartment) {
         $('#personnel-tab-pane .row > div').show();
@@ -64,11 +66,22 @@ function confirmDeleteModalControl(string, elementID, callback) { // Deletion co
     });    
 }
 
+// Display all persons when opening the page
+function displayAllPersonnel() {
+    $.ajax({
+        url: 'lib/PHP/getPersonnel.php',
+        dataType: 'json',
+        success: function(data) {
+            displayPersonnel(data);
+        }
+    });
+}
+
 // Main search element, only searches for persons
 $('#searchMain').on('input', function() {
     var personID = $('#searchMain').val();
 
-    $('#personnelBtn').tab('show'); // always display the Personnel tab when searching
+    $('#personnelBtn').tab('show'); // redirecting the user to personnel tab when searching
 
     if (personID) {
         $.ajax({
@@ -79,12 +92,12 @@ $('#searchMain').on('input', function() {
             },
             dataType: 'json',
             success: function(response) {
-                if (response.status.code === "200") {
+                if (response.status.code === "200" && response.data.personnel.length > 0) {
                     displayPersonnel(response.data.personnel);
                 } else {
-                    displayAllPersonnel();
+                    displayNoUserFound();
                 }
-            },
+            },            
             error: function(jqXHR, textStatus, errorThrown) {
                 alert("Error: " + textStatus + " - " + errorThrown);
             }
@@ -131,6 +144,7 @@ function createPersonnelCard(row) {
 
 // Display one person by ID
 function displayPersonnel(personnel) {
+    $('#no-user-found-alert').addClass('d-none');  // Hide the error message
     var personnelContainer = $('#personnel-tab-pane .row');
     personnelContainer.empty();
 
@@ -140,16 +154,17 @@ function displayPersonnel(personnel) {
     });
 }
 
-// Display all persons when opening the page
-$(document).ready(function displayAllPersonnel() {
-    $.ajax({
-        url: 'lib/PHP/getPersonnel.php',
-        dataType: 'json',
-        success: function(data) {
-            displayPersonnel(data);
-        }
-    });
-})
+// Showing error message when user not found
+function displayNoUserFound() {
+    var personnelContainer = $('#personnel-tab-pane .row');
+    personnelContainer.empty();
+    $('#no-user-found-alert').removeClass('d-none');
+}
+
+// Showing all persons again if the search input was deleted
+$(document).ready(function() {
+    displayAllPersonnel();
+});
 
 // Filling the edit form with existing info for easy editing
 function populatePersonnelForm(row) {
