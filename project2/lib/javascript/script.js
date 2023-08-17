@@ -66,6 +66,22 @@ function confirmDeleteModalControl(string, elementID, callback) { // Deletion co
     });    
 }
 
+// Changing the confirm message depending on the function
+function confirmChangeString(string) {
+    $('#confirmChangesElement').html(string);
+    $('#confirmChangesModal').modal('show');
+}
+
+function reloadAfterChange() {
+    $('#confirmChangesModal .close').on('click', function () {
+        location.reload();
+    });
+
+    $('#confirmChangesModal').on('hidden.bs.modal', function () {
+        location.reload();
+    });
+}
+
 // Display all persons when opening the page
 function displayAllPersonnel() {
     $.ajax({
@@ -111,18 +127,25 @@ $('#searchMain').on('input', function() {
 function createPersonnelCard(row) {
     var cardId = 'collapseCard' + row.id;
     var card = $(
-        '<div class="col-md-4 mb-4" data-department-id="' + row.departmentID + '">' +
+        '<div class="col-md-3 mb-4" data-department-id="' + row.departmentID + '">' +
             '<div class="card border-0">' + 
-            '<div class="card-header bg-warning text-dark" data-bs-toggle="collapse" data-bs-target="#' + cardId + '" aria-expanded="false" aria-controls="' + cardId + '">' +
-            '<h5 class="card-title mb-0">' + row.firstName + ' ' + row.lastName + '</h5>' +
-            '<p class="mb-0"><strong>ID:</strong> ' + row.id + '</p>' +
+            '<div class="card-header text-light" style="background-color: #464646;" data-bs-toggle="collapse" data-bs-target="#' + cardId + '" aria-expanded="false" aria-controls="' + cardId + '">' +
+            '<h6 class="card-title mb-0"><span class="text-warning">' + row.firstName + '</span>' + ' ' + row.lastName + '</h6>' +
             '</div>' +
             '<div id="' + cardId + '" class="collapse">' +
-            '<div class="card-body bg-light">' +
-            '<p class="card-text"><strong>Job Title:</strong> ' + row.jobTitle + '</p>' +
-            '<p class="card-text"><strong>Email:</strong> ' + row.email + '</p>' +
-            '<p class="card-text"><strong>Department:</strong> ' + (row.departmentName || "N/A") + '</p>' +
-            '<p class="card-text"><strong>Location:</strong> ' + (row.locationName || "N/A") + '</p>' +
+            '<div class="card-body d-flex flex-column text-light" style="background-color: #666666;">' +
+    
+            // Div containing all the card details
+            '<div class="flex-grow-1">' + 
+            '<p class="card-text"><strong class="text-warning">ID:</strong> ' + row.id + '</p>' +
+            '<p class="card-text"><strong class="text-warning">Job Title:</strong> ' + row.jobTitle + '</p>' +
+            '<p class="card-text"><strong class="text-warning">Email:</strong> ' + row.email + '</p>' +
+            '<p class="card-text"><strong class="text-warning">Department:</strong> ' + (row.departmentName || "N/A") + '</p>' +
+            '<p class="card-text"><strong class="text-warning">Location:</strong> ' + (row.locationName || "N/A") + '</p>' +
+            '</div>' +
+    
+            // Div containing the buttons
+            '<div class="d-flex justify-content-end mt-2">' + 
             '<button type="button" class="cardEditBtn btn btn-warning btn-sm me-1 editPersonnelBtn" data-bs-toggle="modal" data-bs-target="#editPersonnelModal" data-id="' + row.id + '">' +
             '<i class="fa-solid fa-pencil fa-fw"></i>' +
             '</button>' +
@@ -130,10 +153,13 @@ function createPersonnelCard(row) {
             '<i class="fa-solid fa-trash fa-fw"></i>' +
             '</button>' +
             '</div>' +
+    
+            '</div>' +
             '</div>' + 
             '</div>' +
             '</div>'
     );
+    
 
     card.find('.editPersonnelBtn').on('click', function() {
         populatePersonnelForm(row);
@@ -205,8 +231,8 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.status.code === "200") {
 
-                    // Closing the Modal & layout
                     closeModal('editPersonnelModal');
+                    confirmChangeString('Person edited');
 
                 } else {
                     alert("Update failed: " + response.status.description);
@@ -217,6 +243,7 @@ $(document).ready(function() {
             }
         });
     });
+    reloadAfterChange();
 });
 
 // Personnel Delete Button
@@ -238,8 +265,8 @@ function deletePersonnel(id) {
             if (response.status.code == '200') {
 
                 $('#personnel-tab-pane tbody tr[data-id="' + id + '"]').remove();
-
-                location.reload();
+                
+                confirmChangeString('Person deleted');
 
             } else {
                 alert('Error deleting person: ' + response.status.description);
@@ -249,6 +276,7 @@ function deletePersonnel(id) {
             alert('An error occurred: ' + textStatus);
         }
     });
+    reloadAfterChange();
 }
 
 // Adding new person to the database
@@ -271,11 +299,9 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 if(response.status.code === "200") {
-                    alert('Person added successfully!');
 
                     closeModal('insertPersonnelModal');
-
-                    location.reload();
+                    confirmChangeString('Person added');
 
                 } else {
                     alert('Error: ' + response.status.description);
@@ -286,6 +312,7 @@ $(document).ready(function() {
             }
         });
     });
+    reloadAfterChange();
 });
 
 // Display all departments on the department tab when opening the webpage
@@ -295,16 +322,18 @@ $(document).ready(function() {
         dataType: 'json',
         success: function(data) {
 
-            var departmentFilterSelect = $('#departmentFilter');
+            var departmentDropdown = $('#departmentDropdown');
             var editPersonDepartmentSelect = $('#editPersonnelDepartment');
             var insertPersonDepartmentSelect = $('#insertPersonnelDepartment');
 
-            $.each(data.data, function(index, row) { // generating options for Edit & Insert forms to display department names instead of ID
-                var filterOption = $('<option value="' + row.id + '" class="text-light">' + row.name + '</option>');
+            $.each(data.data, function(index, row) {
+                // generating dropdown items for the new dropdown menu
+                var dropdownItem = $('<a href="#" class="dropdown-item text-light" data-id="' + row.id + '">' + row.name + '</a>');
+                departmentDropdown.append(dropdownItem);
+
+                // generating options for Edit & Insert forms to display department names instead of ID
                 var editOption = $('<option value="' + row.id + '">' + row.name + '</option>');
                 var insertOption = $('<option value="' + row.id + '">' + row.name + '</option>');
-
-                departmentFilterSelect.append(filterOption);
                 editPersonDepartmentSelect.append(editOption);
                 insertPersonDepartmentSelect.append(insertOption);
             });
@@ -325,7 +354,7 @@ $(document).ready(function() {
                 '</button>' +
                 '</td>' +
                 '</tr>');
-    
+
                 tableBody.append(tableRow);
 
                 tableRow.find('.editDepartmentBtn').on('click', function() {
@@ -369,7 +398,8 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.status.code === "200") {
 
-                    closeModal('editDepartmentModal')
+                    closeModal('editDepartmentModal');
+                    confirmChangeString('Department edited')
 
                 } else {
                     alert("Update failed: " + response.status.description);
@@ -380,6 +410,7 @@ $(document).ready(function() {
             }
         });
     });
+    reloadAfterChange();
 });
 
 // Department Delete Button
@@ -403,7 +434,7 @@ function deleteDepartment(id) {
 
                 $('#department-tab-pane tbody tr[data-id="' + id + '"]').remove();
 
-                location.reload();
+                confirmChangeString('Department deleted')
 
             } else {
                 alert('Error deleting department: ' + response.status.description);
@@ -413,6 +444,7 @@ function deleteDepartment(id) {
             alert('An error occurred: ' + textStatus);
         }
     });
+    reloadAfterChange();
 }
 
 // Adding departments
@@ -433,9 +465,9 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 if (response.status.code === "200") {
-                    alert('Department added successfully!');
 
-                    closeModal('insertDepartmentModal')
+                    closeModal('insertDepartmentModal');
+                    confirmChangeString('Department added');
                     
                 } else {
                     alert('Error: ' + response.status.description);
@@ -446,6 +478,7 @@ $(document).ready(function() {
             }
         });
     });
+    reloadAfterChange();
 });
 
 // Displaying All Locations From the Database
@@ -525,6 +558,7 @@ $(document).ready(function() {
                 if (response.status.code === "200") {
 
                     closeModal('editLocationModal');
+                    confirmChangeString('Location edited')
 
                 } else {
                     alert("Update failed: " + response.status.description);
@@ -535,6 +569,7 @@ $(document).ready(function() {
             }
         });
     });
+    reloadAfterChange();
 });
 
 // Location Delete Button
@@ -557,7 +592,7 @@ function deleteLocation(id) {
 
                 $('#location-tab-pane tbody tr[data-id="' + id + '"]').remove();
 
-                location.reload();
+                confirmChangeString('Location deleted')
                 
             } else {
                 alert('Error deleting location: ' + response.status.description);
@@ -567,6 +602,7 @@ function deleteLocation(id) {
             alert('An error occurred: ' + textStatus);
         }
     });
+    reloadAfterChange();
 }
 
 // Adding a new location
@@ -585,9 +621,9 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 if (response.status.code === '200') {
-                    alert('Location added successfully!');
 
                     closeModal('insertLocationModal');
+                    confirmChangeString('Location added');
                     
                 } else {
                     alert('Failed to add location: ' + response.status.description);
@@ -598,4 +634,5 @@ $(document).ready(function() {
             }
         });
     });
+    reloadAfterChange();
 });

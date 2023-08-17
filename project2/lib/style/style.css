@@ -7,35 +7,27 @@ html {
     margin: 0;
 }
 
-.header .form-control {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-}
-.header .btn {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+#searchBtn {
+    border-top-right-radius: 0.30rem !important;
+    border-bottom-right-radius: 0.30rem !important;
 }
 
-.header .filter-select, .nav {
+.bg-custom {
+    background-color: #464646;
+}
+
+.nav {
     border: none;
 }
 
 .nav .nav-item .nav-link.active {
     background-color: #464646;
     border: #464646;
-    color: #fff;
 }
 
-.nav .nav-item .nav-link.active:hover, .nav .nav-item .nav-link, .nav .nav-item .nav-link:hover {
-    border: #464646;
-}
-
-.add-dropdown .dropdown-item:hover {
-    background-color: #464646;
-}
-
-.bg-custom {
-    background-color: #1f1f22;
+.header-filter-edit-buttons .dropdown-menu a:hover,
+.header-filter-edit-buttons .dropdown-menu button:hover {
+    background-color: #535353;
 }
 
 .modal .modal-header {
