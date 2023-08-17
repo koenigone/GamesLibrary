@@ -1,8 +1,5 @@
 <?php
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
 $executionStartTime = microtime(true);
 
 include("config.php");
@@ -19,44 +16,33 @@ if (mysqli_connect_errno()) {
     $output['data'] = [];
 
     mysqli_close($conn);
-
     echo json_encode($output);
     exit;
 }	
 
-// Grabbing the data sent from AJAX
-$personnelId = $_POST['id'];
-$firstName = $_POST['firstName'];
-$lastName = $_POST['lastName'];
-$jobTitle = $_POST['jobTitle'];
-$email = $_POST['email'];
-$departmentID = $_POST['departmentID'];
-
-$query = $conn->prepare('UPDATE personnel SET firstName = ?, lastName = ?, jobTitle = ?, email = ?, departmentID = ? WHERE id = ?');
-
-$query->bind_param("ssssii", $firstName, $lastName, $jobTitle, $email, $departmentID, $personnelId);
+$query = $conn->prepare('INSERT INTO location (name) VALUES(?)');
+$query->bind_param("s", $_POST['name']);
 
 $query->execute();
 
-if (!$query) {
+if (false === $query) {
     $output['status']['code'] = "400";
     $output['status']['name'] = "executed";
     $output['status']['description'] = "query failed";
     $output['data'] = [];
 
     mysqli_close($conn);
-
-    echo json_encode($output);
+    echo json_encode($output); 
     exit;
 }
 
 $output['status']['code'] = "200";
 $output['status']['name'] = "ok";
-$output['status']['description'] = "update success";
+$output['status']['description'] = "success";
 $output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
 $output['data'] = [];
 
 mysqli_close($conn);
+echo json_encode($output); 
 
-echo json_encode($output);
 ?>

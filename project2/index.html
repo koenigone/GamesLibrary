@@ -10,6 +10,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 
     <link rel="stylesheet" href="lib\style\style.css">
+    <link rel="stylesheet" href="lib\style\preloader.css">
     <link rel="stylesheet" href="lib\style\scrollbar.css">
     <title>Company Directory</title>
 </head>
@@ -28,9 +29,18 @@
             </div>
         </div>
         <div class="filter">
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-primary" title="Add"><i class="fa-solid fa-plus"></i></button>
-                <button type="button" class="btn btn-primary" title="Filter"><i class="fa-solid fa-filter"></i></button>
+            <div class="btn-group">
+              <button type="button" class="btn btn-primary filterByDepartment" title="Filter"><i class="fa-solid fa-filter"></i></button>
+              <select class="form-control" id="departmentFilter">
+                  <option value="">All Departments</option>
+                  <!-- Options will be populated here -->
+              </select>
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-plus"></i></button>
+                <div class="dropdown-menu">
+                    <button class="dropdown-item" id="openPersonnelModal">Add Person</button>
+                    <button class="dropdown-item" id="openDepartmentModal">Add Department</button>
+                    <button class="dropdown-item" id="openLocationModal">Add Location</button>
+                </div>
             </div>
         </div>
     </div>
@@ -129,12 +139,14 @@
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="editPersonnelEmail" placeholder="Email" required>
                         <label for="editPersonnelEmail">Email</label>
-                     </div>
+                    </div>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="editPersonnelDepartmentID" placeholder="Department ID" required>
-                        <label for="editPersonnelDepartmentID">Department ID</label>
-                    </div>
+                        <select class="form-control" id="editPersonnelDepartment" required>
+                            <!-- Options will be populated here -->
+                        </select>
+                        <label for="editPersonnelDepartment">Department</label>
+                    </div>                    
 
                   </form>
                 </div>
@@ -168,8 +180,10 @@
                     </div>
           
                     <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="editDepartmentLocationID" placeholder="Department Location ID" required>
-                      <label for="editDepartmentLocationID">Location ID</label>
+                        <select class="form-control" id="editDepartmentLocation" required>
+                            <!-- Options will be populated here -->
+                        </select>
+                        <label for="editDepartmentLocation">Location</label>
                     </div>
           
                   </form>
@@ -213,8 +227,161 @@
             </div>
         </div>
     </div>
+
+
+
+
+
+
+    <!-- Insert Person Modal -->
+    <div>
+        <div id='insertPersonnelModal' class="modal fade" tabindex="-1" role="dialog" aria-labelledby="insertPersonnelModalTitle" area-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+              <div class="modal-header bg-primary bg-gradient text-white">
+                <h5 class="modal-title">Add Person</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+  
+              <div class="modal-body">
+                <form id="insertPersonnelForm">
     
-    <script src="bootstrap-5.3.1-dist\js\bootstrap.js"></script>
+                    <input type="hidden" id="insertPersonnelID">
+          
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="insertPersonnelFirstName" placeholder="First Name" required>
+                      <label for="insertPersonnelFirstName">First Name</label>
+                    </div>
+          
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="insertPersonnelLastName" placeholder="Last Name" required>
+                      <label for="insertPersonnelLastName">Last Name</label>
+                    </div>
+          
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="insertPersonnelJobTitle" placeholder="Job Title" required>
+                        <label for="insertPersonnelJobTitle">Job Title</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="insertPersonnelEmail" placeholder="Email" required>
+                        <label for="insertPersonnelEmail">Email</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <select class="form-control" id="insertPersonnelDepartment" required>
+                            <!-- Options will be populated here -->
+                        </select>
+                        <label for="insertPersonnelDepartment">Department</label>
+                    </div>                    
+
+                  </form>
+                </div>
+  
+                <div class="modal-footer">
+                    <button type="submit" form="insertPersonnelForm" class="btn btn-outline-primary btn-sm myBtn">SAVE</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Insert Department Modal -->
+    <div>
+        <div id='insertDepartmentModal' class="modal fade" tabindex="-1" role="dialog" aria-labelledby="insertDepartmentModalTitle" area-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+              <div class="modal-header bg-primary bg-gradient text-white">
+                <h5 class="modal-title">Add Department</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+  
+              <div class="modal-body">
+                <form id="insertDepartmentForm">
+    
+                    <input type="hidden" id="insertDepartmentID">
+          
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="insertDepartmentName" placeholder="Department Name" required>
+                      <label for="insertDepartmentName">Department Name</label>
+                    </div>
+          
+                    <div class="form-floating mb-3">
+                        <select class="form-control" id="insertDepartmentLocation" required>
+                            <!-- Options will be populated here -->
+                        </select>
+                        <label for="insertDepartmentLocation">Location</label>
+                    </div>
+          
+                  </form>
+                </div>
+  
+                <div class="modal-footer">
+                    <button type="submit" form="insertDepartmentForm" class="btn btn-outline-primary btn-sm myBtn">SAVE</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Insert Location Modal -->
+    <div>
+        <div id='insertLocationModal' class="modal fade" tabindex="-1" role="dialog" aria-labelledby="insertLocationModalTitle" area-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+              <div class="modal-header bg-primary bg-gradient text-white">
+                <h5 class="modal-title">Add Location</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+  
+              <div class="modal-body">
+                <form id="insertLocationForm">
+    
+                    <input type="hidden" id="insertLocationID">
+          
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="insertLocationName" placeholder="Location Name" required>
+                      <label for="insertLocationName">Location Name</label>
+                    </div>
+          
+                  </form>
+                </div>
+  
+                <div class="modal-footer">
+                    <button type="submit" form="insertLocationForm" class="btn btn-outline-primary btn-sm myBtn">SAVE</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- Alert Message Modal -->
+        <div>
+          <div id='alertMessageModal' class="modal fade" tabindex="-1" role="dialog" aria-labelledby="alertMessageModalTitle" area-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+              <div class="modal-content">
+                <div class="modal-header bg-primary bg-gradient text-white">
+                  <h5 class="modal-title">Confirm</h5>
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+    
+                <div class="modal-body">
+                  <div>
+                    <h3>Are you sure you want to delete this <span id="deleteElementMessage"></span>?</h3>
+                  </div>  
+                </div>
+    
+                  <div class="modal-footer">
+                      <button type="submit" id="deleteElementBtn" class="btn btn-outline-primary btn-sm myBtn">DELETE</button>
+                      <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+    
+    <div id="preloader"></div> <!-- preloader -->
+    <script src="bootstrap-5.3.1-dist\js\bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/16651470f2.js" crossorigin="anonymous"></script>
 
     <script src="lib\javascript\jquery-3.7.0.min.js"></script>
