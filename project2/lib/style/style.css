@@ -15,3 +15,29 @@ html {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
+
+.header .filter-select, .nav {
+    border: none;
+}
+
+.nav .nav-item .nav-link.active {
+    background-color: #464646;
+    border: #464646;
+    color: #fff;
+}
+
+.nav .nav-item .nav-link.active:hover, .nav .nav-item .nav-link, .nav .nav-item .nav-link:hover {
+    border: #464646;
+}
+
+.add-dropdown .dropdown-item:hover {
+    background-color: #464646;
+}
+
+.bg-custom {
+    background-color: #1f1f22;
+}
+
+.modal .modal-header {
+    border-bottom: none;
+}

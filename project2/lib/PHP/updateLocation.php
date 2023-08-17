@@ -1,9 +1,5 @@
 <?php
 
-// Remove these lines for production
-ini_set('display_errors', 'On');
-error_reporting(E_ALL);
-
 $executionStartTime = microtime(true);
 
 include("config.php");

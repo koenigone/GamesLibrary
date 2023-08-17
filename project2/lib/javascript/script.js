@@ -112,21 +112,21 @@ function createPersonnelCard(row) {
     var cardId = 'collapseCard' + row.id;
     var card = $(
         '<div class="col-md-4 mb-4" data-department-id="' + row.departmentID + '">' +
-            '<div class="card">' + 
-            '<div class="card-header" data-bs-toggle="collapse" data-bs-target="#' + cardId + '" aria-expanded="false" aria-controls="' + cardId + '">' +
+            '<div class="card border-0">' + 
+            '<div class="card-header bg-warning text-dark" data-bs-toggle="collapse" data-bs-target="#' + cardId + '" aria-expanded="false" aria-controls="' + cardId + '">' +
             '<h5 class="card-title mb-0">' + row.firstName + ' ' + row.lastName + '</h5>' +
             '<p class="mb-0"><strong>ID:</strong> ' + row.id + '</p>' +
             '</div>' +
             '<div id="' + cardId + '" class="collapse">' +
-            '<div class="card-body">' +
+            '<div class="card-body bg-light">' +
             '<p class="card-text"><strong>Job Title:</strong> ' + row.jobTitle + '</p>' +
             '<p class="card-text"><strong>Email:</strong> ' + row.email + '</p>' +
             '<p class="card-text"><strong>Department:</strong> ' + (row.departmentName || "N/A") + '</p>' +
             '<p class="card-text"><strong>Location:</strong> ' + (row.locationName || "N/A") + '</p>' +
-            '<button type="button" class="cardEditBtn btn btn-primary btn-sm me-1 editPersonnelBtn" data-bs-toggle="modal" data-bs-target="#editPersonnelModal" data-id="' + row.id + '">' +
+            '<button type="button" class="cardEditBtn btn btn-warning btn-sm me-1 editPersonnelBtn" data-bs-toggle="modal" data-bs-target="#editPersonnelModal" data-id="' + row.id + '">' +
             '<i class="fa-solid fa-pencil fa-fw"></i>' +
             '</button>' +
-            '<button type="button" class="btn btn-primary btn-sm deletePersonnelBtn" data-id="' + row.id + '">' +
+            '<button type="button" class="btn btn-warning btn-sm deletePersonnelBtn" data-id="' + row.id + '">' +
             '<i class="fa-solid fa-trash fa-fw"></i>' +
             '</button>' +
             '</div>' +
@@ -296,19 +296,15 @@ $(document).ready(function() {
         success: function(data) {
 
             var departmentFilterSelect = $('#departmentFilter');
-
-            $.each(data.data, function(index, row) { // generating options for the filter dropdown
-                var filterOption = $('<option value="' + row.id + '">' + row.name + '</option>');
-                departmentFilterSelect.append(filterOption);
-            });
-
             var editPersonDepartmentSelect = $('#editPersonnelDepartment');
             var insertPersonDepartmentSelect = $('#insertPersonnelDepartment');
 
             $.each(data.data, function(index, row) { // generating options for Edit & Insert forms to display department names instead of ID
+                var filterOption = $('<option value="' + row.id + '" class="text-light">' + row.name + '</option>');
                 var editOption = $('<option value="' + row.id + '">' + row.name + '</option>');
                 var insertOption = $('<option value="' + row.id + '">' + row.name + '</option>');
 
+                departmentFilterSelect.append(filterOption);
                 editPersonDepartmentSelect.append(editOption);
                 insertPersonDepartmentSelect.append(insertOption);
             });
@@ -321,10 +317,10 @@ $(document).ready(function() {
                 '<td>' + row.name + '</td>' +
                 '<td>' + row.locationID + '</td>' +
                 '<td class="text-end">' +
-                '<button type="button" class="btn btn-primary btn-sm me-1 editDepartmentBtn" data-bs-toggle="modal" data-bs-target="#editDepartmentModal" data-id="' + row.id + '">' +
+                '<button type="button" class="btn btn-warning btn-sm me-1 editDepartmentBtn" data-bs-toggle="modal" data-bs-target="#editDepartmentModal" data-id="' + row.id + '">' +
                 '<i class="fa-solid fa-pencil fa-fw"></i>' +
                 '</button>' +
-                '<button type="button" class="btn btn-primary btn-sm deleteDepartmentBtn" data-id="' + row.id + '">' +
+                '<button type="button" class="btn btn-warning btn-sm deleteDepartmentBtn" data-id="' + row.id + '">' +
                 '<i class="fa-solid fa-trash fa-fw"></i>' +
                 '</button>' +
                 '</td>' +
@@ -477,10 +473,10 @@ $(document).ready(function() {
                     '<td>' + row.id + '</td>' +
                     '<td>' + row.name + '</td>' +
                     '<td class="text-end">' +
-                    '<button type="button" class="btn btn-primary btn-sm me-1 editLocationBtn" data-bs-toggle="modal" data-bs-target="#editLocationModal" data-id="' + row.id + '">' +
+                    '<button type="button" class="btn btn-warning btn-sm me-1 editLocationBtn" data-bs-toggle="modal" data-bs-target="#editLocationModal" data-id="' + row.id + '">' +
                     '<i class="fa-solid fa-pencil fa-fw"></i>' +
                     '</button>' +
-                    '<button type="button" class="btn btn-primary btn-sm deleteLocationBtn" data-id="' + row.id + '">' +
+                    '<button type="button" class="btn btn-warning btn-sm deleteLocationBtn" data-id="' + row.id + '">' +
                     '<i class="fa-solid fa-trash fa-fw"></i>' +
                     '</button>' +
                     '</td>' +

@@ -1,11 +1,5 @@
 <?php
 
-	// example use from browser
-	// use insertDepartment.php first to create new dummy record and then specify it's id in the command below
-	// http://localhost/companydirectory/libs/php/deleteDepartmentByID.php?id=<id>
-
-	// remove next two lines for production
-
 	$executionStartTime = microtime(true);
 
 	include("config.php");

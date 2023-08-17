@@ -1,4 +1,5 @@
 <?php
+
 include("config.php");
 
 header('Content-Type: application/json; charset=UTF-8');
@@ -20,7 +21,6 @@ if (mysqli_connect_errno()) {
 
 }	
 
-// Modified the query to JOIN personnel and department tables on departmentID
 $query = "SELECT personnel.*, department.name as departmentName, location.name as locationName 
           FROM personnel 
           LEFT JOIN department ON personnel.departmentID = department.id
