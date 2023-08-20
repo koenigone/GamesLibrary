@@ -36,8 +36,8 @@ html {
 
 /*** MOBILE ***/
 @media only screen and (max-width: 5750px) {
-    .input-group {
-        width: 160px;
+    .header .search {
+        max-width: 155px;
     }
 }
 
@@ -45,7 +45,6 @@ html {
 @media only screen and (min-width: 576px) and (max-width: 1279px) {
     .input-group {
         width: 250px;
-        margin-left: 50px;
     }
     .filter-button, .add-button {
         width: 55px;
