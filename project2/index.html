@@ -17,7 +17,9 @@
 <body class="bg-dark">
     <!---- Header ---->
     <div class="header d-flex justify-content-between m-2 mb-4 bg-dark">
+
         <div class="logo" title="Company Directory"><i class="fa-solid fa-folder-open text-warning fs-1"></i></div>
+
         <div class="search">
           <div class="input-group">
             <input type="text" class="form-control" id="searchMain" placeholder="Search by ID">
@@ -32,14 +34,14 @@
         <div class="header-filter-edit-buttons">
           <div class="btn-group">
             
-            <button type="button" class="btn btn-warning dropdown-toggle rounded-0" data-bs-toggle="dropdown" aria-expanded="false" title="Filter">
+            <button type="button" class="btn btn-warning rounded-0 filter-button" data-bs-toggle="dropdown" aria-expanded="false" title="Filter">
               <i class="fa-solid fa-filter"></i>
             </button>
             <div class="dropdown-menu bg-custom" id="departmentDropdown">
               <!-- Items will be populated here -->
             </div>
 
-            <button type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Add"><i class="fa-solid fa-plus"></i></button>
+            <button type="button" class="btn btn-warning add-button" data-bs-toggle="dropdown" aria-expanded="false" title="Add"><i class="fa-solid fa-plus"></i></button>
             <div class="dropdown-menu bg-custom add-dropdown">
               <button class="dropdown-item text-light" id="openPersonnelModal"><i class="fa-solid fa-user text-warning"></i> Add Person</button>
               <button class="dropdown-item text-light" id="openDepartmentModal"><i class="fa-solid fa-building text-warning"></i> Add Department</button>
