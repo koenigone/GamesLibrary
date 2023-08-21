@@ -24,7 +24,8 @@ if (mysqli_connect_errno()) {
 $query = "SELECT personnel.*, department.name as departmentName, location.name as locationName 
           FROM personnel 
           LEFT JOIN department ON personnel.departmentID = department.id
-          LEFT JOIN location ON department.locationID = location.id";
+          LEFT JOIN location ON department.locationID = location.id
+          ORDER BY lastName ASC";
 
 $result = mysqli_query($conn, $query);
 

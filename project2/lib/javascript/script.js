@@ -25,12 +25,14 @@ $(document).ready(function() {
 });
 
 // Filter control
-$('#departmentFilter').on('change', function() {
-    var selectedDepartment = $(this).val();
+$('#departmentDropdown').on('click', '.dropdown-item', function(e) {
+    e.preventDefault(); // Prevent the default behavior of <a>
+    
+    var selectedDepartment = $(this).data('id');
 
     $('#personnelBtn').tab('show');
 
-    // Show all cards if no department is selected (value is empty)
+    // Show all cards if no department is selected
     if (!selectedDepartment) {
         $('#personnel-tab-pane .row > div').show();
     } else {
@@ -42,15 +44,15 @@ $('#departmentFilter').on('change', function() {
     }
 });
 
+
 // Empting the value to display all departments
 $('.showAllBtn').on('click', function() {
-    $('#departmentFilter').val('').change();
+    $('#departmentDropdown').val('').change();
 });
 
 // Closing modals/overlays function
 function closeModal(modalID) {
-    $('#' + modalID).hide();
-    $(".modal-backdrop").remove();
+    $('#' + modalID).modal('hide');
 }
 
 function confirmDeleteModalControl(string, elementID, callback) { // Deletion confirm function
@@ -66,24 +68,31 @@ function confirmDeleteModalControl(string, elementID, callback) { // Deletion co
     });    
 }
 
+function notAllowedModalControl(string, elementID, callback) { // Deletion confirm function
+    // Modal to confirm deletion
+    $('#notAllowedMessageMessage').html(string);
+    $('#notAllowedMessageModal').modal('show');
+
+    $('#deleteElementBtn').off('click').click(function() {
+        callback(elementID);
+        
+        $('#alertMessageModal').modal('hide');
+        $(".modal-backdrop").remove();
+    });    
+}
+
 // Changing the confirm message depending on the function
 function confirmChangeString(string) {
     $('#confirmChangesElement').html(string);
     $('#confirmChangesModal').modal('show');
 }
 
-function reloadAfterChange() {
-    $('#confirmChangesModal .close').on('click', function () {
-        location.reload();
-    });
-
-    $('#confirmChangesModal').on('hidden.bs.modal', function () {
-        location.reload();
-    });
-}
 
 // Display all persons when opening the page
 function displayAllPersonnel() {
+    var cardResults = $('#personnel-cards');
+    cardResults.empty(); // empying the cards for updating without having to reload
+
     $.ajax({
         url: 'lib/PHP/getPersonnel.php',
         dataType: 'json',
@@ -130,7 +139,7 @@ function createPersonnelCard(row) {
         '<div class="col-md-3 mb-4" data-department-id="' + row.departmentID + '">' +
             '<div class="card border-0">' + 
             '<div class="card-header text-light" style="background-color: #464646;" data-bs-toggle="collapse" data-bs-target="#' + cardId + '" aria-expanded="false" aria-controls="' + cardId + '">' +
-            '<h6 class="card-title mb-0"><span class="text-warning">' + row.firstName + '</span>' + ' ' + row.lastName + '</h6>' +
+            '<h6 class="card-title mb-0">' + row.lastName + '</h6>' +
             '</div>' +
             '<div id="' + cardId + '" class="collapse">' +
             '<div class="card-body d-flex flex-column text-light" style="background-color: #666666;">' +
@@ -138,6 +147,7 @@ function createPersonnelCard(row) {
             // Div containing all the card details
             '<div class="flex-grow-1">' + 
             '<p class="card-text"><strong class="text-warning">ID:</strong> ' + row.id + '</p>' +
+            '<p class="card-text"><strong class="text-warning">Full Name:</strong> ' + row.firstName + ' ' + row.lastName + '</p>' +
             '<p class="card-text"><strong class="text-warning">Job Title:</strong> ' + row.jobTitle + '</p>' +
             '<p class="card-text"><strong class="text-warning">Email:</strong> ' + row.email + '</p>' +
             '<p class="card-text"><strong class="text-warning">Department:</strong> ' + (row.departmentName || "N/A") + '</p>' +
@@ -233,6 +243,7 @@ $(document).ready(function() {
 
                     closeModal('editPersonnelModal');
                     confirmChangeString('Person edited');
+                    displayAllPersonnel();
 
                 } else {
                     alert("Update failed: " + response.status.description);
@@ -243,7 +254,6 @@ $(document).ready(function() {
             }
         });
     });
-    reloadAfterChange();
 });
 
 // Personnel Delete Button
@@ -267,6 +277,7 @@ function deletePersonnel(id) {
                 $('#personnel-tab-pane tbody tr[data-id="' + id + '"]').remove();
                 
                 confirmChangeString('Person deleted');
+                displayAllPersonnel();
 
             } else {
                 alert('Error deleting person: ' + response.status.description);
@@ -276,7 +287,6 @@ function deletePersonnel(id) {
             alert('An error occurred: ' + textStatus);
         }
     });
-    reloadAfterChange();
 }
 
 // Adding new person to the database
@@ -301,7 +311,14 @@ $(document).ready(function() {
                 if(response.status.code === "200") {
 
                     closeModal('insertPersonnelModal');
+                    $('#insertPersonnelFirstName').val('');
+                    $('#insertPersonnelLastName').val('');
+                    $('#insertPersonnelJobTitle').val('');
+                    $('#insertPersonnelEmail').val('');
+                    $('#insertPersonnelDepartment').val('');
+
                     confirmChangeString('Person added');
+                    displayAllPersonnel();
 
                 } else {
                     alert('Error: ' + response.status.description);
@@ -312,11 +329,10 @@ $(document).ready(function() {
             }
         });
     });
-    reloadAfterChange();
 });
 
 // Display all departments on the department tab when opening the webpage
-$(document).ready(function() {
+function loadDepartments() {
     $.ajax({
         url: 'lib/PHP/getAllDepartments.php',
         dataType: 'json',
@@ -326,12 +342,16 @@ $(document).ready(function() {
             var editPersonDepartmentSelect = $('#editPersonnelDepartment');
             var insertPersonDepartmentSelect = $('#insertPersonnelDepartment');
 
+            // Clearing previous data
+            departmentDropdown.empty();
+            editPersonDepartmentSelect.empty();
+            insertPersonDepartmentSelect.empty();
+            $('#department-tab-pane tbody').empty();
+
             $.each(data.data, function(index, row) {
-                // generating dropdown items for the new dropdown menu
                 var dropdownItem = $('<a href="#" class="dropdown-item text-light" data-id="' + row.id + '">' + row.name + '</a>');
                 departmentDropdown.append(dropdownItem);
 
-                // generating options for Edit & Insert forms to display department names instead of ID
                 var editOption = $('<option value="' + row.id + '">' + row.name + '</option>');
                 var insertOption = $('<option value="' + row.id + '">' + row.name + '</option>');
                 editPersonDepartmentSelect.append(editOption);
@@ -339,6 +359,8 @@ $(document).ready(function() {
             });
 
             var tableBody = $('#department-tab-pane tbody');
+
+            tableBody.empty();
 
             $.each(data.data, function(index, row) {
                 var tableRow = $('<tr data-id="' + row.id + '">' +
@@ -357,13 +379,13 @@ $(document).ready(function() {
 
                 tableBody.append(tableRow);
 
-                tableRow.find('.editDepartmentBtn').on('click', function() {
+                tableRow.find('.editDepartmentBtn').off('click').on('click', function() {
                     populateEditForm(row);
                 });
             });
         }
     });
-});
+}
 
 // Setting existing data as default form values for easy editing
 function populateEditForm(row) {
@@ -381,8 +403,10 @@ $(document).on('click', '.editDepartmentBtn', function() {
 
 // Updating Department Data
 $(document).ready(function() {
+    loadDepartments(); // Load departments when the page is ready
+
     $("#editDepartmentForm").on("submit", function(e) {
-        e.preventDefault(); // prevent default form submission
+        e.preventDefault();
 
         let formData = {
             id: $("#editDepartmentID").val(),
@@ -397,9 +421,8 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 if (response.status.code === "200") {
-
                     closeModal('editDepartmentModal');
-                    confirmChangeString('Department edited')
+                    confirmChangeString('Department edited');
 
                 } else {
                     alert("Update failed: " + response.status.description);
@@ -410,32 +433,41 @@ $(document).ready(function() {
             }
         });
     });
-    reloadAfterChange();
 });
 
 // Department Delete Button
 $(document).on('click', '.deleteDepartmentBtn', function() {
+    loadDepartments();
     var departmentID = $(this).data('id');
 
-    // Modal to confirm deletion
-    confirmDeleteModalControl('department', departmentID, deleteDepartment);
+    $.ajax({
+        url: 'lib/PHP/checkDepartmentDependencies.php',
+        type: 'POST',
+        data: { id: departmentID },
+        dataType: 'json',
+        success: function(response) {
+            if (response.hasDependencies) {
+                notAllowedModalControl('department', departmentID, deleteDepartment);
+            } else {
+                confirmDeleteModalControl('department', departmentID, deleteDepartment);
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert('An error occurred while checking dependencies: ' + textStatus);
+        }
+    });
 });
 
 function deleteDepartment(id) {
     $.ajax({
         url: 'lib/PHP/deleteDepartmentByID.php',
         type: 'POST',
-        data: {
-            id: id
-        },
+        data: { id: id },
         dataType: 'json',
         success: function(response) {
             if (response.status.code == '200') {
-
                 $('#department-tab-pane tbody tr[data-id="' + id + '"]').remove();
-
-                confirmChangeString('Department deleted')
-
+                confirmChangeString('Department deleted');
             } else {
                 alert('Error deleting department: ' + response.status.description);
             }
@@ -444,12 +476,11 @@ function deleteDepartment(id) {
             alert('An error occurred: ' + textStatus);
         }
     });
-    reloadAfterChange();
 }
-
 // Adding departments
 $(document).ready(function() {
     $('#insertDepartmentForm').submit(function(e) {
+
         e.preventDefault();
 
         var departmentName = $('#insertDepartmentName').val();
@@ -467,7 +498,11 @@ $(document).ready(function() {
                 if (response.status.code === "200") {
 
                     closeModal('insertDepartmentModal');
+                    $('#insertDepartmentName').val('');
+                    $('#insertDepartmentLocation').val('');
+
                     confirmChangeString('Department added');
+                    loadDepartments(); // Load departments when the page is ready
                     
                 } else {
                     alert('Error: ' + response.status.description);
@@ -478,18 +513,23 @@ $(document).ready(function() {
             }
         });
     });
-    reloadAfterChange();
 });
 
 // Displaying All Locations From the Database
-$(document).ready(function() {
+function loadLocations() {
     $.ajax({
         url: 'lib/PHP/getLocation.php',
         dataType: 'json',
         success: function(data) {
+            
+            var tableBody = $('#location-tab-pane tbody');
 
             var editDepartmentSelect = $('#editDepartmentLocation');
-            var insertDepartmentSelect = $('#insertDepartmentLocation'); 
+            var insertDepartmentSelect = $('#insertDepartmentLocation');
+
+            tableBody.empty();
+            editDepartmentSelect.empty();
+            insertDepartmentSelect.empty();
 
             $.each(data.data, function(index, row) { // generating locations options for Edit & Insert department to show location by name
                 var editOption = $('<option value="' + row.id + '">' + row.name + '</option>');
@@ -498,8 +538,6 @@ $(document).ready(function() {
                 editDepartmentSelect.append(editOption);
                 insertDepartmentSelect.append(insertOption);
             });
-
-            var tableBody = $('#location-tab-pane tbody');
     
             $.each(data.data, function(index, row) {
                 var tableRow = $('<tr>' +
@@ -523,6 +561,10 @@ $(document).ready(function() {
             });
         }
     });
+}
+
+$(document).ready(function() {
+    loadLocations();
 });
 
 // Setting existing value as default for easy editing
@@ -558,7 +600,8 @@ $(document).ready(function() {
                 if (response.status.code === "200") {
 
                     closeModal('editLocationModal');
-                    confirmChangeString('Location edited')
+                    confirmChangeString('Location edited');
+                    loadLocations();
 
                 } else {
                     alert("Update failed: " + response.status.description);
@@ -569,14 +612,28 @@ $(document).ready(function() {
             }
         });
     });
-    reloadAfterChange();
 });
 
 // Location Delete Button
 $(document).on('click', '.deleteLocationBtn', function() {
     var locationID = $(this).data('id');
 
-    confirmDeleteModalControl('location', locationID, deleteLocation);
+    $.ajax({
+        url: 'lib/PHP/checkLocationDependencies.php',
+        type: 'POST',
+        data: { id: locationID },
+        dataType: 'json',
+        success: function(response) {
+            if (response.hasDependencies) {
+                notAllowedModalControl('location', locationID, deleteLocation);
+            } else {
+                confirmDeleteModalControl('location', locationID, deleteLocation);
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert('An error occurred while checking dependencies: ' + textStatus);
+        }
+    });
 });
 
 function deleteLocation(id) {
@@ -592,7 +649,8 @@ function deleteLocation(id) {
 
                 $('#location-tab-pane tbody tr[data-id="' + id + '"]').remove();
 
-                confirmChangeString('Location deleted')
+                confirmChangeString('Location deleted');
+                loadLocations();
                 
             } else {
                 alert('Error deleting location: ' + response.status.description);
@@ -602,7 +660,6 @@ function deleteLocation(id) {
             alert('An error occurred: ' + textStatus);
         }
     });
-    reloadAfterChange();
 }
 
 // Adding a new location
@@ -623,7 +680,9 @@ $(document).ready(function() {
                 if (response.status.code === '200') {
 
                     closeModal('insertLocationModal');
+                    $('#insertLocationName').val('');
                     confirmChangeString('Location added');
+                    loadLocations();
                     
                 } else {
                     alert('Failed to add location: ' + response.status.description);
@@ -634,5 +693,4 @@ $(document).ready(function() {
             }
         });
     });
-    reloadAfterChange();
 });

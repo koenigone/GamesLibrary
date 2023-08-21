@@ -24,7 +24,7 @@
 
 	}	
 
-	$query = $conn->prepare('INSERT INTO department (name, locationID) VALUES(?,?)');
+	$query = $conn->prepare('INSERT INTO department (name, locationID) VALUES(?,?) ORDER BY name ASC');
 
 	$query->bind_param("si", $_POST['name'], $_POST['locationID']);
 
