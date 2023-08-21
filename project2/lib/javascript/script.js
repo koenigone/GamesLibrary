@@ -423,6 +423,7 @@ $(document).ready(function() {
                 if (response.status.code === "200") {
                     closeModal('editDepartmentModal');
                     confirmChangeString('Department edited');
+                    loadDepartments();
 
                 } else {
                     alert("Update failed: " + response.status.description);
