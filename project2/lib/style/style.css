@@ -7,6 +7,12 @@ html {
     margin: 0;
 }
 
+body {
+    overflow: hidden;
+    margin: 5px 0px 10px 10px;
+    padding: 5px 0px 5px 2px;
+}
+
 #searchBtn, .add-button {
     border-top-right-radius: 0.30rem !important;
     border-bottom-right-radius: 0.30rem !important;
@@ -25,8 +31,8 @@ html {
     border: #464646;
 }
 
-.header-filter-edit-buttons .dropdown-menu a:hover,
-.header-filter-edit-buttons .dropdown-menu button:hover {
+.row .dropdown-menu a:hover,
+.row .dropdown-menu button:hover {
     background-color: #535353;
 }
 
@@ -34,30 +40,89 @@ html {
     border-bottom: none;
 }
 
+section {
+    display: flex;
+    flex-flow: column;
+    height: calc(100vh - 20px);
+  }
+
+
+.tab-pane {
+    display: none;
+    overflow: hidden; /* prevents scrolling on hidden panes */
+    height: 0;
+}
+
+/* Show active tab pane */
+.tab-pane.active {
+    display: block;
+    height: auto;
+}
+
+.tab-content #personnel-cards, .scrollable-table-wrapper {
+    flex: 1;
+    overflow-y: scroll;
+    height: 76vh;
+}
+
+.noUserFoundMessage {
+    position: absolute;
+    top: 100px;
+}
+
 /*** MOBILE ***/
-@media only screen and (max-width: 5750px) {
-    .header .search {
-        max-width: 155px;
+@media only screen and (max-width: 499px) {
+    #searchMain.form-control {
+        width: 100px;
+        height: 29px;
+        font-size: 11px;
+        margin-left: -30px;
+    }
+    .btn-group button {
+        width: 27px;
+        font-size: 10px;
+    }
+    #department-table, #location-table {
+        font-size: 10px;
+    }
+    .editDepartmentBtn, .deleteDepartmentBtn, .editLocationBtn, .deleteLocationBtn {
+        font-size: 9px;
+    }
+    #personnel-tab-pane {
+        font-size: 13px;
     }
 }
 
 /*** TABLET ***/
-@media only screen and (min-width: 576px) and (max-width: 1279px) {
-    .input-group {
-        width: 250px;
+@media only screen and (min-width: 500px) and (max-width: 1279px) {
+    #searchMain.form-control {
+        width: 200px;
+        height: 30px;
+        margin-left: -30px;
     }
-    .filter-button, .add-button {
-        width: 55px;
-        font-size: 16px;
+    .btn-group button {
+        width: 40px;
+        height: 30px;
+        font-size: 14px;
+        line-height: 18px;
+    }
+    #department-table, #location-table {
+        font-size: 13px;
+    }
+    .editDepartmentBtn, .deleteDepartmentBtn, .editLocationBtn, .deleteLocationBtn {
+        font-size: 11px;
+    }
+    #personnel-tab-pane {
+        font-size: 15px;
     }
 }
 
 /*** DESKTOP ***/
 @media only screen and (min-width: 1280px) {
-    .input-group {
-        width: 300px;
+    #searchMain.form-control {
+        width: 320px;
     }
-    .filter-button, .add-button {
+    .btn-group button {
         width: 80px;
         font-size: 18px;
     }

@@ -5,6 +5,23 @@ $(window).on('load', function () {
     });
 }});
 
+// Refreshing the content
+$('#refreshBtn').click(function() {
+    refreshContent();
+});
+
+function refreshContent() {
+    $('#preloader').show();
+
+    var personnelPromise = displayAllPersonnel();
+    var departmentPromise = loadDepartments();
+    var locationPromise = loadLocations();
+
+    $.when(personnelPromise, departmentPromise, locationPromise).done(function() {
+        $('#preloader').hide();
+    })
+}
+
 // Buttons to show modals that add data to the database
 $(document).ready(function() {
 
@@ -24,31 +41,55 @@ $(document).ready(function() {
     });
 });
 
-// Filter control
-$('#departmentDropdown').on('click', '.dropdown-item', function(e) {
-    e.preventDefault(); // Prevent the default behavior of <a>
-    
-    var selectedDepartment = $(this).data('id');
+$(document).ready(function() {
+    $("#filterOptionsBtn").click(function() {
+        $("#filterEmployeesModal").modal('show');
+    });
+});
 
-    $('#personnelBtn').tab('show');
+var departmentContainer = $('#departmentContainer');
+var selectedDepartments = []; // Array to hold the selected departmentss
 
-    // Show all cards if no department is selected
-    if (!selectedDepartment) {
-        $('#personnel-tab-pane .row > div').show();
+departmentContainer.on('click', '.department-item', function() {
+    var departmentId = $(this).data('id');
+
+    // Toggle selection
+    if ($(this).hasClass('btn-outline-secondary')) {
+        $(this).removeClass('btn-outline-secondary').addClass('btn-secondary');
+        selectedDepartments.push(departmentId);
     } else {
-        // Hide all cards
-        $('#personnel-tab-pane .row > div').hide();
-
-        // Only show cards that match the selected department
-        $('#personnel-tab-pane .row > div[data-department-id=' + selectedDepartment + ']').show();
+        $(this).addClass('btn-outline-secondary').removeClass('btn-secondary');
+        var index = selectedDepartments.indexOf(departmentId);
+        if (index > -1) {
+            selectedDepartments.splice(index, 1);
+        }
     }
 });
 
-
-// Empting the value to display all departments
-$('.showAllBtn').on('click', function() {
-    $('#departmentDropdown').val('').change();
+$("#filterBtn").click(function() {
+    if (selectedDepartments.length === 0) {
+        displayAllPersonnel();
+    } else {
+        displayPersonnelByDepartments(selectedDepartments);
+    }
+    $("#filterEmployeesModal").modal('hide');
 });
+
+function displayPersonnelByDepartments(departmentIds) {
+    // Hide all cards
+    $('#personnel-cards > div').hide();
+
+    // If no departments are selected, show all cards
+    if (departmentIds.length === 0) {
+        $('#personnel-cards > div').show();
+        return;
+    }
+
+    // Only show cards that match the selected departments
+    departmentIds.forEach(function(id) {
+        $('#personnel-cards > div[data-department-id=' + id + ']').show();
+    });
+}
 
 // Closing modals/overlays function
 function closeModal(modalID) {
@@ -87,7 +128,6 @@ function confirmChangeString(string) {
     $('#confirmChangesModal').modal('show');
 }
 
-
 // Display all persons when opening the page
 function displayAllPersonnel() {
     var cardResults = $('#personnel-cards');
@@ -97,10 +137,19 @@ function displayAllPersonnel() {
         url: 'lib/PHP/getPersonnel.php',
         dataType: 'json',
         success: function(data) {
-            displayPersonnel(data);
-        }
+            if (data.length > 0) {
+                data.forEach(function(row) {
+                    var card = createPersonnelCard(row);
+                    cardResults.append(card);
+                });
+            } else {
+                // Display an alert or message if no data is returned
+                $('#no-user-found-alert').removeClass('d-none'); // show the alert
+            }
+        }        
     });
 }
+
 
 // Main search element, only searches for persons
 $('#searchMain').on('input', function() {
@@ -146,7 +195,6 @@ function createPersonnelCard(row) {
     
             // Div containing all the card details
             '<div class="flex-grow-1">' + 
-            '<p class="card-text"><strong class="text-warning">ID:</strong> ' + row.id + '</p>' +
             '<p class="card-text"><strong class="text-warning">Full Name:</strong> ' + row.firstName + ' ' + row.lastName + '</p>' +
             '<p class="card-text"><strong class="text-warning">Job Title:</strong> ' + row.jobTitle + '</p>' +
             '<p class="card-text"><strong class="text-warning">Email:</strong> ' + row.email + '</p>' +
@@ -190,17 +238,17 @@ function displayPersonnel(personnel) {
     });
 }
 
+$(document).ready(function() {
+    displayAllPersonnel();
+});
+
+
 // Showing error message when user not found
 function displayNoUserFound() {
     var personnelContainer = $('#personnel-tab-pane .row');
     personnelContainer.empty();
     $('#no-user-found-alert').removeClass('d-none');
 }
-
-// Showing all persons again if the search input was deleted
-$(document).ready(function() {
-    displayAllPersonnel();
-});
 
 // Filling the edit form with existing info for easy editing
 function populatePersonnelForm(row) {
@@ -338,19 +386,19 @@ function loadDepartments() {
         dataType: 'json',
         success: function(data) {
 
-            var departmentDropdown = $('#departmentDropdown');
+            var departmentContainer = $('#departmentContainer');
             var editPersonDepartmentSelect = $('#editPersonnelDepartment');
             var insertPersonDepartmentSelect = $('#insertPersonnelDepartment');
 
             // Clearing previous data
-            departmentDropdown.empty();
+            departmentContainer.empty();
             editPersonDepartmentSelect.empty();
             insertPersonDepartmentSelect.empty();
             $('#department-tab-pane tbody').empty();
 
             $.each(data.data, function(index, row) {
-                var dropdownItem = $('<a href="#" class="dropdown-item text-light" data-id="' + row.id + '">' + row.name + '</a>');
-                departmentDropdown.append(dropdownItem);
+                var departmentItem = $('<button class="btn btn-outline-secondary m-2 department-item" data-id="' + row.id + '">' + row.name + '</button>');
+                departmentContainer.append(departmentItem);
 
                 var editOption = $('<option value="' + row.id + '">' + row.name + '</option>');
                 var insertOption = $('<option value="' + row.id + '">' + row.name + '</option>');
@@ -364,9 +412,8 @@ function loadDepartments() {
 
             $.each(data.data, function(index, row) {
                 var tableRow = $('<tr data-id="' + row.id + '">' +
-                '<td>' + row.id + '</td>' +
                 '<td>' + row.name + '</td>' +
-                '<td>' + row.locationID + '</td>' +
+                '<td>' + row.locationName + '</td>' +
                 '<td class="text-end">' +
                 '<button type="button" class="btn btn-warning btn-sm me-1 editDepartmentBtn" data-bs-toggle="modal" data-bs-target="#editDepartmentModal" data-id="' + row.id + '">' +
                 '<i class="fa-solid fa-pencil fa-fw"></i>' +
@@ -387,6 +434,10 @@ function loadDepartments() {
     });
 }
 
+$(document).ready(function() {
+    loadDepartments();
+})
+
 // Setting existing data as default form values for easy editing
 function populateEditForm(row) {
     $('#editDepartmentName').val(row.name);
@@ -403,7 +454,6 @@ $(document).on('click', '.editDepartmentBtn', function() {
 
 // Updating Department Data
 $(document).ready(function() {
-    loadDepartments(); // Load departments when the page is ready
 
     $("#editDepartmentForm").on("submit", function(e) {
         e.preventDefault();
@@ -542,7 +592,6 @@ function loadLocations() {
     
             $.each(data.data, function(index, row) {
                 var tableRow = $('<tr>' +
-                    '<td>' + row.id + '</td>' +
                     '<td>' + row.name + '</td>' +
                     '<td class="text-end">' +
                     '<button type="button" class="btn btn-warning btn-sm me-1 editLocationBtn" data-bs-toggle="modal" data-bs-target="#editLocationModal" data-id="' + row.id + '">' +
