@@ -18,7 +18,7 @@ if (mysqli_connect_errno()) {
     exit;
 }
 
-$query = "SELECT personnel.*, department.name as departmentName, location.name as locationName 
+$query = "SELECT personnel.*, department.name as departmentName, location.name as locationName
           FROM personnel 
           LEFT JOIN department ON personnel.departmentID = department.id
           LEFT JOIN location ON department.locationID = location.id

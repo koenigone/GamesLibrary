@@ -13,7 +13,57 @@ body {
     padding: 5px 0px 5px 2px;
 }
 
-#searchBtn, .add-button {
+/* Styling main search Input*/
+.searchWrapper {
+    position: relative;
+    width: 340px;
+    height: 40px;
+    padding: 1px;
+    margin-left: -30px;
+}
+
+#searchMain {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    border: none;
+    outline: none;
+    color: #fff;
+    background: #111;
+    cursor: text;
+    border-radius: 10px;
+    position: relative;
+    z-index: 2;
+}
+
+.searchWrapper:before {
+    content: '';
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 400%;
+    z-index: 1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing 20s linear infinite;
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+    border-radius: 10px;
+}
+
+.searchWrapper:hover:before {
+    opacity: 1;
+}
+
+@keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}
+
+.add-button {
     border-top-right-radius: 0.30rem !important;
     border-bottom-right-radius: 0.30rem !important;
 }
@@ -72,11 +122,10 @@ section {
 
 /*** MOBILE ***/
 @media only screen and (max-width: 499px) {
-    #searchMain.form-control {
-        width: 100px;
-        height: 29px;
+    .searchWrapper {
+        width: 150px;
+        height: 35px;
         font-size: 11px;
-        margin-left: -30px;
     }
     .btn-group button {
         width: 27px;
@@ -91,14 +140,16 @@ section {
     #personnel-tab-pane {
         font-size: 13px;
     }
+    #personnel-cards .personnelCardLastName {
+        font-size: 13px;
+    }
 }
 
 /*** TABLET ***/
 @media only screen and (min-width: 500px) and (max-width: 1279px) {
-    #searchMain.form-control {
+    .searchWrapper {
         width: 200px;
-        height: 30px;
-        margin-left: -30px;
+        height: 40px;
     }
     .btn-group button {
         width: 40px;
@@ -115,13 +166,13 @@ section {
     #personnel-tab-pane {
         font-size: 15px;
     }
+    #personnel-cards .personnelCardLastName {
+        font-size: 13px;
+    }
 }
 
 /*** DESKTOP ***/
 @media only screen and (min-width: 1280px) {
-    #searchMain.form-control {
-        width: 320px;
-    }
     .btn-group button {
         width: 80px;
         font-size: 18px;

@@ -23,8 +23,8 @@
 
         <div class="col text-start" title="Company Directory"><i class="fa-solid fa-folder-open text-warning fs-2"></i></div>
 
-        <div class="col-3 searchInput">
-          <input type="text" class="form-control" id="searchMain" placeholder="Search by ID">
+        <div class="col-3 searchWrapper">
+          <input type="text" id="searchMain" placeholder="Search by ID">
         </div>
   
         <div class="col text-end">
@@ -146,7 +146,7 @@
     </div>
     <!------------ Edit Data Modals Section ------------>
 
-    <!-- Department Edit Modal -->
+    <!-- Personnel Edit Modal -->
     <div id='editPersonnelModal' class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editPersonnelModalTitle" area-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
@@ -183,10 +183,10 @@
 
               <div class="form-floating mb-3">
                 <select class="form-control" id="editPersonnelDepartment" required>
-                  <!-- Options will be populated here -->
+                    <!-- Options will be populated here -->
                 </select>
                 <label for="editPersonnelDepartment">Department</label>
-              </div>                    
+              </div>                            
 
             </form>
           </div>

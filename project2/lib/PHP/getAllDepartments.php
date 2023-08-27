@@ -24,7 +24,7 @@
 
 	}	
 
-	$query = 'SELECT department.id, department.name, location.name as locationName FROM department
+	$query = 'SELECT department.id, department.name, location.id AS locationId, location.name as locationName FROM department
 	LEFT JOIN location ON department.locationID = location.id
 	ORDER BY department.name ASC';   
 

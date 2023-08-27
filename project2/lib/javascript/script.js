@@ -76,18 +76,21 @@ $("#filterBtn").click(function() {
 });
 
 function displayPersonnelByDepartments(departmentIds) {
-    // Hide all cards
-    $('#personnel-cards > div').hide();
+
+    var allCards = $('#personnel-cards > div');
+    allCards.hide(); // hiding all cards
 
     // If no departments are selected, show all cards
     if (departmentIds.length === 0) {
-        $('#personnel-cards > div').show();
+        allCards.show();
         return;
     }
 
     // Only show cards that match the selected departments
     departmentIds.forEach(function(id) {
-        $('#personnel-cards > div[data-department-id=' + id + ']').show();
+        var matchingCards = $('#personnel-cards > div[data-department-id=' + id + ']');
+        matchingCards.show(); // showing the filtered cards
+        allCards.find('.collapse').collapse('show');
     });
 }
 
@@ -188,7 +191,7 @@ function createPersonnelCard(row) {
         '<div class="col-md-3 mb-4" data-department-id="' + row.departmentID + '">' +
             '<div class="card border-0">' + 
             '<div class="card-header text-light" style="background-color: #464646;" data-bs-toggle="collapse" data-bs-target="#' + cardId + '" aria-expanded="false" aria-controls="' + cardId + '">' +
-            '<h6 class="card-title mb-0">' + row.lastName + '</h6>' +
+            '<span class="card-title mb-0 personnelCardLastName">' + row.lastName + '</span>' +
             '</div>' +
             '<div id="' + cardId + '" class="collapse">' +
             '<div class="card-body d-flex flex-column text-light" style="background-color: #666666;">' +
@@ -256,7 +259,7 @@ function populatePersonnelForm(row) {
     $('#editPersonnelLastName').val(row.lastName);
     $('#editPersonnelJobTitle').val(row.jobTitle);
     $('#editPersonnelEmail').val(row.email);
-    $('#editPersonnelDepartmentID').val(row.departmentID);
+    $('#editPersonnelDepartment').val(row.departmentID);
 }
 
 // Edit personnel Modal
@@ -441,7 +444,7 @@ $(document).ready(function() {
 // Setting existing data as default form values for easy editing
 function populateEditForm(row) {
     $('#editDepartmentName').val(row.name);
-    $('#editDepartmentLocationID').val(row.locationID);
+    $('#editDepartmentLocation').val(row.locationId);
 }
 
 // Department Modal Show Button
@@ -567,12 +570,11 @@ $(document).ready(function() {
 });
 
 // Displaying All Locations From the Database
-function loadLocations() {
+function loadLocations(departmentDetails) {
     $.ajax({
         url: 'lib/PHP/getLocation.php',
         dataType: 'json',
         success: function(data) {
-            
             var tableBody = $('#location-tab-pane tbody');
 
             var editDepartmentSelect = $('#editDepartmentLocation');
@@ -582,14 +584,16 @@ function loadLocations() {
             editDepartmentSelect.empty();
             insertDepartmentSelect.empty();
 
-            $.each(data.data, function(index, row) { // generating locations options for Edit & Insert department to show location by name
+            // Populating dropdowns with location options
+            $.each(data.data, function(index, row) {
                 var editOption = $('<option value="' + row.id + '">' + row.name + '</option>');
                 var insertOption = $('<option value="' + row.id + '">' + row.name + '</option>');
-                
+
                 editDepartmentSelect.append(editOption);
                 insertDepartmentSelect.append(insertOption);
             });
-    
+
+            // Populate table with location details
             $.each(data.data, function(index, row) {
                 var tableRow = $('<tr>' +
                     '<td>' + row.name + '</td>' +
@@ -602,13 +606,18 @@ function loadLocations() {
                     '</button>' +
                     '</td>' +
                     '</tr>');
-    
+
                 tableBody.append(tableRow);
 
                 tableRow.find('.editLocationBtn').on('click', function() {
                     populateLocationForm(row);
                 });
             });
+
+            // Calling the populateEditForm after populating dropdowns
+            if (departmentDetails) {
+                populateEditForm(departmentDetails);
+            }
         }
     });
 }
