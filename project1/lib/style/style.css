@@ -1,12 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
 
-html {
+html, body {
     font-family: 'Open Sans', sans-serif;
+    overflow: hidden;
 }
 
 * {
     padding: 0;
     margin: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 /***************** NAVBAR SECTION *****************/
@@ -31,6 +35,26 @@ html {
     height: 100vh;
     margin: 0;
     padding: 0;
+}
+
+.easy-button-button {
+    background-color: #1872c7 !important;
+    width: 35px !important;
+    height: 35px !important;
+    line-height: 35px !important;
+    font-size: 17px !important;
+    border: none !important;
+    border-radius: 10px !important;
+    transition: border-bottom-right-radius 0.2s ease !important;
+}
+
+.easy-button-button:hover {
+    background-color: rgb(12, 109, 173) !important;
+    border-bottom-right-radius: 0px !important;
+}
+
+.easy-button-button:active {
+    background-color: rgb(38, 132, 196) !important;
 }
 
 table td {
@@ -69,7 +93,7 @@ border-radius: 50%;
 /*** MOBILE ***/
 @media only screen and (max-width: 640px) {
     .selectCountryDiv {
-        width: 210px;
+        width: 170px;
     }
     
     table td {
@@ -84,7 +108,7 @@ border-radius: 50%;
 /*** TABLET ***/
 @media only screen and (min-width: 601px) and (max-width: 1279px) {
     .selectCountryDiv {
-        width: 320px;
+        width: 300px;
     }
     
     table td {

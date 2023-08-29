@@ -698,7 +698,7 @@ L.control.locate().addTo(map);
 var countryInfoModal = L.easyButton({
   states: [{
     stateName: 'show-modal',
-    icon: '<i class="fas fa-info-circle text-primary"></i>',
+    icon: '<i class="fas fa-info-circle text-light"></i>',
     title: 'Show Country Info',
     onClick: function() {
       getCountryInfoBySelected();
@@ -710,7 +710,7 @@ var countryInfoModal = L.easyButton({
 var currencyInfoModal = L.easyButton({
   states: [{
     stateName: 'show-modal',
-    icon: '<i class="fa-solid fa-money-bill text-warning"></i>',
+    icon: '<i class="fa-solid fa-money-bill text-light"></i>',
     title: 'Show Currency Info',
     onClick: function() {
       getCurrencyInfoBySelected();
@@ -722,7 +722,7 @@ var currencyInfoModal = L.easyButton({
 var timezoneInfoModal = L.easyButton({
   states: [{
     stateName: 'show-modal',
-    icon: '<i class="fa-solid fa-clock text-success"></i>',
+    icon: '<i class="fa-solid fa-clock text-light"></i>',
     title: 'Show Timezone Info',
     onClick: function() {
       getTimezoneInfoBySelected();
@@ -734,7 +734,7 @@ var timezoneInfoModal = L.easyButton({
 var weatherInfoModal = L.easyButton({
   states: [{
     stateName: 'show-modal',
-    icon: '<i class="fa-solid fa-cloud text-info"></i>',
+    icon: '<i class="fa-solid fa-cloud text-light"></i>',
     title: 'Show Weather Info',
     onClick: function() {
       getWeatherInfoBySelected();

@@ -33,7 +33,6 @@ L.Control.EasyBar = L.Control.extend({
 
   _buildContainer: function(){
     this._container = this.container = L.DomUtil.create('div', '');
-    this.options.leafletClasses && L.DomUtil.addClass(this.container, 'leaflet-bar easy-button-container leaflet-control');
     this.options.id && (this.container.id = this.options.id);
   },
 
