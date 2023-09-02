@@ -9,6 +9,6 @@ Technologies used:
 - HTML
 - CSS
 - Bootstrap
-- Javascript
+- Javascript / jQuery / AJAX
 - PHP
 - MariaDB
