@@ -4,3 +4,12 @@ Name: CountDown Untill..
 
 Description:
 A mini full-stack web application that counts down to a specific event. It allows users to add new dates and store them in a table for later use. Additionally, users can change the font color and the background of the webpage.
+
+Technologies used:
+
+-HTML
+-CSS
+-Bootstrap
+-Javascript / jQuery / AJAX
+-PHP
+-MariaDB
