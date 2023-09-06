@@ -9,7 +9,7 @@
     <title>Days Until ...</title>
 </head>
 <body>
-    <img src="lib/images/main-background.jpg" id="main-background">
+    <img src="lib/image/main-background.jpg" id="main-background">
 
     <div class="main-content"> <!-- Main content -->
         
@@ -24,9 +24,19 @@
                             <label for="colorPicker" class="form-label text-secondary">Font Color</label>
                             <input type="color" id="colorPicker" class="form-control form-control-color" value="#102d52">
                         </div>
-                        <div>
+                        <div class="mb-4">
                             <label for="backgroundPicker" class="form-label text-secondary">Background</label>
                             <input type="file" id="backgroundPicker" class="form-control" accept="image/*">
+                        </div>
+                        <div class="mb-4 text-center">
+                            <button id="addPaintBtn" class="btn-primary"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                        <div>
+                            <table class="table table-hover">
+                                <tbody id="tableBodyPaint">
+                                  <!-- Paint content here -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -41,8 +51,15 @@
                     <form id="user-form">
                         <input type="text" class="form-control" id="userInputText" placeholder="e.g. game release">
                         <input type="date" class="form-control" id="userInputDate" required>
-                        <button type="submit" class="btn btn-primary">Confirm</button>
+                        <button type="submit" class="btn btn-primary mb-4"><i class="fa-solid fa-plus"></i></button>
                     </form>
+                    <div class="my-data">
+                        <table class="table table-hover">
+                            <tbody id="tableBodyDate">
+                              <!-- Date content here -->
+                            </tbody>
+                          </table>
+                    </div>
                 </div>
             </div>
         </div> <!-- Navbar end -->
@@ -83,8 +100,8 @@
       color="15, 73, 128" 
       opacity='1' 
       zIndex="1" 
-      count="400" 
-      src="lib/vendor/canvas-nest.js-master/dist/canvas-nest.js">
+      count="500" 
+      src="canvas-nest.js-master/dist/canvas-nest.js">
     </script>
 </body>
 </html>

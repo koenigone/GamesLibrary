@@ -13,13 +13,24 @@ body {
 }
 
 .btn-primary {
+    padding: 7px;
+    width: 65px;
     background-color: rgb(18, 41, 75);
+    color: rgba(255, 255, 255, 0.85);
     border: none;
+    border-radius: 10px;
 }
 
 .btn-primary:hover {
     background-color: rgba(255, 255, 255, 0.85);
     color: rgba(19, 61, 109, 0.85);
+}
+
+.btn-secondary {
+    font-size: 12px;
+    width: 35px;
+    height: 25px;
+    line-height: 10px;
 }
 
 #main-background {
@@ -34,8 +45,16 @@ body {
     z-index: 2;
 }
 
-i {
+.dropdown-toggle i {
     font-size: 18px;
+}
+
+.dropdown-menu {
+    width: 300px;
+}
+
+.usreInputColor {
+    margin-top: 6px;
 }
 
 /*
@@ -49,10 +68,6 @@ i {
 
 .navbar .form-dropdown .form-dropdown-menu input {
     margin-bottom: 10px;
-}
-
-.navbar .customize-buttons button, .navbar .form-dropdown a {
-    width: 5rem;
 }
 
 /*
