@@ -184,22 +184,22 @@ $(document).ready(function() {
                     tableContent += '<tr>' + 
                                         `<td><input type="color" value="${row.fontColor}" id="displayedColor" disabled><span class="text-capitalize opacity-50"> ${row.fontColor.toUpperCase()}</span></td>` +
                                         '<td>' +
-                                            '<button class="btn btn-secondary paint-use-button m-2"><i class="fa-solid fa-arrow-left"></i></button>' +
+                                            '<button class="btn btn-secondary paint-use-button m-2" data-bgpath="' + row.background_path + '"><i class="fa-solid fa-arrow-left"></i></button>' +
                                             '<button class="btn btn-secondary paint-delete-button" data-id="' + row.id + '"><i class="fa-solid fa-delete-left"></i></button>' +
                                         '</td>' +
                                     '</tr>';
                 })
 
-                $('#tableBodyPaint').html(tableContent);
+                $('#tableBodyPaint').append(tableContent);
 
                 // using the color from the color table
                 $('.paint-use-button').on('click', function() {
                     var pickedColor = $(this).closest('tr').find('#displayedColor').val();
-                
+    
                     $('#colorPicker').val(pickedColor);
-                    $('.main-counter').css('color', pickedColor); // changing the main counter text color
-                })
-                
+                    $('.main-counter').css('color', pickedColor);
+                });
+         
 
             } else {
                 alert('Error ' + response.status.code);
