@@ -7,9 +7,9 @@ A mini full-stack web application that counts down to a specific event. It allow
 
 Technologies used:
 
--HTML
--CSS
--Bootstrap
--Javascript / jQuery / AJAX
--PHP
--MariaDB
+- HTML
+- CSS
+- Bootstrap
+- Javascript / jQuery / AJAX
+- PHP
+- MariaDB
