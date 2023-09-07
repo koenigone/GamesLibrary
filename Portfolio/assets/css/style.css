@@ -119,6 +119,20 @@ a:hover {
   overflow: hidden;
 }
 
+.cvDownload, .cvPrint {
+  background-color: #05a57d;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  color: white;
+}
+
+.cvDownload:hover, .cvPrint:hover {
+  background-color: #068163;
+  color: rgba(255, 255, 255, 0.850);
+}
+
+
 .bg-image {
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -293,9 +307,6 @@ a:hover {
 }
 .github-logo {
   background-color: #121e47;
-}
-.xTwitter-logo {
-  background-color: #1e1e1e;
 }
 
 
@@ -811,39 +822,14 @@ a:hover {
 /*--------------------------------------------------------------
 # Skills
 --------------------------------------------------------------*/
-.progress {
-  height: 60px;
-  display: block;
-  background: none;
-  border-radius: 0;
+.skills .skills-content {
+  display: flex;
 }
 
-.progress .skill {
-  padding: 0;
-  margin: 0 0 6px 0;
-  text-transform: uppercase;
-  display: block;
-  font-weight: 600;
-  font-family: "Poppins", sans-serif;
-  color: #050d18;
+.skills .skills-content .col-2 {
+  font-size: 45px;
 }
 
-.progress .skill .val {
-  float: right;
-  font-style: normal;
-}
-
-.progress-bar-wrap {
-  background: #dce8f8;
-  height: 10px;
-}
-
-.progress-bar {
-  width: 1px;
-  height: 10px;
-  transition: 0.9s;
-  background-color: #06c998;
-}
 
 /*--------------------------------------------------------------
 # Resume
@@ -915,17 +901,6 @@ a:hover {
   top: 0;
   background: #fff;
   border: 2px solid #06c998;
-}
-
-.resume .cvDownload {
-  background-color: #05a57d;
-  padding: 12px;
-  border-radius: 10px;
-  color: white;
-}
-
-.resume .cvDownload:hover {
-  background-color: #068163;
 }
 
 /*--------------------------------------------------------------
@@ -1101,6 +1076,27 @@ a:hover {
 }
 
 /*--------------------------------------------------------------
+# Resume Details
+--------------------------------------------------------------*/
+.resume-details {
+  padding-top: 19px;
+}
+
+.resume-details .resume-info {
+  padding: 30px;
+  box-shadow: 0px 0 30px rgba(78, 78, 78, 0.08);
+}
+
+.resume-details .resume-info h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+
+/*--------------------------------------------------------------
 # Contact
 --------------------------------------------------------------*/
 .footer-paralax {
@@ -1138,7 +1134,7 @@ a:hover {
 
 .php-email-form .loading {
   display: none;
-  background: #fff;
+  background: rgba(255, 255, 255, 0);
   text-align: center;
   padding: 15px;
 }
@@ -1270,4 +1266,11 @@ footer .credits {
 
 footer .credits a {
   color: #fff;
+}
+
+
+@media (max-width: 576px) {
+  .hero .hero-title {
+      font-size: 1.8em;
+  }
 }

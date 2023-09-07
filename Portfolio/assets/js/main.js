@@ -301,6 +301,19 @@
   });
 
   /**
+  * CV details Print Button
+  */
+  document.addEventListener('DOMContentLoaded', function() {
+    var cvPrintBtn = document.querySelector('.cvPrint');
+    if (cvPrintBtn) {  // Check if the element exists
+        cvPrintBtn.addEventListener('click', function() {
+            window.open('assets/PDF/MohammadCV.pdf', '_blank');
+        });
+    }
+  });
+
+
+  /**
    * Preloader
    */
   let preloader = select('#preloader');
