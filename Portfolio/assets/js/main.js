@@ -118,8 +118,8 @@
     distance: '300px'
   });
 
-  // Resume Animation
-  sr.reveal('#resume', {
+  // CV Animation
+  sr.reveal('#cv', {
     duration: 1500,
     origin: 'bottom',
     distance: '300px'
