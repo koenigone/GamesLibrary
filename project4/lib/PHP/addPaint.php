@@ -22,10 +22,9 @@ if (mysqli_connect_errno()) {
 }	
 
 $fontColor = $_POST['fontColor'];
-$background_path = $_POST['background_path'];
 
-$stmt = $conn->prepare('INSERT INTO paint (fontColor, background_path) VALUES (?, ?)');
-$stmt->bind_param('ss', $fontColor, $background_path);
+$stmt = $conn->prepare('INSERT INTO paint (fontColor) VALUES (?)');
+$stmt->bind_param('s', $fontColor);
 
 if ($stmt->execute()) {
     $output['status']['code'] = "200";

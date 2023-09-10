@@ -9,7 +9,6 @@
     <title>Days Until ...</title>
 </head>
 <body>
-    <img src="lib/image/main-background.jpg" id="main-background">
 
     <div class="main-content"> <!-- Main content -->
         
@@ -19,14 +18,11 @@
                     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa-solid fa-paintbrush"></i>
                     </button>
-                    <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuLink">
+                    <button id="restartBtn" class="btn btn-primary" title="Reset settings"><i class="fa-solid fa-arrows-rotate"></i></button> <!-- Reset Buttn -->
+                    <div class="dropdown-menu p-3 fontColorDropdown" aria-labelledby="dropdownMenuLink">
                         <div class="mb-4">
                             <label for="colorPicker" class="form-label text-secondary">Font Color</label>
                             <input type="color" id="colorPicker" class="form-control form-control-color" value="#102d52">
-                        </div>
-                        <div class="mb-4">
-                            <label for="backgroundPicker" class="form-label text-secondary">Background</label>
-                            <input type="file" id="backgroundPicker" class="form-control" accept="image/*">
                         </div>
                         <div class="mb-4 text-center">
                             <button id="addPaintBtn" class="btn-primary"><i class="fa-solid fa-plus"></i></button>
@@ -34,7 +30,7 @@
                         <div>
                             <table class="table table-hover">
                                 <tbody id="tableBodyPaint">
-                                  <!-- Paint content here -->
+                                    <!-- Paint content here -->
                                 </tbody>
                             </table>
                         </div>
@@ -47,7 +43,7 @@
                     <i class="fa-solid fa-calendar-days"></i>
                 </a>
                   
-                <div class="dropdown-menu p-2 text-center form-dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
+                <div class="dropdown-menu p-2 text-center form-dropdown-menu dropdown-menu-end dateDropdown" aria-labelledby="dropdownMenuLink">
                     <form id="user-form">
                         <input type="text" class="form-control" id="userInputText" placeholder="e.g. game release">
                         <input type="date" class="form-control" id="userInputDate" required>
@@ -99,8 +95,8 @@
     <script 
       color="15, 73, 128" 
       opacity='1' 
-      zIndex="1" 
-      count="500" 
+      zIndex="-1" 
+      count="530"
       src="lib/vendor/canvas-nest.js-master/dist/canvas-nest.js">
     </script>
 </body>
