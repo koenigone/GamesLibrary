@@ -8,12 +8,14 @@ import { Platforms } from "./hooks/useGames";
 import PlatfromSelector from "./components/PlatformSelector";
 import "./Scrollbar-custom.css";
 
-function App() {
-  const [selectedGenre, setSelectedGenre] = useState<Genre | null>(null);
-  const [selectedPlatform, setSelectedPlatform] = useState<Platforms | null>(
-    null
-  );
+export interface GameQuery {
+  genre: Genre | null;
+  platform: Platforms | null;
+}
 
+function App() {
+
+  const [gameQuery, setGameQuery] = useState<GameQuery>({} as GameQuery)
   return (
     <>
       <Grid
@@ -33,19 +35,18 @@ function App() {
         <Show above="lg">
           <GridItem area="aside">
             <GenreList
-              onSelectGenre={(genre) => setSelectedGenre(genre)}
-              selectedGenre={selectedGenre}
+              selectedGenre={gameQuery.genre}
+              onSelectGenre={(genre) => setGameQuery({ ...gameQuery, genre })}
             />
           </GridItem>
         </Show>
         <GridItem area="main">
           <PlatfromSelector
-            onSelectPlatform={(platform) => setSelectedPlatform(platform)}
-            selectedPlatform={selectedPlatform}
+            selectedPlatform={gameQuery.platform}
+            onSelectPlatform={(platform) => setGameQuery({ ...gameQuery, platform })}
           />
           <GameGrid
-            selectedGenre={selectedGenre}
-            selectedPlatform={selectedPlatform}
+            gameQuery={gameQuery}
           />
         </GridItem>
       </Grid>
