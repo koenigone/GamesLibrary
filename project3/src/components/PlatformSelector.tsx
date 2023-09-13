@@ -21,7 +21,7 @@ function PlatfromSelector({ onSelectPlatform, selectedPlatform }: Props) {
   if (error) return null;
 
   return (
-    <HStack margin="0px 20px">
+    <HStack>
       <Menu>
         <MenuButton as={Button} rightIcon={BsChevronBarDown}>
           {selectedPlatform?.name || "Platfroms"}
