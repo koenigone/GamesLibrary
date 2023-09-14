@@ -1,6 +1,6 @@
 import useGames from "../hooks/useGames";
 import { SimpleGrid, Text } from "@chakra-ui/react";
-import "./GamesGrid.css";
+import "./index.css";
 import GameCard from "./GameCard";
 import GameCardSkeleton from "./GameCardSkeleton";
 import GameCardContainer from "./GameCardContainer";
