@@ -6,6 +6,7 @@ import {
   Spinner,
   Button,
   Heading,
+  Center,
 } from "@chakra-ui/react";
 import useGenres, { Genre } from "../hooks/useGenres";
 
@@ -18,7 +19,13 @@ function GenreList({ onSelectGenre, selectedGenre }: Props) {
   const { data, isLoading, error } = useGenres();
 
   if (error) return null;
-  if (isLoading) return <Spinner thickness="4px" size="lg" />;
+  if (isLoading) {
+    return (
+      <Center height="100vh"> {/* Use "height" to center vertically */}
+        <Spinner thickness="4px" size="lg" />
+      </Center>
+    );
+  }
 
   return (
     <HStack display='block' marginLeft={5}>

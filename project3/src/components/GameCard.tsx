@@ -10,7 +10,7 @@ import {
   Text,
   CardFooter,
 } from "@chakra-ui/react";
-import "./GameCard.css";
+import "./index.css";
 
 interface Prorps {
   game: Games;
