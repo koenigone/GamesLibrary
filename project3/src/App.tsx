@@ -8,6 +8,7 @@ import { Platforms } from "./hooks/useGames";
 import PlatfromSelector from "./components/PlatformSelector";
 import SortSelector from "./components/SortSelector";
 import "./Scrollbar-custom.css";
+import GameHeading from "./components/GameHeading";
 
 export interface GameQuery {
   genre: Genre | null;
@@ -45,10 +46,13 @@ function App() {
           </GridItem>
         </Show>
         <GridItem area="main">
-          <HStack spacing={5} paddingLeft={6}>
-            <PlatfromSelector selectedPlatform={gameQuery.platform} onSelectPlatform={(platform) => setGameQuery({ ...gameQuery, platform })} />
-            <SortSelector sortOrder={gameQuery.sortOrder} onSelectSortOrder={(sortOrder) => setGameQuery({ ...gameQuery, sortOrder })} />
-          </HStack>
+          <Box paddingLeft={6}>
+            <GameHeading gameQuery={gameQuery} />
+            <HStack spacing={5}>
+              <PlatfromSelector selectedPlatform={gameQuery.platform} onSelectPlatform={(platform) => setGameQuery({ ...gameQuery, platform })} />
+              <SortSelector sortOrder={gameQuery.sortOrder} onSelectSortOrder={(sortOrder) => setGameQuery({ ...gameQuery, sortOrder })} />
+            </HStack>
+          </Box>
           <GameGrid
             gameQuery={gameQuery}
           />
