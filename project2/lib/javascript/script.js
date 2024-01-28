@@ -155,34 +155,39 @@ function displayAllPersonnel() {
 
 
 // Main search element, only searches for persons
-$('#searchMain').on('input', function() {
-    var personID = $('#searchMain').val();
+$(document).ready(function() {
+  function searchPersonnel(searchTerm) {
+      $.ajax({
+          type: 'GET',
+          url: 'lib/PHP/getPersonnelByID.php',
+          data: { name: searchTerm },
+          dataType: 'json',
+          success: function(response) {
+              if (response.status.code === '200') {
+                  displayPersonnel(response.data.personnel);
+              } else {
+                  $('#no-user-found-alert').removeClass('d-none');
+              }
+          },
+          error: function() {
+              $('#no-user-found-alert').removeClass('d-none');
+          }
+      });
+  }
 
-    $('#personnelBtn').tab('show'); // redirecting the user to personnel tab when searching
+  // Event handler for search input
+  $('#searchMain').on('input', function() {
+      var searchTerm = $(this).val().trim();
 
-    if (personID) {
-        $.ajax({
-            type: 'GET',
-            url: 'lib/PHP/getPersonnelByID.php',
-            data: {
-                id: personID
-            },
-            dataType: 'json',
-            success: function(response) {
-                if (response.status.code === "200" && response.data.personnel.length > 0) {
-                    displayPersonnel(response.data.personnel);
-                } else {
-                    displayNoUserFound();
-                }
-            },            
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert("Error: " + textStatus + " - " + errorThrown);
-            }
-        });
-    } else {
-        displayAllPersonnel();
-    }
+      if (searchTerm !== '') {
+          searchPersonnel(searchTerm);
+      } else {
+          // If search term is empty, display all personnel
+          displayAllPersonnel();
+      }
+  });
 });
+
 
 // Creating Card for both personnel functions
 function createPersonnelCard(row) {
