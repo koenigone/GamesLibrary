@@ -7,7 +7,7 @@ The application retrieves real-time game data from the RAWG.io API
 and presents it using Chakra UI for attractive styling, a clean layout, and a fully responsive design.
 
 <h2>Link to website</h2>
-https://gameslibrarygg.netlify.app/
+<a target="_blank">https://gameslibrarygg.netlify.app/</a>
 
 <h2>Main Dashboard</h2>
 <p align="center"> <img src="https://github.com/user-attachments/assets/9adaca74-c377-4ba6-bb27-2657085c225c" alt="Main Dashboard" width="80%" /> </p>
