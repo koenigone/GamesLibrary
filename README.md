@@ -1,4 +1,5 @@
 <h1>Games Library | React Project</h1>
+<p>Jun - 2023</p>
 
 A mini React application that allows users to discover games by genre.
 It offers the ability to filter games by genres and platforms, making it easy to find titles that match specific preferences.
